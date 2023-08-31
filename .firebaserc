@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "test-9642e": {
+      "hosting": {
+        "Slack-DABuble": [
+          "test-9642e"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "test-9642e"
+  }
+}

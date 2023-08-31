@@ -1,0 +1,64 @@
+.main-page-bg {
+    height: 100vh;
+    width: 100vw;
+    max-width: 100%;
+    background-color: #ECEEFE;
+
+    .main-page-header {
+        height: 110px;
+        width: 100vw;
+        max-width: 100%;
+
+        .logo-container {
+            height: 100%;
+            width: 20%;
+            gap: 20px;
+
+            .code-symbol {
+                transform: rotate(180deg);
+
+                &:hover {
+                    transform: none;
+                }
+            }
+        }
+
+        .search-container {
+            width: 55%;
+
+            .search-field {
+                height: 60px;
+                width: 90%;
+                background-color: white;
+                padding-left: 30px;
+                padding-right: 30px;
+                gap: 20px;
+                border-radius: 50px;
+
+                input {
+                    height: 30px;
+                    width: 100%;
+                    border: none;
+                    outline: none;
+                    background: none;
+
+                    &::placeholder {
+                        font-size: 20px;
+                    }
+                }
+            }
+        }
+
+        .profile-container {
+            height: 100%;
+            width: 25%;
+            margin-right: 20px;
+            gap: 20px;
+
+            span {
+                font-size: 30px;
+                font-weight: 500;
+            }
+        }
+    }
+}
