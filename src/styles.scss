@@ -114,6 +114,12 @@ h2 {
     margin: 0 !important;
 }
 
+b {
+    font-size: 28px;
+    font-weight: 800;
+    margin-right: 10px;
+}
+
 .btn-container {
     display: flex;
     align-self: center;
@@ -178,6 +184,12 @@ h2 {
 .scrollable-container::-webkit-scrollbar {
     width: 0;
     height: 0;
+}
+
+.close-icon {
+    top: 40px;
+    right: 40px;
+    z-index: 10;
 }
 
 /* nunito-300 - latin */

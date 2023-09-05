@@ -12,17 +12,27 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { MatMenuModule } from '@angular/material/menu';
 import { MainpageComponent } from './mainpage/mainpage.component';
+import { HeaderComponent } from './header/header.component';
+import { MainChatComponent } from './main-chat/main-chat.component';
+import { ThreadsComponent } from './threads/threads.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainpageComponent
+    MainpageComponent,
+    HeaderComponent,
+    MainChatComponent,
+    ThreadsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatMenuModule,
+    MatSidenavModule,
+    MatToolbarModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
