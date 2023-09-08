@@ -2,7 +2,6 @@
     height: 100vh;
     width: 100vw;
     max-width: 100%;
-    background-color: #ECEEFE;
     display: flex;
     flex-direction: column;
 }
@@ -43,5 +42,34 @@
     width: 350px;
     background-color: white;
     border-radius: 30px;
+    position: relative;
+    display: flex;
     margin-left: 20px;
+}
+
+.toggle-sidenav-container {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 99;
+    background-color: white;
+    border-radius: 50px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 1px solid grey;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    gap: 20px;
+    padding: 30px 15px;
+
+    span {
+        text-orientation: mixed;
+    }
+
+    img {
+        object-fit: contain;
+    }
 }

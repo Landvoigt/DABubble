@@ -1,0 +1,27 @@
+<div class="send-email-cont">
+
+  <button (click)="checkIntro()" [routerLink]="'/'" >LOGIN</button>
+  <button (click)="checkIntro()" [routerLink]="'/reset-password'" >Reset</button>
+<mat-card>
+
+<!-- <div class="email-send">
+
+    <input placeholder="E-mail" type="email" [(ngModel)]="email">
+    <button (click)="sendEmail()">E-Mail senden</button>
+</div> -->
+
+
+<div class="email-send">
+  <input placeholder="E-mail" type="email" [(ngModel)]="email">
+  <button (click)="sendEmail()" [disabled]="!email">E-Mail senden</button>
+</div>
+
+</mat-card>
+
+    
+
+
+
+
+
+  </div>

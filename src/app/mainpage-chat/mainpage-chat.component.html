@@ -1,0 +1,134 @@
+<div class="chat-header d-flex">
+    <span class="chat-headline d-flex ai-center pointer"><mat-icon><i>tag</i></mat-icon>
+        Entwicklerteam<mat-icon>keyboard_arrow_down</mat-icon></span>
+    <div class="d-flex ai-center">
+        <div class="d-flex ai-center mr-20 assigned-clients-box pointer">
+            <img class="avatar-small" src="assets/img/avatar_big.png">
+            <img class="avatar-small" src="assets/img/avatar_big.png">
+            <img class="avatar-small" src="assets/img/avatar_big.png">
+            <span class="assigned-client-count">3</span>
+        </div>
+        <div class="add-client-icon-box flex-center pointer">
+            <mat-icon class="add-client-icon">person_add_alt</mat-icon>
+        </div>
+    </div>
+</div>
+<div class="chat-content">
+
+    <div class="d-flex ai-center message-date-container mt-120">
+        <div class="message-date-line"></div>
+        <span class="message-date">Montag, 04 September</span>
+        <div class="message-date-line"></div>
+    </div>
+
+    <div class="main-thread-container d-flex ai-start g-20 p-relative" (mouseenter)="hoveredThreadId = true" (mouseleave)="hoveredThreadId = false">
+        <img class="thread-avatar" src="assets/img/avatar_small.png">
+        <div class="d-flex f-column g-10">
+            <div>
+                <span class="thread-creator">Name Name</span>
+                <span class="thread-time">00:00 Uhr</span>
+            </div>
+            <span class="thread-text pointer" (click)="openThreads()">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Neque
+                adipisci
+                dolorum magni
+                provident, ipsam, odit voluptatibus, repellendus sunt</span>
+            <div class="emoji-section d-flex ai-center g-10">
+                <div class="flex-center add-emoji-box">
+                    <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer"
+                        (mouseenter)="addFilter($event)" (mouseleave)="removeFilter($event)">
+                </div>
+                <div class="emoji-box flex-center pointer">
+                    <img src="assets/img/icons/rocket.png">
+                    <span>1</span>
+                </div>
+                <div class="emoji-box flex-center pointer">
+                    <img src="assets/img/icons/checkmark.png">
+                    <span>1</span>
+                </div>
+            </div>
+            <div>
+                <span class="thread-answer-count" (click)="openThreads()">2 Antworten</span>
+                <span class="thread-time">Letzte Antwort 00:00 Uhr</span>
+            </div>
+        </div>
+        <div *ngIf="hoveredThreadId" class="thread-reaction-container flex-center g-10">
+            <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer" (mouseenter)="addFilter($event)"
+                (mouseleave)="removeFilter($event)">
+            <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer" (mouseenter)="addFilter($event)"
+                (mouseleave)="removeFilter($event)">
+            <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer" (mouseenter)="addFilter($event)"
+                (mouseleave)="removeFilter($event)">
+            <mat-icon (click)="openThreads()">comment</mat-icon>
+        </div>
+    </div>
+    
+    <div class="d-flex ai-center message-date-container">
+        <div class="message-date-line"></div>
+        <span class="message-date">Heute</span>
+        <div class="message-date-line"></div>
+    </div>
+    
+    <!-- <div *ngFor="let thread of threads; let i = index"
+     class="main-thread-container d-flex ai-start g-20 p-relative thread-container-reverse" 
+     (click)="openThreads()"
+     (mouseenter)="hoveredThreadId = i"
+     (mouseleave)="hoveredThreadId = null"> -->
+    <div class="main-thread-container d-flex ai-start g-20 p-relative thread-container-reverse"
+        (mouseenter)="hoveredThreadId = true" (mouseleave)="hoveredThreadId = false">
+    <img class="thread-avatar" src="assets/img/avatar_small.png">
+    <div class="d-flex f-column g-10 thread-creator-reverse">
+        <div class="d-flex thread-message-box-reverse">
+            <span class="thread-creator">Name Name</span>
+            <span class="thread-time thread-time-reverse">00:00 Uhr</span>
+        </div>
+        <span class="thread-text pointer thread-text-reverse" (click)="openThreads()">Lorem ipsum dolor sit amet consectetur,
+            adipisicing</span>
+        <div class="emoji-section d-flex ai-center g-10 flex-row-reverse">
+            <div class="flex-center add-emoji-box">
+                <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer"
+                    (mouseenter)="addFilter($event)" (mouseleave)="removeFilter($event)">
+            </div>
+            <div class="emoji-box flex-center pointer">
+                <img src="assets/img/icons/rocket.png">
+                <span>1</span>
+            </div>
+            <div class="emoji-box flex-center pointer">
+                <img src="assets/img/icons/checkmark.png">
+                <span>1</span>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="hoveredThreadId" class="thread-reaction-container thread-reaction-container-reverse flex-center g-10">
+        <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer" (mouseenter)="addFilter($event)"
+            (mouseleave)="removeFilter($event)">
+        <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer" (mouseenter)="addFilter($event)"
+            (mouseleave)="removeFilter($event)">
+        <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer" (mouseenter)="addFilter($event)"
+            (mouseleave)="removeFilter($event)">
+        <mat-icon (click)="openThreads()">comment</mat-icon>
+        <div class="p-relative">
+            <mat-icon class="edit-msg-icon" (click)="showEditMessageButton()">keyboard_control</mat-icon>
+            <div *ngIf="hoveredThreadId" class="thread-edit-btn pointer">Nachricht bearbeiten</div>
+        </div>
+    </div>
+</div>
+
+</div>
+<div class="message-container d-flex f-column">
+    <textarea placeholder="Nachricht an #Entwicklerteam"></textarea>
+    <div class="d-flex message-icons">
+        <div class="d-flex ai-center">
+            <img class="message-hover-icon"
+                [src]="hoverPlusIcon ? 'assets/img/icons/plus_blue.png' : 'assets/img/icons/plus.png'"
+                (mouseenter)="hoverPlusIcon = true" (mouseleave)="hoverPlusIcon = false">
+            <div class="message-hover-icon" class="icon-divider-line"></div>
+            <img class="message-hover-icon"
+                [src]="hoverSmileyIcon ? 'assets/img/icons/smiley_blue.png' : 'assets/img/icons/smiley.png'"
+                (mouseenter)="hoverSmileyIcon = true" (mouseleave)="hoverSmileyIcon = false">
+            <img class="message-hover-icon"
+                [src]="hoverAtIcon ? 'assets/img/icons/at_blue.png' : 'assets/img/icons/at.png'"
+                (mouseenter)="hoverAtIcon = true" (mouseleave)="hoverAtIcon = false">
+        </div>
+        <img class="message-send-icon" src="assets/img/icons/arrow_send.png">
+    </div>
+</div>

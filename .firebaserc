@@ -1,8 +1,15 @@
 {
   "targets": {
+    "login-6cce8": {
+      "hosting": {
+        "slack-firestore": [
+          "login-6cce8"
+        ]
+      }
+    },
     "test-9642e": {
       "hosting": {
-        "Slack-DABuble": [
+        "slack-firestore": [
           "test-9642e"
         ]
       }

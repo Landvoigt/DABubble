@@ -1,0 +1,158 @@
+.main-page-header {
+    min-height: 110px;
+    width: 100vw;
+    max-width: 100%;
+
+    .logo-container {
+        height: 100%;
+        width: 350px;
+        gap: 20px;
+
+        .code-symbol {
+            transform: rotate(180deg);
+            transition: all 125 ease-in-out;
+
+            &:hover {
+                transform: none;
+            }
+        }
+    }
+
+    .search-container {
+        flex: 1;
+
+        .search-field {
+            height: 65px;
+            width: 90%;
+            background-color: white;
+            padding-left: 30px;
+            padding-right: 30px;
+            gap: 20px;
+            border-radius: 50px;
+
+            input {
+                height: 30px;
+                width: 100%;
+                border: none;
+                outline: none;
+                font-size: 22px;
+                background: none;
+
+                &::placeholder {
+                    font-family: 'Nunito', sans-serif;
+                }
+            }
+        }
+    }
+
+    .profile-container {
+        height: 100%;
+        width: 450px;
+        margin-right: 20px;
+        gap: 20px;
+
+        .name {
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        mat-icon {
+            font-size: 28px;
+            font-weight: 600;
+            padding-bottom: 2px;
+        }
+
+        &:hover {
+            color: #797EF3;
+        }
+    }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+}
+
+.logout-popup {
+    top: 110px;
+    right: 20px;
+    height: 150px;
+    width: 250px;
+    background-color: white;
+    border-radius: 30px;
+    border-top-right-radius: 0;
+    gap: 45px;
+
+    span {
+        font-size: 24px;
+        font-weight: 600;
+    }
+}
+
+.profile-popup {
+    top: 110px;
+    right: 20px;
+    width: 400px;
+    background-color: white;
+    border-radius: 30px;
+    border-top-right-radius: 0;
+    padding: 45px 40px;
+
+    span {
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    a {
+        font-size: 18px;
+        font-weight: 600;
+        color: #535AF1;
+    }
+}
+
+.avatar-big {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    align-self: center;
+}
+
+.popup-header-text {
+    font-size: 24px !important;
+}
+
+.online-dot {
+    width: 16px;
+    height: 16px;
+}
+
+.online-text {
+    font-size: 20;
+    font-weight: 400;
+    color: #92C83E;
+}
+
+.popup-email {
+    font-size: 18px;
+    font-weight: 400;
+    color: #535AF1;
+    margin-left: 47px;
+}
+
+.edit-profile-input {
+    font-size: 18px;
+    font-weight: 500;
+    padding: 15px 20px;
+    border-radius: 30px;
+    border: 1px solid #ADB0D9;
+
+    &:focus-visible {
+        outline: none;
+        border: 1px solid #444DF2;
+    }
+}

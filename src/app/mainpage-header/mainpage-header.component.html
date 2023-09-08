@@ -1,0 +1,62 @@
+<div class="main-page-header d-flex ai-center">
+    <div class="logo-container flex-center">
+        <img class="pointer" src="assets/img/logo/logo_&_name.png">
+        <img class="code-symbol pointer"
+            [src]="hoverCodeIcon ? 'assets/img/icons/code_symbol_purple.png' : 'assets/img/icons/code_symbol.png'"
+            (mouseenter)="hoverCodeIcon = true" (mouseleave)="hoverCodeIcon = false" (click)="closeChannelSection()">
+    </div>
+    <div class="search-container flex-center">
+        <div class="search-field d-flex ai-center">
+            <input placeholder="Code learning durchsuchen">
+            <img class="pointer" src="assets/img/icons/loupe.png">
+        </div>
+    </div>
+    <div class="profile-container d-flex ai-center j-end p-relative pointer">
+        <span class="name">{{ currentUser.name }}</span>
+        <img src="assets/img/avatar_1.png">
+        <mat-icon (click)="$event.stopPropagation(); toggleLogoutPopup()">keyboard_arrow_down</mat-icon>
+        <div *ngIf="showLogoutPopup" class="overlay" (click)="closeLogoutPopup()">
+            <div class="logout-popup p-absolute flex-center f-column" (click)="$event.stopPropagation()">
+                <span class="pointer" (click)="closeLogoutPopup(); toggleProfilePopup()">Profil</span>
+                <span class="pointer" (click)="logoutUser()">Logout</span>
+            </div>
+        </div>
+        <div *ngIf="showProfilePopup" class="overlay" (click)="closeProfilePopup()">
+            <div class="profile-popup p-absolute d-flex f-column j-start" (click)="$event.stopPropagation()">
+                <mat-icon class="close-icon p-absolute pointer" (click)="closeProfilePopup()">close</mat-icon>
+                <span *ngIf="!showEditProfile" class="popup-header-text">Profil</span>
+                <span *ngIf="showEditProfile" class="popup-header-text">Dein Profil bearbeiten</span>
+                <img class="avatar-big mt-40 mb-40" src="assets/img/avatar_big.png">
+
+                <div *ngIf="!showEditProfile" class="d-flex w-100 j-between">
+                    <span class="name">{{ currentUser.name }}</span>
+                    <a class="pointer" (click)="toggleEditProfile()">Bearbeiten</a>
+                </div>
+                <div *ngIf="!showEditProfile" class="d-flex w-100 g-20 mt-30">
+                    <img class="online-dot" src="assets/img/icons/online.png">
+                    <span class="online-text">Aktiv</span>
+                </div>
+                <div *ngIf="!showEditProfile" class="d-flex w-100 g-20 mt-40">
+                    <img src="assets/img/icons/email.png">
+                    <span>E-Mail-Adresse</span>
+                </div>
+                <span *ngIf="!showEditProfile" class="popup-email mt-30">{{ currentUser.email }}</span>
+
+                <div *ngIf="showEditProfile" class="d-flex ai-center w-100 g-20 mb-20">
+                    <img src="assets/img/icons/person_in_circle.png">
+                    <span>Vollständiger Name</span>
+                </div>
+                <input *ngIf="showEditProfile" class="edit-profile-input" value="{{ currentUser.name }}">
+                <div *ngIf="showEditProfile" class="d-flex ai-center w-100 g-20 mt-40 mb-20">
+                    <img src="assets/img/icons/email.png">
+                    <span>E-Mail-Adresse</span>
+                </div>
+                <input *ngIf="showEditProfile" class="edit-profile-input" value="{{ currentUser.email }}">
+                <div *ngIf="showEditProfile" class="btn-container">
+                    <button class="btn-secondary" (click)="toggleEditProfile()">Abbrechen</button>
+                    <button class="btn-primary" (click)="saveEditedUserInformation()">Speichern</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

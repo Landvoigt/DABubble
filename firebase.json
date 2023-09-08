@@ -1,7 +1,7 @@
 {
   "hosting": [
     {
-      "target": "Slack-DABuble",
+      "target": "slack-firestore",
       "source": ".",
       "frameworksBackend": {}
     }

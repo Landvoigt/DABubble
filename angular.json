@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Slack-DABuble": {
+    "slack-firestore": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/slack-dabuble",
+            "outputPath": "dist/slack-firestore",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -40,13 +40,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "5mb"
                 }
               ],
               "outputHashing": "all"
@@ -66,10 +66,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Slack-DABuble:build:production"
+              "browserTarget": "slack-firestore:build:production"
             },
             "development": {
-              "browserTarget": "Slack-DABuble:build:development"
+              "browserTarget": "slack-firestore:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -77,7 +77,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Slack-DABuble:build"
+            "browserTarget": "slack-firestore:build"
           }
         },
         "test": {
@@ -104,13 +104,13 @@
           "builder": "@angular/fire:deploy",
           "options": {
             "version": 2,
-            "browserTarget": "Slack-DABuble:build:production"
+            "browserTarget": "slack-firestore:build:production"
           }
         }
       }
     }
   },
   "cli": {
-    "analytics": "8684072b-a5b0-43ce-b56b-cb64997e0ee4"
+    "analytics": "052de906-9718-489a-86ac-045f04427eea"
   }
 }

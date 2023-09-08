@@ -1,0 +1,123 @@
+<mat-icon class="close-icon p-absolute pointer" (click)="closeThreads()">close</mat-icon>
+
+<div class="threads-header d-flex">
+    <span class="threads-headline">Thread<span class="threads-channel"># Entwicklerteam</span></span>
+</div>
+
+<div class="threads-content">
+    <div class="main-thread-container d-flex ai-start g-20">
+        <img class="thread-avatar" src="assets/img/avatar_small.png">
+        <div class="d-flex f-column g-10">
+            <div>
+                <span class="thread-creator">Name Name</span>
+                <span class="thread-time">00:00 Uhr</span>
+            </div>
+            <span class="thread-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Neque
+                adipisci</span>
+        </div>
+    </div>
+    <div class="thread-divider d-flex ai-center g-20">
+        <span>2 Antworten</span>
+        <div class="thread-divider-line"></div>
+    </div>
+
+    <div class="main-thread-container d-flex ai-start g-20">
+        <img class="thread-avatar" src="assets/img/avatar_small.png">
+        <div class="d-flex f-column g-10">
+            <div>
+                <span class="thread-creator">Name Name</span>
+                <span class="thread-time">00:00 Uhr</span>
+            </div>
+            <span class="thread-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Neque
+                adipisci
+                dolorum magni
+                provident, ipsam, odit voluptatibus, repellendus sunt</span>
+        </div>
+    </div>
+
+    <div class="main-thread-container d-flex ai-start g-20 thread-container-reverse">
+        <img class="thread-avatar" src="assets/img/avatar_small.png">
+        <div class="d-flex f-column g-10 thread-creator-reverse">
+            <div class="d-flex thread-message-box-reverse">
+                <span class="thread-creator">Name Name</span>
+                <span class="thread-time thread-time-reverse">00:00 Uhr</span>
+            </div>
+            <span class="thread-text thread-text-reverse">Lorem ipsum dolor sit amet consectetur,
+                adipisicing</span>
+        </div>
+    </div>
+    <div class="main-thread-container d-flex ai-start g-20 thread-container-reverse">
+        <img class="thread-avatar" src="assets/img/avatar_small.png">
+        <div class="d-flex f-column g-10 thread-creator-reverse">
+            <div class="d-flex thread-message-box-reverse">
+                <span class="thread-creator">Name Name</span>
+                <span class="thread-time thread-time-reverse">00:00 Uhr</span>
+            </div>
+            <span class="thread-text thread-text-reverse">Lorem ipsum dolor sit amet consectetur,
+                adipisicing</span>
+        </div>
+    </div>
+    <div class="main-thread-container d-flex ai-start g-20 thread-container-reverse">
+        <img class="thread-avatar" src="assets/img/avatar_small.png">
+        <div class="d-flex f-column g-10 thread-creator-reverse">
+            <div class="d-flex thread-message-box-reverse">
+                <span class="thread-creator">Name Name</span>
+                <span class="thread-time thread-time-reverse">00:00 Uhr</span>
+            </div>
+            <span class="thread-text thread-text-reverse">Lorem ipsum dolor sit amet consectetur,
+                adipisicing</span>
+        </div>
+    </div>
+    <div class="main-thread-container d-flex ai-start g-20 thread-container-reverse">
+        <img class="thread-avatar" src="assets/img/avatar_small.png">
+        <div class="d-flex f-column g-10 thread-creator-reverse">
+            <div class="d-flex thread-message-box-reverse">
+                <span class="thread-creator">Name Name</span>
+                <span class="thread-time thread-time-reverse">00:00 Uhr</span>
+            </div>
+            <span class="thread-text thread-text-reverse">Lorem ipsum dolor sit amet consectetur,
+                adipisicing</span>
+        </div>
+    </div>
+
+    <div class="main-thread-container d-flex ai-start g-20 thread-container-reverse">
+        <img class="thread-avatar" src="assets/img/avatar_small.png">
+        <div class="d-flex f-column g-10 thread-creator-reverse">
+            <div class="d-flex thread-message-box-reverse">
+                <span class="thread-creator">Name Name</span>
+                <span class="thread-time thread-time-reverse">00:00 Uhr</span>
+            </div>
+            <span class="thread-text thread-text-reverse">Lorem ipsum dolor sit amet consectetur,
+                adipisicing</span>
+        </div>
+    </div>
+    <div class="main-thread-container d-flex ai-start g-20 thread-container-reverse">
+        <img class="thread-avatar" src="assets/img/avatar_small.png">
+        <div class="d-flex f-column g-10 thread-creator-reverse">
+            <div class="d-flex thread-message-box-reverse">
+                <span class="thread-creator">Name Name</span>
+                <span class="thread-time thread-time-reverse">00:00 Uhr</span>
+            </div>
+            <span class="thread-text thread-text-reverse">Lorem ipsum dolor sit amet consectetur,
+                adipisicing</span>
+        </div>
+    </div>
+    <div class="message-container d-flex f-column">
+        <textarea placeholder="Antworten..."></textarea>
+        <div class="d-flex message-icons">
+            <div class="d-flex ai-center">
+                <img class="message-hover-icon"
+                    [src]="hoverPlusIcon ? 'assets/img/icons/plus_blue.png' : 'assets/img/icons/plus.png'"
+                    (mouseenter)="hoverPlusIcon = true" (mouseleave)="hoverPlusIcon = false">
+                <div class="message-hover-icon" class="icon-divider-line"></div>
+                <img class="message-hover-icon"
+                    [src]="hoverSmileyIcon ? 'assets/img/icons/smiley_blue.png' : 'assets/img/icons/smiley.png'"
+                    (mouseenter)="hoverSmileyIcon = true" (mouseleave)="hoverSmileyIcon = false">
+                <img class="message-hover-icon"
+                    [src]="hoverAtIcon ? 'assets/img/icons/at_blue.png' : 'assets/img/icons/at.png'"
+                    (mouseenter)="hoverAtIcon = true" (mouseleave)="hoverAtIcon = false">
+            </div>
+            <img class="message-send-icon" src="assets/img/icons/arrow_send.png">
+        </div>
+    </div>
+</div>

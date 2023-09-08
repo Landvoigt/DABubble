@@ -1,0 +1,113 @@
+<div class="login-cont">
+
+
+    <div [style.display]="!isIntro ? 'block' : 'none' " class="logo-img-cont-always">
+        <img src="./assets/img/logo-intro.png">
+        <div class="title">DABubble</div>
+    </div>
+    <div  class="logo-img-cont-always">
+        <img src="./assets/img/logo-intro.png">
+        <div class="title">DABubble</div>
+    </div>
+
+
+    <div style="position: absolute;">
+
+
+
+        <div style="position: relative; width: 100vw; height: 100vh;">
+
+            <!-- <div  (click)="checkIntro()" [routerLink]="'/account'">Create account</div> -->
+
+
+            <div [style.display]="isIntro ? 'block' : 'none' " class="intro-cont"> </div>
+
+
+
+            <div [style.display]="isIntro ? 'block' : 'none' " class="animation-cont">
+
+                <div class="intro-logo-title">
+                    <div class="logo-img-cont">
+                        <img src="./assets/img/logo-intro.png">
+                        <div class="title">DABubble</div>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Anmeldung</mat-card-title>
+            <img src="" alt="">
+
+
+            <mat-card-subtitle>Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die<br>du bei der Arbeit
+                verwendest.</mat-card-subtitle>
+        </mat-card-header>
+
+
+
+
+
+        <form>
+
+
+            <div class="email-cont">
+                <input [(ngModel)]="user.email" type="email" name="email" placeholder="E-mail" autocomplete="on">
+                <img src="./assets/img/mail.png">
+            </div>
+
+            <div class="password-cont">
+                <input [(ngModel)]="user.password" type="password" name="password" placeholder="Password"
+                    autocomplete="on">
+                <img src="./assets/img/lock.png">
+            </div>
+
+            <button  [routerLink]="'/main'" (click)="login()" class="login-btn" type="submit">Anmelden</button>
+            <button class="guest-login-btn">Gäste-Login</button>
+
+        </form>
+
+
+        <div [routerLink]="'/send-link'" class="password-forgot">Passwort vergessen ?</div>
+
+        <img class="oder" src="./assets/img/oder.png">
+        <img class="google-login" src="./assets/img/google-login.png" [routerLink]="'/login-google'" >
+
+
+    </mat-card>
+
+    <div class="to-account">
+        <span> Neu bei DABubble?</span>
+
+         <div (click)="checkIntro()" [routerLink]="'/account'">Konto erstellen</div>
+    </div>
+
+   
+
+
+</div>
+
+<div style="position: absolute; right: 30px; top: 150px; cursor: pointer; border: 2px red solid;" (click)="checkIntro()"
+    [routerLink]="'/main'">zu Main Page</div>
