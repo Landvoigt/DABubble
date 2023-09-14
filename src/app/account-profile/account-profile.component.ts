@@ -3,6 +3,7 @@ import { AccountServiceService } from '../account-service.service';
 import { Location } from '@angular/common';
 import { User } from 'src/models/user.class';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -10,13 +11,13 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/
   templateUrl: './account-profile.component.html',
   styleUrls: ['./account-profile.component.scss']
 })
-export class AccountProfileComponent implements OnInit {
+export class AccountProfileComponent  {
   imageUrl: string | null = null;
   user = new User();
   private storage = getStorage();
-  // private storageFB: FirebaseStorage
   filePath: any;
-
+  isCreated = false;
+  isNotChoose = true;
 
 
   avatars: any = [
@@ -29,49 +30,10 @@ export class AccountProfileComponent implements OnInit {
   name: string = '';
 
   constructor(private accountService: AccountServiceService,
-    private location: Location) {
+    private location: Location,private router: Router) {
     this.isIntro = accountService.isIntro;
     this.name = this.accountService.currentUser[0].name;
   }
-
-
-  // uploadImage(event: any) {
-  //   const file = event.target.files[0];
-  //   const filePath = `images/${file.name}`;
-  //   const fileRef = this.storage.ref(filePath);
-  //   const uploadTask = this.storage.upload(filePath, file);
-
-  //   uploadTask.snapshotChanges().pipe(
-  //     finalize(() => {
-  //       fileRef.getDownloadURL().subscribe(url => {
-  //         this.imageUrl = url;
-  //       });
-  //     })
-  //   ).subscribe();
-
-
-  // }
-
-
-
-
-  // uploadImage(event: any) {
-  //   const file = event.target.files[0];
-  //   this.filePath = `${this.accountService.currentUser[0]['userId']}/${file.name}`; // `${this.accountService.currentUser[0]['email']}/${file.name}` oder ; this.accountService.currentUser[0]['email']
-  //   const fileRef = ref(this.storage, this.filePath);
-  //   const uploadTask = uploadBytesResumable(fileRef, file);
-
-  //   uploadTask.then(snapshot => {
-  //     getDownloadURL(snapshot.ref).then(url => {
-  //       this.imagePath = url;
-  //     }).catch(error => {
-  //       console.error('Fehler beim Abrufen der Download-URL:', error);
-  //     });
-  //   }).catch(error => {
-  //     console.error('Fehler beim Hochladen der Datei:', error);
-  //   });
-
-  // }
 
 
   async uploadImage(event: any) {
@@ -84,7 +46,8 @@ export class AccountProfileComponent implements OnInit {
       this.imagePath = await getDownloadURL(snapshot.ref);
       this.accountService.imagePathService = this.imagePath;
       console.log('Bild-URL:', this.imagePath);
-      console.log('Bild-URL als profile in Firestore:', this.user.profile);
+      console.log('Bild-URL als profile in Firestore:', this.user.avatarSrc);
+      this.isNotChoose = false;
     } catch (error) {
       console.error('Fehler beim Hochladen und Auslesen des Bildes:', error);
     }
@@ -92,67 +55,46 @@ export class AccountProfileComponent implements OnInit {
   }
 
 
-
-  async chooseAvatar(i: any) {
+async chooseAvatar(i: any) {
     try {
       // Annahme: this.avatars ist eine Liste von Dateinamen in assets/img/
       const fileName = this.avatars[i];
       const filePath = `${fileName}`;
-      const fileRef = ref(this.storage, filePath); // Verwende ref aus Firebase Storage
-
-      // Lade das Bild aus dem lokalen assets-Ordner
+      const fileRef = ref(this.storage, filePath);
       const imageBlob = await fetch(`./assets/img/${fileName}`).then((response) => response.blob());
-
-      // Lade das Bild in Firebase Storage hoch
       const uploadTask = uploadBytesResumable(fileRef, imageBlob);
       await uploadTask;
-
-      // Hole die herunterladbare URL des hochgeladenen Bildes
       this.imagePath = await getDownloadURL(fileRef);
-
-      // Speichere die Bild-URL in deinem Service (z. B. accountService)
       this.accountService.imagePathService = this.imagePath;
-
+      this.isNotChoose = false;
       console.log('Bild-URL:', this.imagePath);
-      console.log('Bild-URL als profile in Firestore:', this.user.profile);
+      console.log('Bild-URL als profile in Firestore:', this.user.avatarSrc);
     } catch (error) {
       console.error('Fehler beim Hochladen und Auslesen des Bildes:', error);
     }
   }
 
 
-
-
-  // chooseAvatar(i: any) {
-  //   this.imagePath = `./assets/img/${this.avatars[i]}`;
-  //   this.filePath = this.imagePath;
-  //   const fileRef = ref(this.storage, this.avatars[i]);
-  //   uploadBytesResumable(fileRef, this.filePath);
-  // }
-
-
-
-
-
-  checkIntro() {
+checkIntro() {
+    this.isCreated = true;
+    setTimeout(() => {
+      this.isCreated = false;
+      this.router.navigate(['/']);
+    }, 1500);
     this.sendingForm();
     this.accountService.currentUser = [];
     this.accountService.currentBoolean = [];
     this.accountService.isIntro = false;
   }
 
-  goBack() {
+
+  goBack() {  // test
     this.location.back();
   }
 
-  goForward() {
+  goForward() {   // test
     this.location.forward();
   }
-
-  ngOnInit(): void {
-
-  }
-
 
   sendingForm() {
     // hier wird   boolean Variable auf true gesetzt

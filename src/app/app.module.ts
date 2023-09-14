@@ -32,6 +32,7 @@ import { LoginGoogleComponent } from './login-google/login-google.component';
 import { SuccessBannerComponent } from './success-banner/success-banner.component';
 import { DialogMessageReactComponent } from './dialog-message-react/dialog-message-react.component';
 import { MainpageChannelsComponent } from './mainpage-channels/mainpage-channels.component';
+import { DialogAddChannelComponent } from './dialog-add-channel/dialog-add-channel.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { MainpageChannelsComponent } from './mainpage-channels/mainpage-channels
     LoginGoogleComponent,
     SuccessBannerComponent,
     DialogMessageReactComponent,
-    MainpageChannelsComponent
+    MainpageChannelsComponent,
+    DialogAddChannelComponent
   ],
   imports: [
     BrowserModule,

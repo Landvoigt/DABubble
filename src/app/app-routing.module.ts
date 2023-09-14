@@ -11,10 +11,10 @@ import { LoginGoogleComponent } from './login-google/login-google.component';
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'account', component: AccountComponent },
+  { path: 'profile', component: AccountProfileComponent },
   { path: 'main', component: MainpageComponent },
   { path: 'send-link', component: SendLinkToUserComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
-  { path: 'profile', component: AccountProfileComponent },
   { path: 'login-google', component: LoginGoogleComponent }
 ];
 

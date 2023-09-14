@@ -1,49 +1,58 @@
-
 <div class="profile-cont">
 
-  <div  class="logo-img-cont-always">
+  <img [class.account-created-animation]="isCreated" class="account-created-image"
+    src="./assets/img/account-created.png">
+
+
+  <div [class.profile-cont-opacity]="isCreated" class="logo-img-cont-always">
     <img src="./assets/img/logo-intro.png">
     <div class="title">DABubble</div>
-</div>
-
-
-
- <div  style="position: absolute; right: 30px; top: 80px; cursor: pointer; border: 2px red solid;"
-  (click)="checkIntro()" [routerLink]="'/'">zu Login</div> 
-
-
-
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Wähle deinen Avatar</mat-card-title>
-   
-
-
-   
-  </mat-card-header>
-  <img class="none-profile" [src]="imagePath">
-  <div class="name">{{name}}</div>
-  <div class="info-avatars">
-    <div>Aus der Liste wählen</div>
-    <div class="avatars-container">
-      <img class="avatar-img" (click)="chooseAvatar(i)" *ngFor="let avatar of avatars; let i = index" src="./assets/img/{{avatar}}" >
-    </div>
   </div>
 
-<div class="file-input-container">eigenes Bild verwenden
-  <input type="file" (change)="uploadImage($event)" id="fileInput" class="custom-file-input">
-  <label for="fileInput" class="custom-file-label">Datei hochladen</label>
+
+
+  <mat-card [class.profile-cont-opacity]="isCreated">
+
+
+    <div class="profile-card">
+
+      <div class="title">Wähle deinen Avatar</div>
+
+      <img class="none-profile" [src]="imagePath">
+      <div class="name">{{name}}</div>
+
+      <div class="info-avatars">
+        <div>Aus der Liste wählen</div>
+        <div class="avatars-container">
+          <img class="avatar-img" (click)="chooseAvatar(i)" *ngFor="let avatar of avatars; let i = index"
+            src="./assets/img/{{avatar}}">
+        </div>
+      </div>
+
+      <div class="file-input-container">eigenes Bild verwenden
+        <input type="file" (change)="uploadImage($event)" id="fileInput" class="custom-file-input">
+        <label for="fileInput" class="custom-file-label">Datei hochladen</label>
+      </div>
+
+
+      <button (click)="checkIntro()" [disabled]="isNotChoose" class="weiter-btn">Weiter</button>
+
+    </div>
+
+
+
+    <mat-card-actions>
+      <button [routerLink]="'/account'" mat-button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </mat-card-actions>
+
+
+  </mat-card>
+
+  <footer>
+    <span>Impressum</span>
+    <span>Datenschutz</span>
+  </footer>
+
 </div>
-
-
-  <button  (click)="checkIntro()" [routerLink]="'/'" class="weiter-btn">Weiter</button>
-</mat-card>
-
- <div style="position: absolute; right: 30px; top: 30px; cursor: pointer; border: 2px red solid;" 
- [routerLink]="'/account'"> zu Create Account</div>
-
-<!-- <button (click)="sendingForm()">Weiter</button> -->
- 
-</div>
-
-

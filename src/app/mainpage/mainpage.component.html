@@ -1,62 +1,27 @@
 <div class="main-page-bg p-relative">
-    <div class="toggle-sidenav-container" (click)="toggleLeftSidenav()" (mouseenter)="hoverCodeIcon = true" (mouseleave)="hoverCodeIcon = false">
-        <span>Workspace-Menü schließen</span>
-        <img class="code-symbol pointer"
-            [src]="hoverCodeIcon ? 'assets/img/icons/code_symbol_purple.png' : 'assets/img/icons/code_symbol.png'">
-        <!-- <span>Workspace-Menü öffnen</span> -->
+    <div class="toggle-sidenav-container pointer" (click)="toggleLeftSidenav()" (mouseenter)="hoverCodeIcon = true"
+        (mouseleave)="hoverCodeIcon = false">
+        <span *ngIf="isSidenavOpen">Workspace-Menü schließen</span>
+        <span *ngIf="!isSidenavOpen">Workspace-Menü öffnen</span>
+        <img class="code-symbol"
+            [src]="hoverCodeIcon ? 'assets/img/icons/code_symbol_purple.png' : 'assets/img/icons/code_symbol.png'"
+            [ngStyle]="{ transform: isSidenavOpen ? 'rotate(180deg)' : 'rotate(0)' }">
     </div>
-    
+
     <app-mainpage-header (closeEvent)="toggleLeftSidenav()"></app-mainpage-header>
 
     <mat-sidenav-container class="content">
 
-        <mat-sidenav #leftSidenav mode="side" opened="true" class="wrapper">
+        <mat-sidenav #leftSidenav [(opened)]="isSidenavOpen" mode="side" opened="true" class="wrapper">
             <app-mainpage-channels class="channel-container f-column"></app-mainpage-channels>
         </mat-sidenav>
 
         <app-mainpage-chat class="chat-container d-flex f-column" (openEvent)="openRightSidenav()"></app-mainpage-chat>
 
-        <mat-sidenav #rightSidenav mode="side" opened="true" position="end" class="wrapper">
+        <mat-sidenav #rightSidenav mode="side" opened="false" position="end" class="wrapper">
             <app-mainpage-threads class="threads-container d-flex f-column"
                 (closeEvent)="toggleRightSidenav()"></app-mainpage-threads>
         </mat-sidenav>
-
-        <!-- <div class="flex-center f-column g-40" style="width: 100%; height: 100%;">
-            
-            <div class="flex-center g-40">
-                <input [(ngModel)]="channelName">
-                <button class="btn-primary" (click)="createNewChannel()">New Channel</button>
-            </div>
-            <div class="d-flex g-40">
-                <span><b>Channels</b></span>
-                <div class="d-flex f-column">
-                    <span *ngFor="let channel of allChannels">{{ channel.name }}</span>
-                </div>
-            </div>
-
-            <div class="flex-center g-40">
-                <input [(ngModel)]="channelMessage">
-                <button class="btn-primary" (click)="createNewMessage()">New Message</button>
-            </div>
-            <div class="d-flex g-40">
-                <span><b>Messages</b></span>
-                <div class="d-flex f-column">
-                    <span *ngFor="let message of allMessages">{{ message.content }}</span>
-                </div>
-            </div>
-
-            <div class="flex-center g-40">
-                <input [(ngModel)]="channelAnswer">
-                <button class="btn-primary" (click)="createNewAnswer()">New Anwser</button>
-            </div>
-            <div class="d-flex g-40">
-                <span><b>Answers</b></span>
-                <div class="d-flex f-column">
-                    <span *ngFor="let answer of allAnswers">{{ answer.content }}</span>
-                </div>
-            </div>
-
-        </div> -->
 
     </mat-sidenav-container>
 </div>

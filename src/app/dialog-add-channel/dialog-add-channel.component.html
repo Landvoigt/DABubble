@@ -1,0 +1,14 @@
+<form class="content d-flex f-column" #channelForm="ngForm" (ngSubmit)="addChannel(channelForm)">
+    <h4>Channel erstellen</h4>
+    <span>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein #marketing zum
+        Beispiel.</span>
+
+    <b>Channel-Name</b>
+    <input [(ngModel)]="channel.name" name="channelName" placeholder="# z.B. Kooperationsprojekte">
+    <b>Beschreibung (optional)</b>
+    <input [(ngModel)]="channel.description" name="channelDescription" placeholder="Dein Text hier">
+
+    <mat-dialog-actions>
+        <button mat-button type="submit" [disabled]="loading">Erstellen</button>
+    </mat-dialog-actions>
+</form>

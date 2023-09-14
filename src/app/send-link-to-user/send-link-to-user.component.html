@@ -1,27 +1,63 @@
 <div class="send-email-cont">
 
-  <button (click)="checkIntro()" [routerLink]="'/'" >LOGIN</button>
-  <button (click)="checkIntro()" [routerLink]="'/reset-password'" >Reset</button>
-<mat-card>
 
-<!-- <div class="email-send">
-
-    <input placeholder="E-mail" type="email" [(ngModel)]="email">
-    <button (click)="sendEmail()">E-Mail senden</button>
-</div> -->
-
-
-<div class="email-send">
-  <input placeholder="E-mail" type="email" [(ngModel)]="email">
-  <button (click)="sendEmail()" [disabled]="!email">E-Mail senden</button>
-</div>
-
-</mat-card>
-
-    
-
-
-
-
-
+  <div class="logo-img-cont-always">
+    <img src="./assets/img/logo-intro.png">
+    <div class="title">DABubble</div>
   </div>
+
+  <!-- <button (click)="checkIntro()" [routerLink]="'/'" >LOGIN</button> -->
+  
+  <mat-card [class.send-email-opacity]="isSent">
+    <div class="send-link">
+
+      <div class="title">Passwort zurücksetzen</div>
+      <div class="info-above">Bitte geben Sie Ihre E-mail Adresse ein.</div>
+      <div class="email-send">
+        <input placeholder="E-mail" type="email" [(ngModel)]="email" #emailInput="ngModel"
+          (ngModelChange)="checkUserEmail()">
+
+        <img src="./assets/img/mail.png">
+        
+        <div [style.display]="isEmailExist ? 'none' : 'flex'">
+          <div [style.display]="emailInput.touched ? (isEmailValid ? 'none' : 'flex') : 'none'"
+            [class.warning-invalid]="!isEmailValid">*Diese E-Mail-Adresse ist leider ungültig.</div>
+        </div>
+
+        <div [style.display]="isEmailExist ? 'none' : 'flex'">
+          <div [style.display]="emailInput.touched ? (!isEmailValid ? 'none' : 'flex') : 'none'"
+            [class.warning-not-exist]="isEmailValid">*Die E-Mail-Adresse ist nicht in der Datenbank vorhanden!</div>
+        </div>
+      </div>
+
+
+      <p>Wir senden Ihnen eine E-Mail, über die <br> Sie
+        Ihr Passwort Ändern können.
+      </p>
+      <div class="button-cont">
+        <button (click)="sendEmail()" [disabled]="!isEmailExist">E-Mail senden</button>
+
+      </div>
+
+    </div>
+
+
+    <mat-card-actions>
+      <button (click)="checkIntro()" [routerLink]="'/'" mat-button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </mat-card-actions>
+
+  </mat-card>
+
+
+
+
+  <img [class.email-sent-animation]="isSent" class="email-sent-image" src="./assets/img/email-sent.png">
+
+  <footer>
+    <span>Impressum</span>
+    <span>Datenschutz</span>
+  </footer>
+
+</div>

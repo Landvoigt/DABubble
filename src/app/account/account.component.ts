@@ -1,10 +1,11 @@
-import { Component, OnInit, inject, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { Firestore, collection, doc, getDoc, getDocs, setDoc } from '@angular/fire/firestore';
+import { Component, OnInit, inject, ViewChild } from '@angular/core';
+import { Firestore, addDoc, collection, doc, getDoc, getDocs, setDoc } from '@angular/fire/firestore';
 import { User } from 'src/models/user.class';
 import { NgForm } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 import { AccountServiceService } from '../account-service.service';
-import { query, QuerySnapshot, where } from 'firebase/firestore';
+import { onSnapshot, query, QuerySnapshot, where } from 'firebase/firestore';
+import { Router } from '@angular/router';
 
 
 export interface Task {
@@ -36,6 +37,9 @@ export class AccountComponent implements OnInit {
   passwordPattern: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
   isChecked: boolean = false;
   uID: any;
+  isPasswordNotValid = false;
+  isEmailNotValid = false;
+
 
   @ViewChild('accountForm', { static: false }) accountForm: NgForm;
 
@@ -52,7 +56,6 @@ export class AccountComponent implements OnInit {
   };
 
 
-
   submitForm() {  // hier wird das Formular gesendet
     this.saveUser(this.accountForm);
   }
@@ -65,6 +68,7 @@ export class AccountComponent implements OnInit {
         this.formAction();
       }
     });
+    this.getUsersFirestore();
   }
 
   formAction() {
@@ -74,8 +78,7 @@ export class AccountComponent implements OnInit {
 
 
 
-
-  constructor(public accountService: AccountServiceService) {
+  constructor(public accountService: AccountServiceService, public router: Router) {
 
     const lastBooleanIndex = this.accountService.currentBoolean.length - 1;
     const lastUserIndex = this.accountService.currentUser.length - 1;
@@ -108,21 +111,21 @@ export class AccountComponent implements OnInit {
     this.accountService.isIntro = false;
   }
 
-  
+
   async saveUser(userForm: NgForm) {
     if (this.isName &&
       !this.isEmailExist &&
       !this.isPasswordExist) {
       const collRef = collection(this.firestore, "users");
-      const newUserDocRef = doc(collRef);
-      await setDoc(newUserDocRef, {
+      const newUser = await addDoc(collRef, {
         name: this.user.name,
         email: this.user.email,
         password: this.user.password,
         loggedIn: false,
         isActive: false,
-        chanel: '',
-        profile: this.accountService.imagePathService
+        friends: [],
+        channels: [],
+        avatarSrc: this.accountService.imagePathService
       });
       userForm.resetForm();
       this.isValidName = true;
@@ -130,78 +133,61 @@ export class AccountComponent implements OnInit {
       this.isValidPassword = true;
       this.isChecked = false;
 
+      await this.addIdToUser(newUser.id);
+    }
+  }
+
+  async addIdToUser(_id: string) {
+    try {
+      const userDocRef = doc(this.firestore, 'users', _id);
+      await setDoc(userDocRef, { id: _id }, { merge: true });
+
+    } catch (error) {
+      console.error("Error updating channel:", error);
     }
   }
 
 
-  async getUsersFirestore() {
+  async getUsersFirestore() {    // Test
     const collRef = collection(this.firestore, "users");
-
-    // Rufe alle Dokumente in der Sammlung "user" ab und warte auf das Ergebnis
     const querySnapshot = await getDocs(collRef);
-
-    // Durchlaufe jedes Dokument in der Abfrageergebnis-Sammlung
     querySnapshot.forEach((doc) => {
-      // Rufe die Benutzerdaten aus dem aktuellen Dokument ab und interpretiere sie als "User"-Objekt
       const userData = doc.data() as User;
-
-      // Rufe die eindeutige ID des aktuellen Dokuments ab
       const documentId = doc.id;
-
-      // Gib die eindeutige ID und die Benutzerdaten auf der Konsole aus
       console.log('Dokument ID:', documentId);
       console.log('User Data:', userData);
     });
 
-    //console.log('ennyi felhasznalo van: ', (await this.getNumberOfUsers()).toString());
-    // console.log('Anzahl der Benutzer:', Number(await this.getNumberOfUsers()));
-    // this.numberOfUsers = Number(await this.getNumberOfUsers());
-    // console.log('Slack-Benutzer: ',this.numberOfUsers);
-
-
   }
 
 
-
-
-
-  async getUsers() {
+  async getLoggedInUsers() {   // Test
     const collRef = collection(this.firestore, "users");
 
     try {
-      // Führe eine Abfrage durch, um nur Dokumente mit userId === 5 zu erhalten
-      const querySnapshot = await getDocs(query(collRef, where("userId", "==", 5)));
-
-      // Durchlaufe die Ergebnisse der Abfrage
+      const querySnapshot = await getDocs(collRef);
       querySnapshot.forEach((doc) => {
-        // Rufe die Benutzerdaten aus dem aktuellen Dokument ab und interpretiere sie als "User"-Objekt
         const userData = doc.data() as User;
-
-        // Rufe die eindeutige ID des aktuellen Dokuments ab
         const documentId = doc.id;
         console.log('Dokument ID:', documentId);
         console.log('User Data:', userData);
-        // Erstelle ein div-Element, um die Benutzerdaten anzuzeigen
-        const userDiv = document.createElement("div");
+        const loggedInListener = onSnapshot(doc.ref, (snapshot) => {
+          const loggedInValue = snapshot.data()?.['loggedIn'];
+          if (loggedInValue !== undefined) {
+            if (loggedInValue) {
+              console.log(`Benutzer ${userData.name} ist eingeloggt!`);
+            } else {
+              console.log(`Benutzer ${userData.name} ist ausgeloggt!`);
+            }
+          }
 
-        // Füge die Benutzerdaten dem div-Element hinzu (angepasst an deine Datenstruktur)
-        userDiv.innerHTML = `
-          <p>Document ID: ${documentId}</p>
-          <p>Name: ${userData.name}</p>
-          <p>Email: ${userData.email}</p>
-          <p>Password: ${userData.password}</p>
-          <img id="profileImg" src="${userData.profile}">
-        `;
-
-        // Füge das div-Element zum DOM hinzu, um die Benutzerdaten anzuzeigen
-        document.body.appendChild(userDiv);
+        });
       });
+
     } catch (error) {
       console.error('Fehler beim Abrufen der Benutzerdaten:', error);
     }
-    //this.accountService.getLoggedUsers();
   }
-
 
 
   async checkUserEmail() {
@@ -214,8 +200,10 @@ export class AccountComponent implements OnInit {
 
     if (this.user.email === '' || !this.emailPattern.test(this.user.email) || this.isEmailExist) {
       this.isValidEmail = true;
+      this.isEmailNotValid = true;
     } else {
       this.isValidEmail = false;
+      this.isEmailNotValid = false;
     }
   }
 
@@ -230,8 +218,10 @@ export class AccountComponent implements OnInit {
 
     if (this.user.password === '' || !this.passwordPattern.test(this.user.password) || this.isPasswordExist) {
       this.isValidPassword = true;
+      this.isPasswordNotValid = true;
     } else {
       this.isValidPassword = false;
+      this.isPasswordNotValid = false;
     }
   }
 
@@ -247,7 +237,6 @@ export class AccountComponent implements OnInit {
 
 
   saveCurrentUser() {
-
     let currentUser = {
       name: this.user.name,
       email: this.user.email,
@@ -262,16 +251,10 @@ export class AccountComponent implements OnInit {
       isValidEmail: this.isValidEmail,
       isChecked: this.isChecked
     };
-
     this.accountService.currentUser.push(currentUser);
     this.accountService.currentBoolean.push(currentBoolean);
 
   }
-
-
-
-
-
 
 }
 

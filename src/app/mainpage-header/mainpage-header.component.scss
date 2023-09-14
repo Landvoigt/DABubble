@@ -5,7 +5,7 @@
 
     .logo-container {
         height: 100%;
-        width: 350px;
+        width: 385px;
         gap: 20px;
 
         .code-symbol {
@@ -47,24 +47,42 @@
 
     .profile-container {
         height: 100%;
-        width: 450px;
+        width: 467px;
         margin-right: 20px;
         gap: 20px;
 
         .name {
             font-size: 30px;
             font-weight: 700;
+
+            &:hover {
+                color: #797EF3;
+            }
         }
 
-        mat-icon {
+        .user-avatar {
+            height: 70px;
+            object-fit: contain;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 0, 0, 0.904);
+        }
+
+        .arrow-icon {
             font-size: 28px;
             font-weight: 600;
             padding-bottom: 2px;
-        }
 
-        &:hover {
-            color: #797EF3;
+            &:hover {
+                color: #797EF3;
+            }
         }
+    }
+}
+
+.cancel-hover {
+    &:hover {
+        color: black !important;
+        cursor: default !important;
     }
 }
 
@@ -91,6 +109,11 @@
     span {
         font-size: 24px;
         font-weight: 600;
+
+        &:hover {
+            color: #797EF3;
+            font-weight: 700;
+        }
     }
 }
 

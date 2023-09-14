@@ -20,6 +20,21 @@
     margin-top: 20px;
 }
 
+.friends-wrapper {
+    margin-top: 12px;
+    height: 300px;
+    width: auto;
+    overflow: scroll;
+}
+
+.up {
+display: none;
+}
+
+.rotate {
+    rotate: -90deg;
+}
+
 .channel-box {
     width: fit-content;
     margin: 10px 0 10px 40px;
@@ -114,4 +129,6 @@ mat-icon {
     object-fit: contain;
     border-radius: 50%;
     height: 50px;
+    // padding: 1px;
+    // border: 1px solid grey;
 }

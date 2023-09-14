@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { AccountServiceService } from '../account-service.service';
+import { Firestore, collection, doc, getDoc, getDocs, updateDoc } from '@angular/fire/firestore';
 import { User } from 'src/models/user.class';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mainpage-header',
@@ -9,7 +11,6 @@ import { User } from 'src/models/user.class';
 })
 export class MainpageHeaderComponent {
   @Output() closeEvent = new EventEmitter<void>();
-  currentUser = new User();
 
   showLogoutPopup: boolean = false;
   showProfilePopup: boolean = false;
@@ -19,13 +20,17 @@ export class MainpageHeaderComponent {
   hoverSmileyIcon: boolean = false;
   hoverAtIcon: boolean = false;
   hoverAddClientIcon: boolean = false;
+  isSidenavOpen: boolean = true;
+  user: User;
+  isUserEmail: boolean;
 
-  constructor(private accountService: AccountServiceService) {
-    this.currentUser = this.accountService.currentUser;
+  constructor(public accountService: AccountServiceService,
+    private firestore: Firestore, private router: Router) {
   }
 
   closeChannelSection() {
     this.closeEvent.emit();
+    this.isSidenavOpen = !this.isSidenavOpen;
   }
 
   /**
@@ -73,7 +78,23 @@ export class MainpageHeaderComponent {
     this.toggleEditProfile();
   }
 
-  logoutUser() {
-    // login out
+  async logoutUser() {
+    const collRef = collection(this.firestore, "users");
+    const querySnapshot = await getDocs(collRef);
+    querySnapshot.forEach(async (queryDocSnapshot) => {
+      const userData = queryDocSnapshot.data() as User;
+      if (userData.email === this.accountService.getLoggedInUser().email) {
+        const userDocRef = doc(this.firestore, 'users', queryDocSnapshot.id);
+        await updateDoc(userDocRef, {
+          loggedIn: false
+        });
+        this.checkIntro();
+        this.router.navigate(['/']);
+      }
+    });
+  }
+
+  checkIntro() {
+    this.accountService.isIntro = false;
   }
 }

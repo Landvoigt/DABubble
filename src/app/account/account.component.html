@@ -1,59 +1,67 @@
 <div class="account-cont">
-    <button class="get-users" (click)="getUsers()">Get userId 5</button>
-    <!-- <img class="logo" src="./assets/img/logo.png"> -->
 
 
-    <div  class="logo-img-cont-always">
+
+    <div class="logo-img-cont-always">
         <img src="./assets/img/logo-intro.png">
         <div class="title">DABubble</div>
     </div>
-    
-    <!-- <button (click)="saveCurrentUser()" style="position: absolute; right: 30px; top: 30px; cursor: pointer; border: 2px red solid;"
-     [routerLink]="'/profile'" >Weiter zu Profile</button>  -->
+
+
 
 
     <mat-card>
-        <mat-card-header>
-            <mat-card-title>Konto erstellen</mat-card-title>
-            <mat-card-subtitle>Mit deinem Namen und deiner E-mail-Adresse hast <br> du dein neues
-                DABubble-Konto.</mat-card-subtitle>
-        </mat-card-header>
+
+        <div class="account-card-cont">
 
 
-        <form (ngSubmit)="saveUser(accountForm)" #accountForm='ngForm'>
-            <div class="name-cont">
-                <input [(ngModel)]="user.name" (ngModelChange)="checkUserName()" type="text" name="name"
-                    placeholder="Name und Nachname" autocomplete="on">
-                <img src="./assets/img/person.png">
-            </div>
+            <div class="title">Konto erstellen</div>
+            <div class="sub-title">Mit deinem Namen und deiner E-mail-Adresse hast <br> du dein neuesDABubble-Konto.</div>
 
-            <div class="email-cont">
-                <input [(ngModel)]="user.email" (ngModelChange)="checkUserEmail()" type="email" name="email"
-                    placeholder="E-mail" autocomplete="on">
-                <div style="display: none;" [class.warning]="isEmailExist">Existiert bereits!</div>
-                <img src="./assets/img/mail.png">
-            </div>
+            <form (ngSubmit)="saveUser(accountForm)" #accountForm='ngForm'>
+                <div class="name-cont">
+                    <input [(ngModel)]="user.name" (ngModelChange)="checkUserName()" type="text" name="name"
+                        placeholder="Name und Nachname" autocomplete="on">
+                        <div style="display: none;" [class.warning]="isValidName && user.name != ''">
+                            Nur Buchstaben erlaubt!</div>
+                    <img src="./assets/img/person.png">
+                </div>
 
-            <div class="password-cont">
-                <input [(ngModel)]="user.password" (ngModelChange)="checkUserPassword()" type="password" name="password"
-                    placeholder="Password" autocomplete="on">
-                <div style="display: none;" [class.warning]="isPasswordExist">Existiert bereits!</div>
-                <img src="./assets/img/lock.png">
-            </div>
+                <div class="email-cont">
+                    <input [(ngModel)]="user.email" (ngModelChange)="checkUserEmail()" type="email" name="email"
+                        placeholder="E-mail" autocomplete="on">
+                    <div style="display: none;" [class.warning]="isEmailExist">Existiert bereits!</div>
+                    <div style="display: none;" [class.warning]="isEmailNotValid  && user.email != '' && !isEmailExist ">beispielname@email.com</div>
+                    <img src="./assets/img/mail.png">
+                </div>
 
-           
-        </form>
+                <div class="password-cont">
+                    <input [(ngModel)]="user.password" (ngModelChange)="checkUserPassword()" type="password"
+                        name="password" placeholder="Passwort" autocomplete="on">
+                    <div style="display: none;" [class.warning]="isPasswordExist">Passwort kann man nicht mehr wälen!</div>
+                    <div style="display: none;" [class.warning]="isPasswordNotValid && user.password != '' && !isPasswordExist ">
+                        mind. 8 Karakter: a-z-A-Z-0-9</div>
+                    <img src="./assets/img/lock.png">
+                </div>
 
-   <button class="account-btn" [routerLink]="'/profile'" (click)="saveCurrentUser()"  [class.account-btn-active]="!isValidName && !isValidEmail && !isValidPassword"
+
+            </form>
+
+            <button class="account-btn" [routerLink]="'/profile'" (click)="saveCurrentUser()"
+                [class.account-btn-active]="!isValidName && !isValidEmail && !isValidPassword"
                 [disabled]="isValidName || isValidEmail || isValidPassword || !isChecked"
-                [class.account-btn-disabled]="isValidName || isValidEmail || isValidPassword || !isChecked"
-                >Weiter</button>
-        
+                [class.account-btn-disabled]="isValidName || isValidEmail || isValidPassword || !isChecked">Weiter</button>
 
-        <mat-checkbox class="custom-checkbox" [color]="task.color" [(ngModel)]="isChecked">
+            <mat-checkbox class="custom-checkbox" [color]="task.color" [(ngModel)]="isChecked">
+                     <label>Ich stimme der</label><a href="#"> Datenschutzerklärung </a><label>zu.</label>
+            </mat-checkbox>
 
-            <label>Ich stimme der</label><a href="#"> Datenschuterklärung </a><label>zu.</label>
-        </mat-checkbox>
+
+        </div>
+
+
+
+      
 
         <mat-card-actions>
             <button (click)="checkIntro()" [routerLink]="'/'" mat-button>
@@ -63,7 +71,10 @@
     </mat-card>
 
 
-<button (click)="getUsersFirestore()" >Get all users</button>
-<!-- <button (click)=" submitForm()">submit</button> -->
+    <footer>
+        <span>Impressum</span>
+        <span>Datenschutz</span>
+      </footer>
 
+      
 </div>

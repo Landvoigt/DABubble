@@ -1,113 +1,85 @@
 <div class="login-cont">
 
 
-    <div [style.display]="!isIntro ? 'block' : 'none' " class="logo-img-cont-always">
-        <img src="./assets/img/logo-intro.png">
-        <div class="title">DABubble</div>
-    </div>
-    <div  class="logo-img-cont-always">
+    <div [style.display]="!isIntro ? 'flex' : 'none' " class="logo-img-cont-always">
         <img src="./assets/img/logo-intro.png">
         <div class="title">DABubble</div>
     </div>
 
+    <div class="to-account">
+        <span> Neu bei DABubble?</span>
+        <div (click)="checkIntro()" [routerLink]="'/account'">Konto erstellen</div>
+    </div>
 
     <div style="position: absolute;">
-
-
-
         <div style="position: relative; width: 100vw; height: 100vh;">
-
-            <!-- <div  (click)="checkIntro()" [routerLink]="'/account'">Create account</div> -->
-
-
-            <div [style.display]="isIntro ? 'block' : 'none' " class="intro-cont"> </div>
-
-
-
-            <div [style.display]="isIntro ? 'block' : 'none' " class="animation-cont">
-
+            <div [style.display]="isIntro ? 'flex' : 'none' " class="intro-cont"> </div>
+            <div [style.display]="isIntro ? 'flex' : 'none' " class="animation-cont">
                 <div class="intro-logo-title">
                     <div class="logo-img-cont">
                         <img src="./assets/img/logo-intro.png">
                         <div class="title">DABubble</div>
                     </div>
-
-
-
-
                 </div>
+            </div>
+        </div>
+    </div>
+
+
+    <mat-card>
+
+        <div class="mat-card-cont">
+
+            <div class="title">Anmeldung</div>
+
+            <div class="sub-title">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die<br>du bei der Arbeit verwendest
+            </div>
+
+            <form #loginForm="ngForm" (ngSubmit)="login()">
+                <div class="email-cont">
+                    <input [(ngModel)]="user.email" (ngModelChange)="checkUserEmail()" type="email" name="email" placeholder="E-mail" autocomplete="on" ngModel #emailInput="ngModel">
+                    <img src="./assets/img/mail.png">
+                    <div [style.display]="emailInput.touched ? (isEmailValid ? 'none' : 'flex') : 'none'" [class.warning-invalid]="!isEmailValid">
+                        * Diese E-Mail-Adresse ist leider ungültig.
+                    </div>
+                </div>
+            
+                <div class="password-cont">
+                    <input [(ngModel)]="user.password" (ngModelChange)="checkUserPassword()" type="password" name="password" placeholder="Password" autocomplete="on" ngModel #passwordInput="ngModel">
+                    <img src="./assets/img/lock.png">
+                    <div [style.display]="passwordInput.touched ? (isPasswordValid ? 'none' : 'flex') : 'none'" [class.warning-invalid]="!isPasswordValid">
+                        * Das Passwort ist ungültig.
+                    </div>
+                </div>
+            
+               
+            </form>
+            
+
+            <div [routerLink]="'/send-link'" class="password-forgot">Passwort vergessen ?</div>
+
+            <div class="oder">
+                <div class="underline"></div>
+                <div class="oder-text">ODER</div>
+                <div class="underline"></div>
+            </div>
+
+            <img class="google-login" src="./assets/img/google-login.png" [routerLink]="'/login-google'">
+
+            <div class="btn-cont">
+                <button (click)="login()" [disabled]="!isEmailExist || !isPasswordExist" type="submit" class="login-btn">Anmelden</button>
+                <button [routerLink]="'/main'" class="guest-login-btn">Gäste-Login</button>
             </div>
 
         </div>
 
 
-
-
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-    <mat-card>
-        <mat-card-header>
-            <mat-card-title>Anmeldung</mat-card-title>
-            <img src="" alt="">
-
-
-            <mat-card-subtitle>Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die<br>du bei der Arbeit
-                verwendest.</mat-card-subtitle>
-        </mat-card-header>
-
-
-
-
-
-        <form>
-
-
-            <div class="email-cont">
-                <input [(ngModel)]="user.email" type="email" name="email" placeholder="E-mail" autocomplete="on">
-                <img src="./assets/img/mail.png">
-            </div>
-
-            <div class="password-cont">
-                <input [(ngModel)]="user.password" type="password" name="password" placeholder="Password"
-                    autocomplete="on">
-                <img src="./assets/img/lock.png">
-            </div>
-
-            <button  [routerLink]="'/main'" (click)="login()" class="login-btn" type="submit">Anmelden</button>
-            <button class="guest-login-btn">Gäste-Login</button>
-
-        </form>
-
-
-        <div [routerLink]="'/send-link'" class="password-forgot">Passwort vergessen ?</div>
-
-        <img class="oder" src="./assets/img/oder.png">
-        <img class="google-login" src="./assets/img/google-login.png" [routerLink]="'/login-google'" >
-
-
     </mat-card>
 
-    <div class="to-account">
-        <span> Neu bei DABubble?</span>
-
-         <div (click)="checkIntro()" [routerLink]="'/account'">Konto erstellen</div>
-    </div>
-
-   
+    <footer>
+        <span>Impressum</span>
+        <span>Datenschutz</span>
+      </footer>
 
 
 </div>
-
-<div style="position: absolute; right: 30px; top: 150px; cursor: pointer; border: 2px red solid;" (click)="checkIntro()"
-    [routerLink]="'/main'">zu Main Page</div>

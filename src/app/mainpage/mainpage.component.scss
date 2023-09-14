@@ -50,7 +50,7 @@
 .toggle-sidenav-container {
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: 100px;
     z-index: 99;
     background-color: white;
     border-radius: 50px;
@@ -64,12 +64,25 @@
     transform: rotate(180deg);
     gap: 20px;
     padding: 30px 15px;
+    -webkit-box-shadow: -2px 0px 7px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: -2px 0px 7px 0px rgba(0, 0, 0, 0.25);
+    transition: all 90ms ease-in-out;
 
     span {
         text-orientation: mixed;
+        font-size: 18px;
     }
 
-    img {
+    .code-symbol {
         object-fit: contain;
+        transform: rotate(180deg);
+
+        &:hover {
+            transform: none;
+        }
+    }
+
+    &:hover {
+        color: #797EF3;
     }
 }

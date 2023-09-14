@@ -1,6 +1,6 @@
 <div class="chat-header d-flex">
-    <span class="chat-headline d-flex ai-center pointer"><mat-icon><i>tag</i></mat-icon>
-        Entwicklerteam<mat-icon>keyboard_arrow_down</mat-icon></span>
+    <span class="chat-headline d-flex ai-center pointer"><mat-icon><i>tag</i></mat-icon>{{ this.currentChannel ?
+        this.currentChannel.name : 'No Channel' }}<mat-icon>keyboard_arrow_down</mat-icon></span>
     <div class="d-flex ai-center">
         <div class="d-flex ai-center mr-20 assigned-clients-box pointer">
             <img class="avatar-small" src="assets/img/avatar_big.png">
@@ -13,109 +13,77 @@
         </div>
     </div>
 </div>
+
 <div class="chat-content">
+    <div *ngFor="let thread of threads; let i = index" class="d-flex f-column">
 
-    <div class="d-flex ai-center message-date-container mt-120">
-        <div class="message-date-line"></div>
-        <span class="message-date">Montag, 04 September</span>
-        <div class="message-date-line"></div>
-    </div>
+        <div *ngIf="!threadSentOnNewDate(i, threads)" class="d-flex ai-center message-date-container"
+            [ngStyle]="{ 'margin-top': i === threads.length - 1 ? '120px' : '30px' }">
+            <div class="message-date-line"></div>
+            <span class="message-date">{{ getFormattedDate(thread.date) }}</span>
+            <div class="message-date-line"></div>
+        </div>
 
-    <div class="main-thread-container d-flex ai-start g-20 p-relative" (mouseenter)="hoveredThreadId = true" (mouseleave)="hoveredThreadId = false">
-        <img class="thread-avatar" src="assets/img/avatar_small.png">
-        <div class="d-flex f-column g-10">
-            <div>
-                <span class="thread-creator">Name Name</span>
-                <span class="thread-time">00:00 Uhr</span>
-            </div>
-            <span class="thread-text pointer" (click)="openThreads()">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Neque
-                adipisci
-                dolorum magni
-                provident, ipsam, odit voluptatibus, repellendus sunt</span>
-            <div class="emoji-section d-flex ai-center g-10">
-                <div class="flex-center add-emoji-box">
-                    <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer"
-                        (mouseenter)="addFilter($event)" (mouseleave)="removeFilter($event)">
+        <div class="main-thread-container d-flex ai-start g-20 p-relative"
+            [class.own-thread-container]="thread.owner === accountService.getLoggedInUser().id"
+            (mouseenter)="hoveredThreadId = i" (mouseleave)="hoveredThreadId = null">
+            <img class="thread-avatar" [src]="thread.avatarSrc || 'assets/img/avatar_small.png'">
+            <div class="d-flex f-column g-10"
+                [class.thread-creator-reverse]="thread.owner === accountService.getLoggedInUser().id">
+                <div class="d-flex ai-baseline"
+                    [class.thread-message-box-reverse]="thread.owner === accountService.getLoggedInUser().id">
+                    <span class="thread-creator">{{ thread.ownerName }}</span>
+                    <span class="thread-time"
+                        [class.thread-time-reverse]="thread.owner === accountService.getLoggedInUser().id">{{
+                        getFormattedTime(thread.date) }}</span>
                 </div>
-                <div class="emoji-box flex-center pointer">
-                    <img src="assets/img/icons/rocket.png">
-                    <span>1</span>
-                </div>
-                <div class="emoji-box flex-center pointer">
-                    <img src="assets/img/icons/checkmark.png">
-                    <span>1</span>
+                <span class="thread-text pointer"
+                    [class.thread-text-reverse]="thread.owner === accountService.getLoggedInUser().id"
+                    (click)="openThreads()">{{ thread.content }}</span>
+                <!-- <div class="emoji-section d-flex ai-center g-10"
+                    [class.flex-row-reverse]="thread.owner === accountService.getLoggedInUser().id">
+                    <div class="flex-center add-emoji-box">
+                        <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer"
+                            (mouseenter)="addFilter($event)" (mouseleave)="removeFilter($event)">
+                    </div>
+                    <div class="emoji-box flex-center pointer">
+                        <img src="assets/img/icons/rocket.png">
+                        <span>1</span>
+                    </div>
+                    <div class="emoji-box flex-center pointer">
+                        <img src="assets/img/icons/checkmark.png">
+                        <span>1</span>
+                    </div>
+                </div> -->
+                <div *ngIf="thread.answers?.length">
+                    <span class="thread-answer-count">{{ getAmountOfAnswers(thread) }}</span>
+                    <span class="thread-time">Letzte Antwort 00:00 Uhr</span>
                 </div>
             </div>
-            <div>
-                <span class="thread-answer-count" (click)="openThreads()">2 Antworten</span>
-                <span class="thread-time">Letzte Antwort 00:00 Uhr</span>
-            </div>
-        </div>
-        <div *ngIf="hoveredThreadId" class="thread-reaction-container flex-center g-10">
-            <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer" (mouseenter)="addFilter($event)"
-                (mouseleave)="removeFilter($event)">
-            <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer" (mouseenter)="addFilter($event)"
-                (mouseleave)="removeFilter($event)">
-            <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer" (mouseenter)="addFilter($event)"
-                (mouseleave)="removeFilter($event)">
-            <mat-icon (click)="openThreads()">comment</mat-icon>
-        </div>
-    </div>
-    
-    <div class="d-flex ai-center message-date-container">
-        <div class="message-date-line"></div>
-        <span class="message-date">Heute</span>
-        <div class="message-date-line"></div>
-    </div>
-    
-    <!-- <div *ngFor="let thread of threads; let i = index"
-     class="main-thread-container d-flex ai-start g-20 p-relative thread-container-reverse" 
-     (click)="openThreads()"
-     (mouseenter)="hoveredThreadId = i"
-     (mouseleave)="hoveredThreadId = null"> -->
-    <div class="main-thread-container d-flex ai-start g-20 p-relative thread-container-reverse"
-        (mouseenter)="hoveredThreadId = true" (mouseleave)="hoveredThreadId = false">
-    <img class="thread-avatar" src="assets/img/avatar_small.png">
-    <div class="d-flex f-column g-10 thread-creator-reverse">
-        <div class="d-flex thread-message-box-reverse">
-            <span class="thread-creator">Name Name</span>
-            <span class="thread-time thread-time-reverse">00:00 Uhr</span>
-        </div>
-        <span class="thread-text pointer thread-text-reverse" (click)="openThreads()">Lorem ipsum dolor sit amet consectetur,
-            adipisicing</span>
-        <div class="emoji-section d-flex ai-center g-10 flex-row-reverse">
-            <div class="flex-center add-emoji-box">
+            <div *ngIf="hoveredThreadId === i" class="thread-reaction-container flex-center g-10"
+                [class.thread-reaction-container-reverse]="thread.owner === accountService.getLoggedInUser().id">
                 <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer"
                     (mouseenter)="addFilter($event)" (mouseleave)="removeFilter($event)">
+                <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer"
+                    (mouseenter)="addFilter($event)" (mouseleave)="removeFilter($event)">
+                <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer"
+                    (mouseenter)="addFilter($event)" (mouseleave)="removeFilter($event)">
+                <mat-icon (click)="openThreads()">comment</mat-icon>
+                <div *ngIf="thread.owner === accountService.getLoggedInUser().id" class="p-relative"
+                    (mouseenter)="ownThreadId = i" (mouseleave)="ownThreadId = null">
+                    <mat-icon class="edit-msg-icon">keyboard_control</mat-icon>
+                    <div *ngIf="(hoveredThreadId === i) && (ownThreadId === i)" class="thread-edit-btn pointer">
+                        Nachricht
+                        bearbeiten</div>
+                </div>
             </div>
-            <div class="emoji-box flex-center pointer">
-                <img src="assets/img/icons/rocket.png">
-                <span>1</span>
-            </div>
-            <div class="emoji-box flex-center pointer">
-                <img src="assets/img/icons/checkmark.png">
-                <span>1</span>
-            </div>
-        </div>
-    </div>
-    <div *ngIf="hoveredThreadId" class="thread-reaction-container thread-reaction-container-reverse flex-center g-10">
-        <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer" (mouseenter)="addFilter($event)"
-            (mouseleave)="removeFilter($event)">
-        <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer" (mouseenter)="addFilter($event)"
-            (mouseleave)="removeFilter($event)">
-        <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer" (mouseenter)="addFilter($event)"
-            (mouseleave)="removeFilter($event)">
-        <mat-icon (click)="openThreads()">comment</mat-icon>
-        <div class="p-relative">
-            <mat-icon class="edit-msg-icon" (click)="showEditMessageButton()">keyboard_control</mat-icon>
-            <div *ngIf="hoveredThreadId" class="thread-edit-btn pointer">Nachricht bearbeiten</div>
         </div>
     </div>
 </div>
 
-</div>
 <div class="message-container d-flex f-column">
-    <textarea placeholder="Nachricht an #Entwicklerteam"></textarea>
+    <textarea name="main-chat-input" placeholder="Nachricht an #Entwicklerteam"
+        [(ngModel)]="message.content"></textarea>
     <div class="d-flex message-icons">
         <div class="d-flex ai-center">
             <img class="message-hover-icon"
@@ -129,6 +97,6 @@
                 [src]="hoverAtIcon ? 'assets/img/icons/at_blue.png' : 'assets/img/icons/at.png'"
                 (mouseenter)="hoverAtIcon = true" (mouseleave)="hoverAtIcon = false">
         </div>
-        <img class="message-send-icon" src="assets/img/icons/arrow_send.png">
+        <img class="message-send-icon" src="assets/img/icons/arrow_send.png" (click)="sendMessage()">
     </div>
 </div>

@@ -56,6 +56,10 @@ body {
     align-items: flex-end;
 }
 
+.ai-baseline {
+    align-items: baseline;
+}
+
 .f-column {
     flex-direction: column;
 }
@@ -216,4 +220,9 @@ textarea {
         background-color: #ECEEFE;
         color: #797EF3;
     }
+}
+
+.mdc-dialog__surface {
+    border-radius: 30px !important;
+    padding: 40px;
 }

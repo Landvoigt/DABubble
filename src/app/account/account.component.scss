@@ -25,26 +25,30 @@
 
 }
 
+
+
+
 .logo-img-cont-always {
     position: absolute;
-
-    left: 0px;
-    top: 30px;
+    width: 250px;
+    left: 50px;
+    top: 50px;
     display: flex;
 
     img {
         height: 70px;
-        width: auto;
+        width: 150px;
         object-fit: cover;
         position: relative;
     }
 
     .title {
-        font-size: 35px;
+        font-size: 30px;
+        font-weight: 500;
         position: absolute;
         color: black;
         top: 35%;
-        right: -50px;
+        right: 0px;
         display: flex;
         align-items: center;
         justify-content: flex-end;
@@ -55,39 +59,64 @@
 
 
 
+// ************************** mat-card ************************
 
 
 mat-card {
-    width: 550px;
-    height: 650px;
-    border-radius: 32px;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-bottom: 64px;
-}
+    width: 550px;
+    height: 650px;
+    border-radius: 32px;
 
+    mat-card-actions {
+        position: absolute;
+        left: 30px;
+        top: 30px;
+    }
 
-mat-card-header {
-    text-align: center;
+    .mat-mdc-button>.mat-icon {
+        font-size: 1.4rem;
+        border-radius: 100%;
+    }
+
+   
+    .mat-mdc-button {
+        width: 70px;
+        height: 70px;border-radius: 100%;
+    }
+
+.mat-mdc-button:not(:disabled):hover {
     color: #444DF2;
-    --mat-card-title-text-size: 45px;
-    position: relative;
-
+}
 }
 
 
-.mat-mdc-card-title {
-    margin: 32px !important;
+.account-card-cont {
+
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 64px;
+    box-sizing: border-box;
+    gap: 32px;
+
+    .title {
+        color: #444DF2;
+        font-size: 42px;
+    }
+
+    .sub-title {
+        text-align: center;
+        font-size: 16px;
+        font-weight: 200;
+        margin: 24px 0;
+    }
 }
 
-
-mat-card-subtitle {
-    color: black;
-    text-align: center;
-    font-weight: 400;
-
-}
 
 mat-card-actions {
     position: absolute;
@@ -110,70 +139,76 @@ form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 48px;
-    padding-top: 64px;
-    padding-bottom: 32px;
+    gap: 32px;
+   
 
-    img {
-        position: absolute;
-        width: 15px;
-        height: 15px;
-        object-fit: contain;
-        left: 35px;
-        top: 18px;
+   
+    .email-cont,
+    .password-cont,
+    .name-cont {
+        position: relative;
+        height: auto;
+        display: flex;
+        justify-content: center;
+    
+        input {
+    
+            outline: none;
+            height: 48px;
+            font-size: 16px;
+            padding-left: 80px;
+            border: unset;
+            border-radius: 25px;
+            background-color: #ECEEFE;
+             width: 340px;
+            border: 1px transparent solid;
+            cursor: pointer;
+        }
+    
+        input:hover {
+            border: 1px gray solid;
+        }
+
+        input::placeholder {
+            color:gray ;
+          }
+          
+          input:focus::placeholder {
+            color: transparent;
+          }
+    
+        img {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            object-fit: contain;
+            left: 35px;
+            top: 18px;
+        }
+    
+        .warning {
+            display: block !important;
+            position: absolute;
+            bottom: -20px;
+            left: 3px;
+            font-size: 13px;
+            color: red;
+        }
     }
 
 
-    input {
-
-        outline: none;
-        height: 48px;
-        font-size: 16px;
-        padding-left: 80px;
-        border: unset;
-        border-radius: 25px;
-        background-color: #ECEEFE;
-
-    }
 
    
 }
 
-.email-cont,
-.password-cont,
-.name-cont {
-    position: relative;
-    width: 478px;
-    height: auto;
-    display: flex;
-    justify-content: center;
 
-    input {
-        width: 100%;
-        border: 1px transparent solid;
-        cursor: pointer;
-    }
-
-    input:hover {
-        border: 1px gray solid;
-    }
-
-    .warning {
-        display: block !important;
-        position: absolute;
-        bottom: -20px;
-        left: 3px;
-        font-size: 16px;
-        color: red;
-    }
-}
 
 mat-checkbox {
 
     display: flex;
     justify-content: flex-start;
     padding-bottom: 64px;
-    margin-left: -170px;
+    margin-left: -130px;
 
     a {
         color: #444DF2;
@@ -203,7 +238,7 @@ mat-checkbox {
     color: white;
     position: absolute;
     bottom: 32px;
-    right: 38px;
+    right: 64px;
 }
 
 .account-btn-disabled {
@@ -220,4 +255,28 @@ mat-checkbox {
     height: 150px;
     object-fit: cover;
     border-radius: 100%;
+}
+
+
+
+footer {
+    position: absolute;
+    bottom: 64px;
+    display: flex;
+    gap: 32px;
+    color: #797EF3;
+    cursor: pointer;
+    font-size: 18px;
+    span {
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        border-radius: 16px;
+        padding: 5px 10px;
+
+        &:hover {
+            border: 1px solid lightgray;
+            transition: all 225ms ease-in-out;
+        }
+    }
 }

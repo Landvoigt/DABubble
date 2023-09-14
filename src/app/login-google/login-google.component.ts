@@ -1,5 +1,5 @@
 import { Component, NgZone, OnDestroy, OnInit, inject } from '@angular/core';
-import { Firestore, collection, doc, getDoc, getDocs, setDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, doc, getDoc, getDocs, setDoc, updateDoc } from '@angular/fire/firestore';
 import { CredentialResponse, PromptMomentNotification } from 'google-one-tap';
 import { User } from 'src/models/user.class';
 import { Router } from '@angular/router';
@@ -22,7 +22,7 @@ export class LoginGoogleComponent implements OnInit, OnDestroy {
 
   public clientId = "136417201224-s82t0jk6btp5001rqj6vohm4pkdlfgdn.apps.googleusercontent.com";
 
-  constructor(private router: Router, private accountService: AccountServiceService, private ngZone: NgZone,) { }
+  constructor(private router: Router, private accountService: AccountServiceService, private ngZone: NgZone) { }
 
   ngOnInit(): void {
     this.initializeGoogleLogin();
@@ -90,7 +90,6 @@ export class LoginGoogleComponent implements OnInit, OnDestroy {
       const userData = queryDocSnapshot.data() as User;
 
       if (userData.email === this.googleEmail) {
-        console.log('yes');
         userFound = true;
         const userDocRef = doc(this.firestore, "users", queryDocSnapshot.id);
         await updateDoc(userDocRef, {
@@ -100,6 +99,7 @@ export class LoginGoogleComponent implements OnInit, OnDestroy {
         const userDoc = await getDoc(userDocRef);
         const updatedUserData = userDoc.data() as User;
         console.log('Benutzerdaten nach dem Einloggen:', updatedUserData);
+        this.accountService.setLoggedInUser(updatedUserData);
 
         /// Probetest
         this.accountService.currentUser = updatedUserData;
@@ -117,24 +117,33 @@ export class LoginGoogleComponent implements OnInit, OnDestroy {
 
   async createNewUserFromGoogleData() {
     this.generatePassword();
-
     const collRef = collection(this.firestore, "users");
-    const newUserDocRef = doc(collRef);
+    const fullName = `${this.googleFirstName} ${this.googleLastName}`;
+    const newUser = await addDoc(collRef, {
+      email: this.googleEmail,
+      name: fullName,
+      password: this.generatedPassword,
+      avatarSrc: this.googlePicSrc,
+      loggedIn: true,
+      isActive: false,
+      friends: [],
+      channels: []
+    });
+    await this.addIdToUser(newUser.id);
 
-    this.user.email = this.googleEmail,
-      this.user.name = this.googleFirstName + this.googleLastName,
-      this.user.password = this.generatedPassword,
-
-      await setDoc(newUserDocRef, this.user.toJSON());
-
-    const userDoc = await getDoc(newUserDocRef);
-    const updatedUserData = userDoc.data() as User;
-    console.log('Benutzerdaten nach dem Einloggen:', updatedUserData);
-
-    this.accountService.currentUser = updatedUserData;
     this.ngZone.run(() => {
       this.router.navigate(['/main']);
     });
+  }
+
+  async addIdToUser(_id: string) {
+    try {
+      const userDocRef = doc(this.firestore, 'users', _id);
+      await setDoc(userDocRef, { id: _id }, { merge: true });
+
+    } catch (error) {
+      console.error("Error updating channel:", error);
+    }
   }
 
   generatePassword() {

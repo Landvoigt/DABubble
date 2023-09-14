@@ -9,55 +9,32 @@
     position: relative;
 }
 
-
-mat-card {
-    width: 500px;
-    height: 650px;
-    border-radius: 32px;
-    display: flex;
-    align-items: center;
+.profile-cont-opacity {
+    opacity: 0.7;
 }
 
-mat-card-header {
-    text-align: center;
-    color: #444DF2;
-    --mat-card-title-text-size: 42px;
-    position: relative;
-
-}
-
-.mat-mdc-card-title {
-    margin: 32px !important;
-}
-
-
-mat-card-subtitle {
-    color: black;
-    text-align: center;
-    font-weight: 400;
-
-}
 
 .logo-img-cont-always {
     position: absolute;
-
-    left: 0px;
-    top: 30px;
+    width: 250px;
+    left: 50px;
+    top: 50px;
     display: flex;
 
     img {
         height: 70px;
-        width: auto;
+        width: 150px;
         object-fit: cover;
         position: relative;
     }
 
     .title {
-        font-size: 35px;
+        font-size: 30px;
+        font-weight: 500;
         position: absolute;
         color: black;
         top: 35%;
-        right: -50px;
+        right: 0px;
         display: flex;
         align-items: center;
         justify-content: flex-end;
@@ -66,11 +43,70 @@ mat-card-subtitle {
 
 }
 
+
+
+
+mat-card {
+    width: 550px;
+    height: 650px;
+    border-radius: 32px;
+    display: flex;
+    align-items: center;
+
+
+
+    mat-card-actions {
+        position: absolute;
+        left: 5px;
+        top: 27px;
+    }
+
+    .mat-mdc-button>.mat-icon {
+        font-size: 1.4rem;
+        border-radius: 100%;
+    }
+
+   
+    .mat-mdc-button {
+        width: 70px;
+        height: 70px;border-radius: 100%;
+    }
+
+.mat-mdc-button:not(:disabled):hover {
+    color: #444DF2;
+}
+}
+
+
+.profile-card {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 64px;
+    box-sizing: border-box;
+    gap: 32px;
+
+    .title {
+    color: #444DF2;
+    font-size: 40px;
+}
+
+
+
+}
+
+
+
+
 .file-input-container {
     position: relative;
-    display: inline-block;
-    padding: 10px;
-}
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 18px;
+
 
 .custom-file-input {
     position: absolute;
@@ -78,7 +114,6 @@ mat-card-subtitle {
     top: 0;
     opacity: 0;
 }
-
 .custom-file-label {
     border: unset;
     color: #444DF2;
@@ -87,9 +122,16 @@ mat-card-subtitle {
     cursor: pointer;
     border-radius: 25px;
     &:hover {
-        background-color: #a2bac9;
+        background-color: #444DF2;
+        color: white;
     }
 }
+
+}
+
+
+
+
 
 .image-container img {
     width: 100px;
@@ -106,18 +148,18 @@ mat-card-subtitle {
 }
 
 .name {
-    padding-top: 32px;
+    padding-top: 16px;
     font-size: 30px;
     font-weight: 500;
 }
 
 .info-avatars {
+    font-size: 18px;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    width: 80%;
-    margin-bottom: 64px;
-    margin-top: 32px;
+    width: 100%;
+   
 }
 
 .avatars-container {
@@ -148,8 +190,74 @@ mat-card-subtitle {
         color: white;
         position: absolute;
         bottom: 32px;
-        right: 32px;
+        right: 64px;
         cursor: pointer;
         z-index: 10;
+        &:not([disabled]) {
+            background-color: #444DF2;
+            cursor: pointer;
 
+            &:hover {
+                filter: brightness(1.6);
+            }
+        }
+
+        &[disabled] {
+            background-color: #444DF2;
+            opacity: 0.7;
+            cursor: default;
+        }
+
+}
+
+
+.account-created-image {
+    position: absolute;
+    z-index: 100;
+    bottom: 64px;
+    right: 64px;
+    width: 0;
+    height: 0;
+}
+
+.account-created-animation {
+    animation: account-created 100ms ease-in-out forwards ;
+
+}
+
+
+@keyframes account-created {
+    from {
+        transform: translateX(200px);
+        width: 400px;
+        height: auto;
+    }
+
+    to {
+        transform: translateX(0px);
+        width: 400px;
+        height: auto;
+    }
+}
+   
+footer {
+    position: absolute;
+    bottom: 64px;
+    display: flex;
+    gap: 32px;
+    color: #797EF3;
+    cursor: pointer;
+    font-size: 18px;
+    span {
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: all 225ms ease-in-out;
+        border-radius: 16px;
+        padding: 5px 10px;
+
+        &:hover {
+            border: 1px solid lightgray;
+            transition: all 225ms ease-in-out;
+        }
+    }
 }

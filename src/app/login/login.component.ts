@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { User } from 'src/models/user.class';
 import { AccountServiceService } from '../account-service.service';
 import { Firestore, collection, getDocs } from '@angular/fire/firestore';
@@ -10,73 +10,101 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   isIntro = true;
   user = new User();
+  isEmailExist: boolean = false;
+  isPasswordExist: boolean = false;
   firestore: Firestore = inject(Firestore);
+  isEmailValid: boolean = false;
+  isPasswordValid: boolean = false;
 
   constructor(public accountService: AccountServiceService, private router: Router, private ref: ChangeDetectorRef) {
     this.isIntro = accountService.isIntro;
-    //this.accountService.getLoggedUsers();
+  }
+
+  ngOnInit(): void {
+    console.log('this.accountService.usersArray: ', this.accountService.usersArray);
   }
 
   checkIntro() {
     this.isIntro = false;
   }
 
+  async checkUserEmail() {
+    const collRef = collection(this.firestore, "users");
+    const querySnapshot = await getDocs(collRef);
+    this.isEmailExist = querySnapshot.docs.some((doc) => {
+      const userData = doc.data() as User;
+      return userData.email === this.user.email;
+    });
+    if (this.isEmailExist) {
+      this.isEmailValid = true;
+    } else {
+      this.isEmailValid = false;
+    }
+  }
+
+
+  async checkUserPassword() {
+    const collRef = collection(this.firestore, "users");
+    const querySnapshot = await getDocs(collRef);
+    this.isPasswordExist = querySnapshot.docs.some((doc) => {
+      const userData = doc.data() as User;
+      return userData.password === this.user.password;
+    });
+
+    if (this.isPasswordExist) {
+      this.isPasswordValid = true;
+    } else {
+      this.isPasswordValid = false;
+    }
+  }
+
+
+
   async login() {
-    const email = this.user.email; // E-Mail-Adresse aus dem Eingabefeld
-    const password = this.user.password; // Passwort aus dem Eingabefeld
+    const email = this.user.email;
+    const password = this.user.password;
 
     if (email && password) {
-      // Überprüfen, ob beide Eingabefelder ausgefüllt sind
-
       const collRef = collection(this.firestore, "users");
       const querySnapshot = await getDocs(collRef);
 
-      let userFound = false; // Eine Flagge, um zu überprüfen, ob der Benutzer gefunden wurde
+      let userFound = false;
 
       querySnapshot.forEach(async (queryDocSnapshot) => {
         const userData = queryDocSnapshot.data() as User;
 
         if (userData.email === email) {
-          // Wenn die E-Mail-Adresse in der Datenbank gefunden wurde
           userFound = true;
 
-          // Überprüfe das Passwort
           if (userData.password === password) {
-            // Das Passwort stimmt überein, der Benutzer ist erfolgreich angemeldet
             console.log('Erfolgreich angemeldet:', userData);
 
-            // Das Firestore-Dokument aktualisieren, um loggedIn auf true zu setzen
-            const userDocRef = doc(this.firestore, 'user', queryDocSnapshot.id);
+            const userDocRef = doc(this.firestore, 'users', queryDocSnapshot.id);
             await updateDoc(userDocRef, {
               loggedIn: true
             });
-
-            // Daten des Benutzers aus Firestore abrufen
+            this.router.navigate(['/main']);
             const userDoc = await getDoc(userDocRef);
             const updatedUserData = userDoc.data() as User;
-
-            // Ausloggen der Benutzerdaten auf die Konsole ausgeben
             console.log('Benutzerdaten nach dem Einloggen:', updatedUserData);
+            this.accountService.setLoggedInUser(updatedUserData);
 
-            // Füge die Benutzerdaten dem JSON-Array in der Serviceklasse hinzu
 
           } else {
-            // Das Passwort stimmt nicht überein
             console.log('Falsches Passwort');
           }
         }
       });
 
       if (!userFound) {
-        // Der Benutzer mit der angegebenen E-Mail-Adresse wurde nicht gefunden
         console.log('Benutzer ist nicht vorhanden!');
       }
     } else {
-      // Wenn nicht beide Eingabefelder ausgefüllt sind
       console.log('Bitte füllen Sie beide Eingabefelder aus.');
     }
+
   }
 }
