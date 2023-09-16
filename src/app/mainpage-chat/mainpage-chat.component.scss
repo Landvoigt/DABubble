@@ -1,5 +1,5 @@
 .main-thread-container {
-    padding: 10px 40px;
+    padding: 14px 40px 18px 40px;
 
     &:hover {
         background-color: #ECEEFE;
@@ -18,13 +18,25 @@
     }
 }
 
+.hover-main-thread {
+    background-color: #ECEEFE;
+}
+
+.emojis-container {
+    button {
+        border: unset;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+}
+
 .chat-content {
     display: flex;
     flex: 1;
     flex-direction: column-reverse;
     overflow-y: scroll;
     margin-bottom: 180px;
-    
 }
 
 .chat-header {
@@ -217,12 +229,6 @@
                 transform: scale(1.1);
             }
         }
-
-        .message-send-icon {
-            &:hover {
-                filter: opacity(0.7)
-            }
-        }
     }
 }
 
@@ -412,4 +418,86 @@
         color: #797EF3;
         border: 1px solid #797EF3;
     }
+}
+
+.no-channel-overlay {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    span {
+        z-index: 1;
+        font-size: 24px;
+        font-weight: 700;
+        opacity: 0.4;
+        padding: 10px;
+        position: relative;
+    }
+
+    .line {
+        position: absolute;
+        background: black;
+        opacity: 0.2;
+        width: 1px;
+        height: 150%;
+        z-index: 1;
+    }
+
+    .line1 {
+        height: 45%;
+        top: 50%;
+        left: 50%;
+        transform: rotate(-55deg) translateY(-145%);
+        transform-origin: top;
+    }
+
+    .line2 {
+        height: 45%;
+        top: 50%;
+        right: 50%;
+        transform: rotate(55deg) translateY(-145%);
+        transform-origin: top;
+    }
+
+    .line3 {
+        height: 45%;
+        bottom: 50%;
+        left: 50%;
+        transform: rotate(55deg) translateY(145%);
+        transform-origin: bottom;
+    }
+
+    .line4 {
+        height: 45%;
+        bottom: 50%;
+        right: 50%;
+        transform: rotate(-55deg) translateY(145%);
+        transform-origin: bottom;
+    }
+}
+
+.edit-msg-input {
+    font-family: 'Nunito', sans-serif !important;
+    height: 100%;
+    outline: none;
+    border: none;
+    resize: none;
+    font-size: 14px;
+    font-weight: 400;
+    background-color: white;
+}
+
+.edit-msg-input-box {
+    min-height: 75px;
+    padding: 20px;
+    gap: 10px;
+    border-radius: 20px;
+    border-top-right-radius: 0;
+    border: 1px solid #ADB0D9;
+    background-color: white;
+}
+
+.btn-container-extra {
+    align-self: flex-end;
+    gap: 20px !important;
 }

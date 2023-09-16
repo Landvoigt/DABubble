@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { MatSidenav } from '@angular/material/sidenav';
+import { ChannelServiceService } from '../channel-service.service';
 
 @Component({
   selector: 'app-mainpage',
@@ -13,6 +14,10 @@ export class MainpageComponent implements OnInit {
   firestore: Firestore = inject(Firestore);
   hoverCodeIcon: boolean = false;
   isSidenavOpen: boolean = true;
+
+  constructor(public channelService: ChannelServiceService) {
+    
+  }
 
   ngOnInit(): void {
   }

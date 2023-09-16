@@ -16,7 +16,8 @@
             <app-mainpage-channels class="channel-container f-column"></app-mainpage-channels>
         </mat-sidenav>
 
-        <app-mainpage-chat class="chat-container d-flex f-column" (openEvent)="openRightSidenav()"></app-mainpage-chat>
+        <app-mainpage-chat *ngIf="!channelService.inDirectMessage" class="chat-container d-flex f-column" (openEvent)="openRightSidenav()"></app-mainpage-chat>
+        <app-mainpage-direct-message *ngIf="channelService.inDirectMessage" class="chat-container d-flex f-column"></app-mainpage-direct-message>
 
         <mat-sidenav #rightSidenav mode="side" opened="false" position="end" class="wrapper">
             <app-mainpage-threads class="threads-container d-flex f-column"

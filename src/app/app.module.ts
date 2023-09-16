@@ -30,9 +30,15 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { LoginGoogleComponent } from './login-google/login-google.component';
 import { SuccessBannerComponent } from './success-banner/success-banner.component';
-import { DialogMessageReactComponent } from './dialog-message-react/dialog-message-react.component';
 import { MainpageChannelsComponent } from './mainpage-channels/mainpage-channels.component';
 import { DialogAddChannelComponent } from './dialog-add-channel/dialog-add-channel.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { DialogEditChannelComponent } from './dialog-edit-channel/dialog-edit-channel.component';
+import { DialogEmojisComponent } from './dialog-emojis/dialog-emojis.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { PickerComponent } from '@ctrl/ngx-emoji-mart';
+import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { MainpageDirectMessageComponent } from './mainpage-direct-message/mainpage-direct-message.component';
 
 
 @NgModule({
@@ -49,9 +55,12 @@ import { DialogAddChannelComponent } from './dialog-add-channel/dialog-add-chann
     MainpageChatComponent,
     LoginGoogleComponent,
     SuccessBannerComponent,
-    DialogMessageReactComponent,
     MainpageChannelsComponent,
-    DialogAddChannelComponent
+    DialogAddChannelComponent,
+    DialogEditChannelComponent,
+    DialogEmojisComponent,
+    MainpageDirectMessageComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -64,6 +73,9 @@ import { DialogAddChannelComponent } from './dialog-add-channel/dialog-add-chann
     MatSidenavModule,
     MatToolbarModule,
     MatDialogModule,
+    ReactiveFormsModule,
+    PickerComponent,
+    EmojiComponent,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),

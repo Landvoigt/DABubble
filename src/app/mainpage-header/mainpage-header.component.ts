@@ -88,6 +88,7 @@ export class MainpageHeaderComponent {
         await updateDoc(userDocRef, {
           loggedIn: false
         });
+        this.accountService.clearLoggedInUser();
         this.checkIntro();
         this.router.navigate(['/']);
       }

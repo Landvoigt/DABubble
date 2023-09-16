@@ -12,24 +12,45 @@ import { ChannelServiceService } from '../channel-service.service';
   styleUrls: ['./dialog-add-channel.component.scss']
 })
 export class DialogAddChannelComponent {
+  /** Instance of Firestore to interact with the database. */
   firestore: Firestore = inject(Firestore);
+
+  /** New channel instance to be added. */
   channel = new Channel();
+
+  /** Loading indicator flag. */
   loading: boolean = false;
 
-  constructor(public dialogRef: MatDialogRef<DialogAddChannelComponent>, public accountService: AccountServiceService, private channelService: ChannelServiceService) { }
+  /**
+   * @param {MatDialogRef<DialogAddChannelComponent>} dialogRef - Reference to the current dialog.
+   * @param {AccountServiceService} accountService - Service to manage accounts.
+   * @param {ChannelServiceService} channelService - Service to manage channels.
+   */
+  constructor(
+    public dialogRef: MatDialogRef<DialogAddChannelComponent>,
+    public accountService: AccountServiceService,
+    private channelService: ChannelServiceService) { }
 
+
+  /**
+  * Determines the channel creator and creation date for adding a new channel to Firestore if the form is valid.
+  * @param {NgForm} form - The form containing the channel details.
+  */
   async addChannel(form: NgForm) {
     if (form.valid) {
       this.loading = true;
       this.channel.owner = this.accountService.getLoggedInUser().id;
       this.channel.date = new Date();
-      console.log(this.channel);
       await this.createNewChannel();
     }
     this.dialogRef.close();
     this.loading = false;
   }
 
+
+  /**
+   * Creates the new channel in Firestore.
+   */
   async createNewChannel() {
     const channelCollection = collection(this.firestore, 'channels');
     const newChannel = await addDoc(channelCollection, this.channel.toJSON());
@@ -38,6 +59,11 @@ export class DialogAddChannelComponent {
     this.channelService.currentChannel_ID = newChannel.id;
   }
 
+
+   /**
+   * Updates the channel in Firestore to add its own ID.
+   * @param {string} _id - The ID of the channel to be updated.
+   */
   async addIdToChannel(_id: string) {
     try {
       const channelDocRef = doc(this.firestore, 'channels', _id);

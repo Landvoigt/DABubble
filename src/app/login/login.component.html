@@ -37,24 +37,28 @@
 
             <form #loginForm="ngForm" (ngSubmit)="login()">
                 <div class="email-cont">
-                    <input [(ngModel)]="user.email" (ngModelChange)="checkUserEmail()" type="email" name="email" placeholder="E-mail" autocomplete="on" ngModel #emailInput="ngModel">
+                    <input [(ngModel)]="user.email" (ngModelChange)="checkUserEmail()" type="email" name="email"
+                        placeholder="E-mail" autocomplete="on" ngModel #emailInput="ngModel">
                     <img src="./assets/img/mail.png">
-                    <div [style.display]="emailInput.touched ? (isEmailValid ? 'none' : 'flex') : 'none'" [class.warning-invalid]="!isEmailValid">
+                    <div [style.display]="emailInput.touched ? (isEmailValid ? 'none' : 'flex') : 'none'"
+                        [class.warning-invalid]="!isEmailValid">
                         * Diese E-Mail-Adresse ist leider ungültig.
                     </div>
                 </div>
-            
+
                 <div class="password-cont">
-                    <input [(ngModel)]="user.password" (ngModelChange)="checkUserPassword()" type="password" name="password" placeholder="Password" autocomplete="on" ngModel #passwordInput="ngModel">
+                    <input [(ngModel)]="user.password" (ngModelChange)="checkUserPassword()" type="password"
+                        name="password" placeholder="Password" autocomplete="on" ngModel #passwordInput="ngModel">
                     <img src="./assets/img/lock.png">
-                    <div [style.display]="passwordInput.touched ? (isPasswordValid ? 'none' : 'flex') : 'none'" [class.warning-invalid]="!isPasswordValid">
+                    <div [style.display]="passwordInput.touched ? (isPasswordValid ? 'none' : 'flex') : 'none'"
+                        [class.warning-invalid]="!isPasswordValid">
                         * Das Passwort ist ungültig.
                     </div>
                 </div>
-            
-               
+
+
             </form>
-            
+
 
             <div [routerLink]="'/send-link'" class="password-forgot">Passwort vergessen ?</div>
 
@@ -67,7 +71,8 @@
             <img class="google-login" src="./assets/img/google-login.png" [routerLink]="'/login-google'">
 
             <div class="btn-cont">
-                <button (click)="login()" [disabled]="!isEmailExist || !isPasswordExist" type="submit" class="login-btn">Anmelden</button>
+                <button (click)="login()" [disabled]="!isEmailExist || !isPasswordExist" type="submit"
+                    class="login-btn">Anmelden</button>
                 <button [routerLink]="'/main'" class="guest-login-btn">Gäste-Login</button>
             </div>
 
@@ -79,7 +84,6 @@
     <footer>
         <span>Impressum</span>
         <span>Datenschutz</span>
-      </footer>
-
-
+    </footer>
+    
 </div>

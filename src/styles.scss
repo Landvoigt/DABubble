@@ -1,4 +1,5 @@
 @import 'assets/fonts.scss';
+@import '@ctrl/ngx-emoji-mart/picker';
 
 
 html,
@@ -37,7 +38,7 @@ body {
 }
 
 .j-end {
-    justify-content: flex-end;
+    justify-content: flex-end !important;
 }
 
 .j-between {
@@ -100,6 +101,10 @@ body {
     margin-bottom: 20px;
 }
 
+.mb-10 {
+    margin-bottom: 10px;
+}
+
 .mr-10 {
     margin-right: 10px;
 }
@@ -125,10 +130,9 @@ body {
 }
 
 h2 {
-    font-size: 24px !important;
+    font-size: 28px !important;
     font-weight: 700 !important;
     font-family: 'Nunito', sans-serif !important;
-    margin: 0 !important;
 }
 
 b {
@@ -180,6 +184,21 @@ b {
     }
 }
 
+.btn-primary-medium, .btn-secondary-medium {
+    padding: 8px 16px !important;
+    font-size: 16px !important;
+}
+
+.btn-container-small {
+    margin-top: 0 !important;
+    gap: 10px !important;
+}
+
+.btn-primary-small, .btn-secondary-small {
+    padding: 3px 6px !important;
+    font-size: 13px !important;
+}
+
 ::-webkit-scrollbar {
     width: 0;
     height: 0;
@@ -222,7 +241,53 @@ textarea {
     }
 }
 
+.close-icon-dialog {
+    top: 40px !important;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+}
+
 .mdc-dialog__surface {
     border-radius: 30px !important;
     padding: 40px;
+}
+
+.message-send-btn {
+    outline: none;
+    background-color: unset;
+    border: none;
+}
+
+.message-send-icon {
+    &:hover {
+        filter: opacity(0.7)
+    }
+}
+
+.loading-icon {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    animation: rotate .25s linear infinite;
+    border: 2px solid transparent;
+    border-top-color: #444DF2;
+    margin-right: 7px;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

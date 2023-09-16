@@ -14,8 +14,8 @@ export class MainpageChannelsComponent {
   firestore: Firestore = inject(Firestore);
   allChannels = [];
   allUsers = [];  // all Friends later
-  isDropdownOpenChannel:boolean = true;
-  isDropdownOpenDm:boolean = true;
+  isDropdownOpenChannel: boolean = true;
+  isDropdownOpenDm: boolean = true;
 
   unsubChannels: Unsubscribe;
   unsubUsers: Unsubscribe;
@@ -53,7 +53,13 @@ export class MainpageChannelsComponent {
   }
 
   openChannelArea(_id: string) {
+    this.channelService.inDirectMessage = false;
     this.channelService.currentChannel_ID = _id;
+  }
+
+  openDirectMessage(user_id) {
+    console.log(user_id);
+    this.channelService.inDirectMessage = true;
   }
 
   ngOnDestroy() {
@@ -61,14 +67,11 @@ export class MainpageChannelsComponent {
     this.unsubUsers();
   }
 
-channelSectionToggle() {
-  this.isDropdownOpenChannel = !this.isDropdownOpenChannel
-}
+  channelSectionToggle() {
+    this.isDropdownOpenChannel = !this.isDropdownOpenChannel
+  }
 
-dMSectionToggle() {
-  this.isDropdownOpenDm = !this.isDropdownOpenDm
-}
-
-
-
+  dMSectionToggle() {
+    this.isDropdownOpenDm = !this.isDropdownOpenDm
+  }
 }

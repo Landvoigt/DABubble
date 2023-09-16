@@ -147,15 +147,13 @@ export class LoginGoogleComponent implements OnInit, OnDestroy {
   }
 
   generatePassword() {
-    const specialCharacters = '!@#$%^&*()_-+=<>?';
     const numbers = '0123456789';
     const uppercaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const lowercaseLetters = 'abcdefghijklmnopqrstuvwxyz';
-    const allCharacters = specialCharacters + numbers + uppercaseLetters + lowercaseLetters;
+    const allCharacters = numbers + uppercaseLetters + lowercaseLetters;
 
     // Ensure at least one character from each category is included
     let password = [
-      specialCharacters[Math.floor(Math.random() * specialCharacters.length)],
       numbers[Math.floor(Math.random() * numbers.length)],
       uppercaseLetters[Math.floor(Math.random() * uppercaseLetters.length)],
       lowercaseLetters[Math.floor(Math.random() * lowercaseLetters.length)]

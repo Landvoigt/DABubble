@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import { User } from 'src/models/user.class';
 import { AccountServiceService } from '../account-service.service';
 import { Firestore, collection, getDocs } from '@angular/fire/firestore';
@@ -10,7 +10,8 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit{
+
   isIntro = true;
   user = new User();
   isEmailExist: boolean = false;
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
   isEmailValid: boolean = false;
   isPasswordValid: boolean = false;
 
-  constructor(public accountService: AccountServiceService, private router: Router, private ref: ChangeDetectorRef) {
+  constructor(public accountService: AccountServiceService,private router: Router, private ref: ChangeDetectorRef) {
     this.isIntro = accountService.isIntro;
   }
 

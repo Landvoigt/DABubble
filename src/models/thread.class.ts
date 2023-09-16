@@ -1,28 +1,28 @@
 export class Thread {
-    name: string;
+    id: any;
     content: string;
-    owner: string;
     date: any;
-    members: any[] = [];
-    answers: any[] = [];
+    ownerID: string;
+    ownerName: string;
+    ownerAvatarSrc: string;
 
     constructor(obj?: any) {
-        this.name = obj && obj.name ? obj.name : '';
+        this.id = obj && obj.id ? obj.id : '';
         this.content = obj && obj.content ? obj.content : '';
-        this.owner = obj && obj.owner ? obj.owner : '';
         this.date = obj && obj.date ? obj.date : '';
-        this.members = obj && obj.members ? obj.members : [];
-        this.answers = obj && obj.answers ? obj.answers : [];
+        this.ownerID = obj && obj.ownerID ? obj.ownerID : '';
+        this.ownerName = obj && obj.ownerName ? obj.ownerName : '';
+        this.ownerAvatarSrc = obj && obj.ownerAvatarSrc ? obj.ownerAvatarSrc : '';
     }
 
     public toJSON() {
         return {
-            name: this.name,
+            id: this.id,
             content: this.content,
-            owner: this.owner,
             date: this.date,
-            members: this.members,
-            answers: this.answers
+            ownerID: this.ownerID,
+            ownerName: this.ownerName,
+            ownerAvatarSrc: this.ownerAvatarSrc,
         };
     }
 }

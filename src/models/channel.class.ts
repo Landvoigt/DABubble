@@ -4,7 +4,6 @@ export class Channel {
     owner: string;
     date: any;
     members: any[] = [];
-    threads: any[] = [];
     id: any;
 
     constructor(obj?: any) {
@@ -13,7 +12,6 @@ export class Channel {
         this.owner = obj && obj.owner ? obj.owner : '';
         this.date = obj && obj.date ? obj.date : '';
         this.members = obj && obj.members ? obj.members : [];
-        this.threads = obj && obj.threads ? obj.threads : [];
         this.id = obj && obj.id ? obj.id : '';
     }
 
@@ -24,7 +22,6 @@ export class Channel {
             owner: this.owner,
             date: this.date,
             members: this.members,
-            threads: this.threads,
             id: this.id
         };
     }

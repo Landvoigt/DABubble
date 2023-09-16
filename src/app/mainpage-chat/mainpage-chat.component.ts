@@ -1,11 +1,16 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { ChannelServiceService } from '../channel-service.service';
-import { Firestore, addDoc, arrayUnion, collection, doc, getDocs, onSnapshot, orderBy, query, updateDoc, where } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, doc, getDoc, getDocs, onSnapshot, query, updateDoc, where } from '@angular/fire/firestore';
 import { Unsubscribe } from '@angular/fire/database';
 import { Subscription } from 'rxjs';
 import { Thread } from 'src/models/thread.class';
 import { AccountServiceService } from '../account-service.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogEditChannelComponent } from '../dialog-edit-channel/dialog-edit-channel.component';
+import { ChatServiceService } from '../chat-service.service';
+import { DialogEmojisComponent } from '../dialog-emojis/dialog-emojis.component';
+import { NgForm } from '@angular/forms';
+import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 
 @Component({
   selector: 'app-mainpage-chat',
@@ -21,77 +26,85 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
   hoverSmileyIcon: boolean = false;
   hoverAtIcon: boolean = false;
   hoverAddClientIcon: boolean = false;
+  showMembersPopup: boolean = false;
+  noCurrentChannel: boolean = true;
+  loading: boolean = false;
 
   currentChannel;
   unsubChannel: Unsubscribe;
   unsubThreads: Unsubscribe;
 
   message = new Thread();
-  // message_ID = '';
   threads = [];
 
   hoveredThreadId: number | null = null;
   ownThreadId: number | null = null;
+  inEditMessage: number | null = null;
 
-  constructor(public dialog: MatDialog, public channelService: ChannelServiceService, public accountService: AccountServiceService) { }
+  loadedMessageContent;
+
+  constructor(
+    public dialog: MatDialog,
+    public channelService: ChannelServiceService,
+    public accountService: AccountServiceService,
+    public chatService: ChatServiceService) {
+  }
+
+  containsVisibleCharacter(control) {
+    const value = control.value;
+    const visibleCharacterPattern = /[^\s\p{C}]/u; // Überprüft, ob mindestens ein sichtbares Zeichen (Buchstabe oder Emoji) vorhanden ist
+    return visibleCharacterPattern.test(value) ? null : { containsVisibleCharacter: true };
+  }
+
 
   ngOnInit() {
     this.subscription = this.channelService.currentChannel$.subscribe(channel => {
       if (channel && Object.keys(channel).length > 0) {
         this.currentChannel = channel;
-        this.threads = [];
+        this.noCurrentChannel = false;
         this.setupThreads(this.currentChannel.id);
+      } else {
+        this.noCurrentChannel = true;
       }
     });
   }
 
-  async sendMessage() {
-    const channelCollection = collection(this.firestore, 'channels');
-    const channelDocRef = doc(channelCollection, this.currentChannel.id);
-    const threadCollection = collection(channelDocRef, 'threads');
+  async sendMessage(form: NgForm) {
+    if (form.valid) {
+      this.loading = true;
+      const channelCollection = collection(this.firestore, 'channels');
+      const channelDocRef = doc(channelCollection, this.currentChannel.id);
+      const threadCollection = collection(channelDocRef, 'threads');
 
-    this.message.date = new Date();
-    this.message.owner = this.accountService.getLoggedInUser().id;
-    const threadData = this.message.toJSON();
-    await addDoc(threadCollection, threadData);
-    // const newThread = await addDoc(threadCollection, threadData);
-    // this.message_ID = newThread.id;
-    // await this.addThreadIdToChannel(this.currentChannel.id, this.message_ID);
+      this.message.date = new Date();
+      this.message.ownerID = this.accountService.getLoggedInUser().id;
+      this.message.ownerName = this.accountService.getLoggedInUser().name;
+      this.message.ownerAvatarSrc = this.accountService.getLoggedInUser().avatarSrc;
+
+      const threadData = this.message.toJSON();
+      const newThread = await addDoc(threadCollection, threadData);
+
+      const threadDocRef = doc(threadCollection, newThread.id);
+      await updateDoc(threadDocRef, {
+        id: newThread.id
+      });
+
+      form.resetForm();
+      this.message.content = '';
+      this.loading = false;
+    }
   }
-
-  // async addThreadIdToChannel(channelId: string, threadId: string) {
-  //   const channelDocRef = doc(this.firestore, 'channels', channelId);
-
-  //   try {
-  //     await updateDoc(channelDocRef, {
-  //       messages: arrayUnion(threadId)
-  //     });
-  //   } catch (error) {
-  //     console.error("Error adding thread ID to channel:", error);
-  //   }
-  // }
 
   setupThreads(channelId: string) {
     const channelDocRef = doc(this.firestore, 'channels', channelId);
     const threadCollection = collection(channelDocRef, 'threads');
 
-    // const q = query(threadCollection, orderBy('date', 'desc'))
-    // this.unsubThreads = onSnapshot(q, async (threadSnapshot) => {
     this.unsubThreads = onSnapshot(threadCollection, async (threadSnapshot) => {
       this.threads = [];
-      const threadPromises = [];
-
       threadSnapshot.forEach(element => {
         const threadData = element.data();
-        const ownerDetailsPromise = this.getThreadOwnerDetails(threadData['owner']);
-        threadPromises.push(ownerDetailsPromise.then(ownerDetails => {
-          threadData['ownerName'] = ownerDetails.name;
-          threadData['avatarSrc'] = ownerDetails.avatarSrc;
-          this.threads.push(threadData);
-        }));
+        this.threads.push(threadData);
       });
-
-      await Promise.all(threadPromises);
 
       this.threads.sort((a, b) => {
         const dateA = this.timestampToDate(a.date);
@@ -113,16 +126,41 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
         avatarSrc: userData['avatarSrc'] || 'assets/img/avatar_small.png'
       };
     }
-    // Return default values if user is not found
     return {
       name: 'Unknown User',
       avatarSrc: 'assets/img/avatar_small.png'
     };
   }
 
+  closeEdit() {
+    this.inEditMessage = null;
+  }
 
-  openThreads() {
+  async openEditMessage(threadId: any, i: number) {
+    this.inEditMessage = i;
+    const channelDocRef = doc(this.firestore, 'channels', this.currentChannel.id);
+    const threadDocRef = doc(channelDocRef, 'threads', threadId);
+
+    const docSnapshot = await getDoc(threadDocRef);
+    if (docSnapshot.exists()) {
+      this.threads[i].editMessageContent = docSnapshot.data()['content'];
+    }
+  }
+
+  async editMessage(threadId: any, i: number) {
+    const channelDocRef = doc(this.firestore, 'channels', this.currentChannel.id);
+    const threadDocRef = doc(channelDocRef, 'threads', threadId);
+
+    await updateDoc(threadDocRef, {
+      content: this.threads[i].editMessageContent
+    });
+
+    this.inEditMessage = null;
+  }
+
+  openThreads(_id: string) {
     this.openEvent.emit();
+    this.channelService.currentThread_ID = _id;
   }
 
   addFilter(event: MouseEvent) {
@@ -135,11 +173,11 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
     target.style.filter = 'brightness(0%)';
   }
 
-  getAmountOfAnswers(thread: any) {
-    if (thread.answers?.length === 1) {
+  formatAnswerCount(amount: number): string {
+    if (amount === 1) {
       return '1 Antwort';
     } else {
-      return thread.answers?.length + ' Antworten';
+      return amount + ' Antworten';
     }
   }
 
@@ -188,6 +226,10 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
   //   // [ngClass]="{'thread-container-reverse': isOwnerDifferentFromPrevious(i, threads)}"
   // }
 
+  openEditChannel() {
+    this.dialog.open(DialogEditChannelComponent);
+  }
+
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -200,5 +242,15 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
     if (this.unsubThreads) {
       this.unsubThreads();
     }
+  }
+
+  openDialog() {
+    this.chatService.serviceThread = this.message;
+    event.preventDefault();
+    this.dialog.open(DialogEmojisComponent, { restoreFocus: false });
+  }
+
+  insertEmoji(event: EmojiEvent) {
+    this.chatService.insertEmoji(event);
   }
 }

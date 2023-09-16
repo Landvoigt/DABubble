@@ -1,0 +1,103 @@
+.chat-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column-reverse;
+    overflow-y: scroll;
+    margin-bottom: 180px;
+}
+
+.chat-header {
+    height: 100px;
+    padding: 0 40px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    align-items: center;
+    -webkit-box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.message-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    height: 140px;
+    border: 1px solid rgba(171, 174, 216, 0.85);
+    border-radius: 20px;
+    background-color: white;
+
+    textarea {
+        height: 60%;
+        outline: none;
+        border: none;
+        padding: 15px 20px;
+        border-radius: 20px;
+        resize: none;
+        overflow: scroll;
+        font-size: 16px;
+        font-weight: 500;
+        color: #686868;
+
+        &::placeholder {
+            font-family: 'Nunito', sans-serif;
+        }
+    }
+
+    .message-icons {
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 15px;
+        justify-content: space-between;
+
+        img {
+            object-fit: contain;
+            cursor: pointer;
+            height: 20px;
+            width: 20px;
+            padding: 10px;
+            margin-left: 5px;
+        }
+
+        img:first-child {
+            height: 15px;
+            width: 15px;
+            margin-left: 0;
+        }
+
+        .icon-divider-line {
+            height: 40px;
+            width: 1px;
+            background-color: #ADB0D9;
+            margin-left: 5px;
+        }
+
+        .message-hover-icon {
+            &:hover {
+                border-radius: 50%;
+                background-color: #ECEEFE;
+                transform: scale(1.1);
+            }
+        }
+    }
+}
+
+.emojis-container {
+    button {
+        border: unset;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+}
+
+.emoji-section {
+    flex-direction: row;
+    margin-top: -5px;
+
+    img {
+        object-fit: contain;
+        margin-right: 10px;
+    }
+}

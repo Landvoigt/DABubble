@@ -17,7 +17,7 @@
                 </span>
                 <span (click)="channelSectionToggle()" class="sub-headlines">Channels</span>
             </div>
-            <mat-icon class="add-icon pointer">add</mat-icon>
+            <mat-icon class="add-icon pointer" (click)="openAddChannel()">add</mat-icon>
         </div>
 
         <div [ngClass]="{'up': !isDropdownOpenChannel}">
@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="friends-section d-flex" *ngFor="let user of allUsers">
-                <div class="d-flex ai-center friend-box pointer">
+                <div class="d-flex ai-center friend-box pointer" (click)="openDirectMessage(user.id)">
                     <div class="p-relative mr-20 d-flex">
                         <img class="friends-avatar" [src]="user.avatarSrc || 'assets/img/avatar_small.png'">
                     </div>
