@@ -18,26 +18,22 @@ export class AccountServiceService {
   emailResetPassword = '';
   usersArray = [];
   firestoreLoggedInUsers: any = [];
-  firestoreLoggedInUsersImage:any = [];
-
+  firestoreLoggedInUsersImage: any = [];
   loggedInUser: User | null = null;
   localStorageKey = 'loggedInUser';
   getLoggedInUserName: string;
-
+  loggedInUsersArray = [];
 
   constructor() {
     const storedUser = localStorage.getItem(this.localStorageKey);
     if (storedUser) {
       this.loggedInUser = JSON.parse(storedUser);
-    }else {
+    } else {
       // Wenn kein gespeicherter Benutzer gefunden wurde, initialisiere loggedInUser
       this.loggedInUser = null; // Oder eine geeignete Standardwerte
     }
-    //this.getLoggedInUsers();
+    // this.getLoggedInUsers();
   }
-
- 
-
 
   setLoggedInUser(user: User) {
     this.loggedInUser = user;
@@ -45,21 +41,18 @@ export class AccountServiceService {
   }
 
   getLoggedInUser() {
-    return this.loggedInUser;
-  }
+    return this.loggedInUser || null;
+  }  
 
   clearLoggedInUser() {
     this.loggedInUser = null;
     localStorage.removeItem(this.localStorageKey);
   }
 
-
   getEmail() {
     console.log('service klasse', this.emailResetPassword);
 
   }
-
-
 
   private meinBooleanSubject = new Subject<boolean>();  // Wenn die Variable true ist, wird <form> gesendet
   meinBoolean$ = this.meinBooleanSubject.asObservable();  // Wenn die Variable true ist, wird <form> gesendet
@@ -68,33 +61,38 @@ export class AccountServiceService {
   }
 
 
-  async getLoggedInUsers() {   // Test
-    const collRef = collection(this.firestore, "users");
+    ////  braucht man nicht
 
-    try {
-      const querySnapshot = await getDocs(collRef);
-      querySnapshot.forEach((doc) => {
-        const userData = doc.data() as User;
-        const documentId = doc.id;
-        const loggedInListener = onSnapshot(doc.ref, (snapshot) => {
-          const loggedInValue = snapshot.data()?.['loggedIn'];
-          //const loggedInName = snapshot.data();
-          if (loggedInValue !== undefined) {
-            if (loggedInValue && userData.name !== this.getLoggedInUser().name) {
-              this.firestoreLoggedInUsers.push(userData.name);
-              this.firestoreLoggedInUsersImage.push(userData.avatarSrc);
-              this.getLoggedInUserName = userData.name;
-            } else {
-            }
-          }
+  // async getLoggedInUsers() {   // Test
+  //   const collRef = collection(this.firestore, "users");
 
-        });
-      });
+  //   try {
+  //     const querySnapshot = await getDocs(collRef);
+  //     querySnapshot.forEach((doc) => {
+  //       const userData = doc.data() as User;
+  //       const documentId = doc.id;
 
-    } catch (error) {
-      //console.error('Fehler beim Abrufen der Benutzerdaten:', error);
-    }
-  }
+  //       const loggedInListener = onSnapshot(doc.ref, (snapshot) => {
+  //         const loggedInValue = snapshot.data()?.['loggedIn'];
+  //         //const loggedInName = snapshot.data();
+  //         this.loggedInUsersArray.push(snapshot.data())
+  //         if (loggedInValue !== undefined) {
+  //           if (loggedInValue && userData.email !== this.getLoggedInUser().email) {
+  //             this.firestoreLoggedInUsers.push(userData.name);
+  //             this.firestoreLoggedInUsersImage.push(userData.avatarSrc);
+  //             this.firestoreLoggedInUsersImage.push(userData.email);
+  //             this.getLoggedInUserName = userData.name;
+  //           } else {
+  //           }
+  //         }
+
+  //       });
+  //     });
+
+  //   } catch (error) {
+  //     //console.error('Fehler beim Abrufen der Benutzerdaten:', error);
+  //   }
+  // }
 
 
 }

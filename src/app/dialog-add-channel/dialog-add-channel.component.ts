@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Firestore, addDoc, collection, doc, setDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, doc, updateDoc } from '@angular/fire/firestore';
 import { NgForm } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Channel } from 'src/models/channel.class';
@@ -14,6 +14,9 @@ import { ChannelServiceService } from '../channel-service.service';
 export class DialogAddChannelComponent {
   /** Instance of Firestore to interact with the database. */
   firestore: Firestore = inject(Firestore);
+
+  /** Reference to the current collection in Firestore. */
+  channelCollection = collection(this.firestore, 'channels');
 
   /** New channel instance to be added. */
   channel = new Channel();
@@ -33,44 +36,46 @@ export class DialogAddChannelComponent {
 
 
   /**
-  * Determines the channel creator and creation date for adding a new channel to Firestore if the form is valid.
-  * @param {NgForm} form - The form containing the channel details.
-  */
-  async addChannel(form: NgForm) {
-    if (form.valid) {
-      this.loading = true;
-      this.channel.owner = this.accountService.getLoggedInUser().id;
-      this.channel.date = new Date();
-      await this.createNewChannel();
-    }
+   * Attempts to add a new channel if the provided form is valid. It sets the required properties of the channel,
+   * creates the channel in Firestore, and then closes the dialog.
+   * @param {NgForm} form - The form containing the channel details.
+   * @returns {Promise<void>}
+   */
+  async addChannel(form: NgForm): Promise<void> {
+    if (!form.valid) return;
+
+    this.loading = true;
+
+    this.setChannelProperties();
+    await this.createNewChannel();
+
     this.dialogRef.close();
     this.loading = false;
   }
 
 
   /**
-   * Creates the new channel in Firestore.
+   * Sets the properties for the channel that's about to be added. It sets the owner (current user),
+   * adds the owner to the members list, and sets the current date for the creation date of the channel.
    */
-  async createNewChannel() {
-    const channelCollection = collection(this.firestore, 'channels');
-    const newChannel = await addDoc(channelCollection, this.channel.toJSON());
-
-    await this.addIdToChannel(newChannel.id);
-    this.channelService.currentChannel_ID = newChannel.id;
+  private setChannelProperties(): void {
+    this.channel.owner = this.accountService.getLoggedInUser().id;
+    this.channel.members.push(this.channel.owner);  // this.channel.owner was already extracted
+    this.channel.date = new Date();
   }
 
 
-   /**
-   * Updates the channel in Firestore to add its own ID.
-   * @param {string} _id - The ID of the channel to be updated.
+  /**
+   * Creates the new channel in Firestore, then updates the channel in Firestore to add its own ID.
    */
-  async addIdToChannel(_id: string) {
-    try {
-      const channelDocRef = doc(this.firestore, 'channels', _id);
-      await setDoc(channelDocRef, { id: _id }, { merge: true });
+  async createNewChannel(): Promise<void> {
+    const newChannel = await addDoc(this.channelCollection, this.channel.toJSON());
+    const newChannelDoc = doc(this.channelCollection, newChannel.id);
+    await updateDoc(newChannelDoc, {
+      id: newChannel.id
+    });
 
-    } catch (error) {
-      console.error("Error updating channel:", error);
-    }
+    this.channelService.currentChannel_ID = newChannel.id;
+    this.channelService.checkChannelOwner(this.channel);
   }
 }

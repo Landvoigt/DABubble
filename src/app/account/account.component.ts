@@ -1,10 +1,10 @@
 import { Component, OnInit, inject, ViewChild } from '@angular/core';
-import { Firestore, addDoc, collection, doc, getDoc, getDocs, setDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, doc, getDocs, setDoc } from '@angular/fire/firestore';
 import { User } from 'src/models/user.class';
 import { NgForm } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 import { AccountServiceService } from '../account-service.service';
-import { onSnapshot, query, QuerySnapshot, where } from 'firebase/firestore';
+import { onSnapshot } from 'firebase/firestore';
 import { Router } from '@angular/router';
 
 
@@ -39,6 +39,7 @@ export class AccountComponent implements OnInit {
   uID: any;
   isPasswordNotValid = false;
   isEmailNotValid = false;
+  showPassword = false;
 
 
   @ViewChild('accountForm', { static: false }) accountForm: NgForm;
@@ -61,8 +62,7 @@ export class AccountComponent implements OnInit {
   }
 
 
-
-  ngOnInit(): void {   // damit wird die Variable meinBoolean überwacht und abonniert für die Änderung
+ngOnInit(): void {   // damit wird die Variable meinBoolean überwacht und abonniert für die Änderung
     this.accountService.meinBoolean$.subscribe((value) => {
       if (value === true) {
         this.formAction();
@@ -190,15 +190,22 @@ export class AccountComponent implements OnInit {
   }
 
 
+
   async checkUserEmail() {
+    if (this.user.email === '' || !this.emailPattern.test(this.user.email)) {
+      this.isValidEmail = true;
+      this.isEmailNotValid = true;
+      return;
+    }
+  
     const collRef = collection(this.firestore, "users");
     const querySnapshot = await getDocs(collRef);
     this.isEmailExist = querySnapshot.docs.some((doc) => {
       const userData = doc.data() as User;
       return userData.email === this.user.email;
     });
-
-    if (this.user.email === '' || !this.emailPattern.test(this.user.email) || this.isEmailExist) {
+  
+    if (this.isEmailExist) {
       this.isValidEmail = true;
       this.isEmailNotValid = true;
     } else {
@@ -206,10 +213,17 @@ export class AccountComponent implements OnInit {
       this.isEmailNotValid = false;
     }
   }
+  
 
 
   async checkUserPassword() {
-    const collRef = collection(this.firestore, "users");
+
+    if (this.user.password === '' || !this.passwordPattern.test(this.user.password)) {
+      this.isValidPassword = true;
+      this.isPasswordNotValid = true;
+      return;
+    }
+ const collRef = collection(this.firestore, "users");
     const querySnapshot = await getDocs(collRef);
     this.isPasswordExist = querySnapshot.docs.some((doc) => {
       const userData = doc.data() as User;
@@ -225,18 +239,18 @@ export class AccountComponent implements OnInit {
     }
   }
 
+  
+ checkUserName() {
+     this.isName = this.namePattern.test(this.user.name);
+   if (this.user.name === '' || !this.isName) {
+       this.isValidName = true;
+     } else {
+       this.isValidName = false;
+     }
+   }
 
-  checkUserName() {
-    this.isName = this.namePattern.test(this.user.name);
-    if (this.user.name === '' || !this.isName) {
-      this.isValidName = true;
-    } else {
-      this.isValidName = false;
-    }
-  }
 
-
-  saveCurrentUser() {
+ saveCurrentUser() {
     let currentUser = {
       name: this.user.name,
       email: this.user.email,
@@ -254,6 +268,10 @@ export class AccountComponent implements OnInit {
     this.accountService.currentUser.push(currentUser);
     this.accountService.currentBoolean.push(currentBoolean);
 
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
 }

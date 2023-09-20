@@ -9,7 +9,7 @@ import { Thread } from 'src/models/thread.class';
 export class ChatServiceService {
 
   serviceThread:any;
-
+  ownerData:any;
  
 
   constructor() { }

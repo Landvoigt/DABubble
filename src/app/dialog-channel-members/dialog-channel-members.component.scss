@@ -1,0 +1,104 @@
+.content {
+    min-width: 380px;
+
+    h2 {
+        padding-top: 5px;
+        padding-left: 15px;
+    }
+}
+
+.members-section {
+    margin-top: 10px;
+}
+
+.member-box {
+    padding: 4px 16px;
+    border-radius: 50px;
+    text-wrap: nowrap;
+
+    &:hover {
+        color: #797EF3;
+        background-color: #ECEEFE;
+    }
+}
+
+.members-avatar {
+    object-fit: contain;
+    border-radius: 50%;
+    height: 45px;
+}
+
+.close-icon-extra {
+    top: 0 !important;
+    right: 0 !important;
+}
+
+.font-adjust {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.channel-name-wrap,
+.user-name-wrap {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.channel-name-wrap {
+    max-width: 220px;
+}
+
+.add-client-icon-box {
+    border-radius: 50px;
+    background-color: #ECEEFE;
+    padding: 8px;
+    width: 29px;
+    height: 29px;
+    margin-right: 20px;
+
+    &:hover {
+        mat-icon {
+            color: #797EF3;
+        }
+    }
+}
+
+.add-member {
+    font-weight: 700;
+}
+
+.add-member-hover {
+    &:hover {
+        color: #797EF3;
+        background-color: white !important;
+    }
+}
+
+.add-member-hover-grey {
+    opacity: 0.3;
+    cursor: default;
+
+    &:hover {
+        color: black !important;
+
+        .add-client-icon-box {
+            cursor: default;
+        }
+
+        mat-icon {
+            color: black !important;
+        }
+    }
+}
+
+.channel-owner-icon {
+    color: #444DF2;
+    margin-right: 8px;
+}
+
+.no-perm-advice {
+    position: absolute;
+    bottom: -10px;
+    left: -10px;
+}

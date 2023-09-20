@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { AccountServiceService } from '../account-service.service';
 import { Location } from '@angular/common';
 import { User } from 'src/models/user.class';
@@ -57,7 +57,6 @@ export class AccountProfileComponent  {
 
 async chooseAvatar(i: any) {
     try {
-      // Annahme: this.avatars ist eine Liste von Dateinamen in assets/img/
       const fileName = this.avatars[i];
       const filePath = `${fileName}`;
       const fileRef = ref(this.storage, filePath);

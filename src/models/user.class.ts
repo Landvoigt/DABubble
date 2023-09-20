@@ -5,8 +5,6 @@ export class User {
     password: string;
     loggedIn: boolean;
     isActive: boolean;
-    friends: string[];
-    channels: string[];
     avatarSrc: any;
 
     constructor(obj?: any) {
@@ -16,8 +14,6 @@ export class User {
         this.password = obj ? obj.password : '';
         this.loggedIn = obj ? obj.loggedIn : false;
         this.isActive = obj ? obj.isActive : false;
-        this.friends = obj ? obj.friends : '';
-        this.channels = obj ? obj.channels : '';
         this.avatarSrc = obj ? obj.avatarSrc : '';
     }
 
@@ -29,8 +25,6 @@ export class User {
             password: this.password,
             loggedIn: this.loggedIn,
             isActive: this.isActive,
-            friends: this.friends,
-            channels: this.channels,
             avatarSrc: this.avatarSrc
         };
     }

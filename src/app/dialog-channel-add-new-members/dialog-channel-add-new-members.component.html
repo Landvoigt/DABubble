@@ -1,0 +1,15 @@
+<form (ngSubmit)="addNewMember()" class="content d-flex f-column p-relative">
+  <mat-icon class="close-icon p-absolute pointer close-icon-extra" (click)="dialogRef.close()">close</mat-icon>
+  <h2>Leute hinzufügen</h2>
+  <span class="threads-channel"># {{ currentChannel.name }}</span>
+  <input placeholder="Name eingeben" matInput [matAutocomplete]="auto" [formControl]="control"
+    [class.change-input-border]="auto.isOpen" required>
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayUserName" class="autocomplete-container">
+    <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
+      {{ user.name }}
+    </mat-option>
+  </mat-autocomplete>
+  <mat-dialog-actions class="j-end">
+    <button class="btn-primary" type="submit" [disabled]="!control.valid">Hinzufügen</button>
+  </mat-dialog-actions>
+</form>

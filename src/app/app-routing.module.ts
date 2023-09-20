@@ -7,6 +7,7 @@ import { MainpageComponent } from './mainpage/mainpage.component';
 import { SendLinkToUserComponent } from './send-link-to-user/send-link-to-user.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { LoginGoogleComponent } from './login-google/login-google.component';
+import { ImprintComponent } from './imprint/imprint.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'main', component: MainpageComponent },
   { path: 'send-link', component: SendLinkToUserComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
-  { path: 'login-google', component: LoginGoogleComponent }
+  { path: 'login-google', component: LoginGoogleComponent },
+  { path: 'imprint', component: ImprintComponent }
 ];
 
 @NgModule({

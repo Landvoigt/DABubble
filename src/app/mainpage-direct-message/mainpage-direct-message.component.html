@@ -1,27 +1,13 @@
 <div class="chat-header d-flex">
-    <!-- <span class="chat-headline d-flex ai-center pointer" (click)="openEditChannel()"><mat-icon><i>tag</i></mat-icon>{{
-        this.currentChannel.name
-        }}<mat-icon>keyboard_arrow_down</mat-icon></span>
-    <div class="d-flex ai-center p-relative">
-        <div class="d-flex ai-center mr-20 assigned-clients-box pointer" (click)="showMembersPopup = true">
-            <img class="avatar-small" src="assets/img/avatar_big.png">
-            <img class="avatar-small" src="assets/img/avatar_big.png">
-            <img class="avatar-small" src="assets/img/avatar_big.png">
-            <span class="assigned-client-count">3</span>
-        </div>
-        <div class="add-client-icon-box flex-center pointer">
-            <mat-icon class="add-client-icon">person_add_alt</mat-icon>
-        </div>
-        <div *ngIf="showMembersPopup" class="overlay" (click)="showMembersPopup = false">
-            <div class="members-popup p-absolute flex-center f-column" (click)="$event.stopPropagation()">
-
-            </div>
-        </div>
-    </div> -->
+    <div class="chat-headline d-flex ai-center g-20 pointer">
+        <img class="thread-avatar" [src]="channelService.savedDmPartner.avatarSrc || 'assets/img/avatar_small.png'">
+        <span *ngIf="!isOwnDmChannel">{{ channelService.savedDmPartner.name }}</span>
+        <span *ngIf="isOwnDmChannel">{{ channelService.savedDmPartner.name }} (Du)</span>
+    </div>
 </div>
 
-<div class="chat-content">
-    <!-- <div *ngFor="let thread of threads; let i = index" class="d-flex f-column">
+<div *ngIf="!isThreadsEmpty" class="chat-content">
+    <div *ngFor="let thread of threads; let i = index" class="d-flex f-column">
 
         <div *ngIf="!threadSentOnNewDate(i, threads)" class="d-flex ai-center message-date-container"
             [ngStyle]="{ 'margin-top': i === threads.length - 1 ? '120px' : '30px' }">
@@ -32,73 +18,79 @@
 
         <div class="main-thread-container d-flex ai-start g-20 p-relative"
             [class.own-thread-container]="thread.ownerID === accountService.getLoggedInUser().id"
-            (mouseenter)="hoveredThreadId = i" (mouseleave)="hoveredThreadId = null">
-            <img class="thread-avatar" [src]="thread.ownerAvatarSrc || 'assets/img/avatar_small.png'">
+            [class.hover-main-thread]="inEditMessage === i" (mouseenter)="hoveredThreadId = i"
+            (mouseleave)="hoveredThreadId = null">
+            <img (click)="openDialogThread(thread)" class="thread-avatar pointer"
+                [src]="thread.ownerAvatarSrc || 'assets/img/avatar_small.png'">
             <div class="d-flex f-column g-10"
                 [class.thread-creator-reverse]="thread.ownerID === accountService.getLoggedInUser().id">
                 <div class="d-flex ai-baseline"
                     [class.thread-message-box-reverse]="thread.ownerID === accountService.getLoggedInUser().id">
                     <span class="thread-creator">{{ thread.ownerName }}</span>
                     <span class="thread-time"
-                        [class.thread-time-reverse]="thread.ownerID === accountService.getLoggedInUser().id">{{
-                        getFormattedTime(thread.date) }}</span>
+                        [class.thread-time-reverse]="thread.ownerID === accountService.getLoggedInUser().id">
+                        {{ getFormattedTime(thread.date) }}
+                    </span>
                 </div>
-                <span class="thread-text pointer"
-                    [class.thread-text-reverse]="thread.ownerID === accountService.getLoggedInUser().id"
-                    (click)="openThreads(thread.id)">{{ thread.content }}</span>
-                <div *ngIf="thread.amountOfAnswers">
-                    <span class="thread-answer-count" (click)="openThreads(thread.id)">{{
-                        formatAnswerCount(thread.amountOfAnswers) }}</span>
-                    <span class="thread-time">Letzte Antwort - {{ getFormattedTime(thread.lastAnswerTime) }}</span>
+                <span *ngIf="!(inEditMessage === i)" class="thread-text pointer"
+                    [class.thread-text-reverse]="thread.ownerID === accountService.getLoggedInUser().id">
+                    {{ thread.content }}
+                </span>
+                <div *ngIf="inEditMessage === i" class="d-flex j-between f-column edit-msg-input-box">
+                    <textarea [(ngModel)]="thread.editMessageContent" class="edit-msg-input"
+                        [class.edit-msg-input-reverse]="thread.ownerID === accountService.getLoggedInUser().id"
+                        maxlength="1500">
+                        {{ loadedMessageContent }}
+                    </textarea>
+                    <div class="btn-container btn-container-extra">
+                        <button class="btn-secondary btn-secondary-medium" (click)="closeEdit()">Abbrechen</button>
+                        <button class="btn-primary btn-primary-medium"
+                            (click)="editMessage(thread.id, i)">Speichern</button>
+                    </div>
                 </div>
             </div>
-            <div *ngIf="hoveredThreadId === i" class="thread-reaction-container flex-center g-10"
+            <div *ngIf="hoveredThreadId === i && !(inEditMessage === i)"
+                class="thread-reaction-container flex-center g-10"
                 [class.thread-reaction-container-reverse]="thread.ownerID === accountService.getLoggedInUser().id">
-                <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer"
-                    (mouseenter)="addFilter($event)" (mouseleave)="removeFilter($event)">
-                <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer"
-                    (mouseenter)="addFilter($event)" (mouseleave)="removeFilter($event)">
-                <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer"
-                    (mouseenter)="addFilter($event)" (mouseleave)="removeFilter($event)">
-                <mat-icon (click)="openThreads(thread.id)">comment</mat-icon>
+                <div class="emoji-icon flex-center pointer">
+                    <span class="material-symbols-outlined">add_reaction</span>
+                </div>
                 <div *ngIf="thread.ownerID === accountService.getLoggedInUser().id" class="p-relative"
                     (mouseenter)="ownThreadId = i" (mouseleave)="ownThreadId = null">
                     <mat-icon class="edit-msg-icon">keyboard_control</mat-icon>
-                    <div *ngIf="(hoveredThreadId === i) && (ownThreadId === i)" class="thread-edit-btn pointer">
-                        Nachricht
-                        bearbeiten</div>
+                    <div *ngIf="(hoveredThreadId === i) && (ownThreadId === i)" class="thread-edit-btn pointer"
+                        (click)="openEditMessage(thread.id, i)">
+                        Nachricht bearbeiten
+                    </div>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 </div>
 
-<form #chatMessageForm="ngForm" class="message-container d-flex f-column"
-    (ngSubmit)="sendMessage(chatMessageForm)">
+<form #chatMessageForm="ngForm" class="message-container d-flex f-column" (ngSubmit)="sendMessage(chatMessageForm)">
 
-    <textarea name="main-chat-input" placeholder="Nachricht an #Entwicklerteam"
-     required></textarea>
+    <textarea (keydown.enter)="sendMessage(chatMessageForm)" [(ngModel)]="directMessage.content" name="main-chat-input"
+        placeholder="Nachricht an #Entwicklerteam" maxlength="1500" required></textarea>
 
     <div class="d-flex message-icons">
         <div class="d-flex ai-center">
-            <img class="message-hover-icon"
-                [src]="hoverPlusIcon ? 'assets/img/icons/plus_blue.png' : 'assets/img/icons/plus.png'"
-                (mouseenter)="hoverPlusIcon = true" (mouseleave)="hoverPlusIcon = false">
+
+            <span class="material-symbols-outlined message-hover-icon flex-center pointer">
+                add
+            </span>
             <div class="message-hover-icon" class="icon-divider-line"></div>
 
-            <mat-dialog-content>
-                <div class="emojis-container">
-                    <button mat-menu-item (click)="openDialog()">
-                        <img class="message-hover-icon"
-                            [src]="hoverSmileyIcon ? 'assets/img/icons/smiley_blue.png' : 'assets/img/icons/smiley.png'"
-                            (mouseenter)="hoverSmileyIcon = true" (mouseleave)="hoverSmileyIcon = false">
-                    </button>
-                </div>
-            </mat-dialog-content>
+            <!-- hallo barnabas der nachfolgende span ist dein emoji-button :)  -->
+            <span (click)="openDialog()"
+                class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust">
+                sentiment_satisfied
+            </span>
 
-            <img class="message-hover-icon"
-                [src]="hoverAtIcon ? 'assets/img/icons/at_blue.png' : 'assets/img/icons/at.png'"
-                (mouseenter)="hoverAtIcon = true" (mouseleave)="hoverAtIcon = false">
+            <span class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust">
+                alternate_email
+            </span>
+
         </div>
         <button class="message-send-btn" type="submit" [disabled]="loading">
             <img *ngIf="!loading" class="message-send-icon" src="assets/img/icons/arrow_send.png">
@@ -106,3 +98,30 @@
         </button>
     </div>
 </form>
+
+<div *ngIf="isThreadsEmpty && !isOwnDmChannel" class="chat-content-before-msg">
+    <div class="d-flex ai-end">
+        <img class="thread-avatar-big pointer"
+            [src]="channelService.savedDmPartner.avatarSrc || 'assets/img/avatar_small.png'">
+        <span class="chat-headline mb-10">{{ channelService.savedDmPartner.name }}</span>
+    </div>
+    <span class="no-content-span">
+        Diese Unterhaltung findet nur zwischen
+        <span>
+            @{{ channelService.savedDmPartner.name }}
+        </span>
+        und dir statt.
+    </span>
+</div>
+
+<div *ngIf="isThreadsEmpty && isOwnDmChannel" class="chat-content-before-msg">
+    <div class="d-flex ai-end">
+        <img class="thread-avatar-big pointer"
+            [src]="channelService.savedDmPartner.avatarSrc || 'assets/img/avatar_small.png'">
+        <span class="chat-headline mb-10">{{ channelService.savedDmPartner.name }} (Du)</span>
+    </div>
+    <span class="no-content-span">
+        <b>Dieser Channel ist nur für dich da.</b>Mache dir Notizen, liste To-dos auf oder bewahre Links und Dateien
+        griffbereit auf. Du kannst hier auch gerne Dinge mit dir selbst besprechen.
+    </span>
+</div>

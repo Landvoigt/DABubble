@@ -5,6 +5,7 @@ export class Thread {
     ownerID: string;
     ownerName: string;
     ownerAvatarSrc: string;
+    ownerEmail:string;
 
     constructor(obj?: any) {
         this.id = obj && obj.id ? obj.id : '';
@@ -13,6 +14,7 @@ export class Thread {
         this.ownerID = obj && obj.ownerID ? obj.ownerID : '';
         this.ownerName = obj && obj.ownerName ? obj.ownerName : '';
         this.ownerAvatarSrc = obj && obj.ownerAvatarSrc ? obj.ownerAvatarSrc : '';
+        this.ownerEmail = obj && obj.ownerEmail ? obj.ownerEmail : '';
     }
 
     public toJSON() {
@@ -23,6 +25,7 @@ export class Thread {
             ownerID: this.ownerID,
             ownerName: this.ownerName,
             ownerAvatarSrc: this.ownerAvatarSrc,
+            ownerEmail: this.ownerEmail
         };
     }
 }

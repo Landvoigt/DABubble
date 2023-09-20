@@ -7,14 +7,14 @@
     <div class="edit-box d-flex f-column g-20 p-relative" [class.hide-borders]="inEditName">
         <b [class.pl-10]="inEditName">Channel-Name</b>
         <span *ngIf="!inEditName">{{ channelData.name }}</span>
-        <input *ngIf="inEditName" [(ngModel)]="channelName" name="channelName" minlength="3" required>
+        <input *ngIf="inEditName" [(ngModel)]="channelName" name="channelName" minlength="3" maxlength="30" required>
         <span *ngIf="!inEditName" class="edit-span p-absolute pointer" (click)="editName()">Bearbeiten</span>
         <span *ngIf="inEditName" class="edit-span save-span p-absolute pointer" (click)="saveName(channelForm)">Speichern</span>
     </div>
     <div class="edit-box d-flex f-column g-20 p-relative" [class.hide-borders]="inEditDescription">
         <b [class.pl-10]="inEditDescription">Beschreibung</b>
-        <span *ngIf="!inEditDescription">{{ channelData.description }}</span>
-        <input *ngIf="inEditDescription" [(ngModel)]="channelDescription" name="channelDescription" required>
+        <span *ngIf="!inEditDescription" class="description-text">{{ channelData.description }}</span>
+        <input *ngIf="inEditDescription" [(ngModel)]="channelDescription" name="channelDescription" maxlength="160" required>
         <div class="edit-box-parting-line" [class.add-padding]="inEditDescription"></div>
         <b>Erstellt von</b>
         <span class="owner-span">Tim Voigt</span>

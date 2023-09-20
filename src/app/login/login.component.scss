@@ -10,6 +10,8 @@
      animation-delay: 1.5s;
  }
 
+ 
+
  .login-cont {
      width: 100vw;
      max-width: 100%;
@@ -254,6 +256,17 @@
          width: 100%;
          display: flex;
          justify-content: center;
+
+         .eye {
+            position: absolute;
+            left: 380px;
+            top: 15px;
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            cursor: pointer;
+            opacity: 0.6;
+        }
 
          img {
              position: absolute;

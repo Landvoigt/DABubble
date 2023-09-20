@@ -32,13 +32,17 @@ import { LoginGoogleComponent } from './login-google/login-google.component';
 import { SuccessBannerComponent } from './success-banner/success-banner.component';
 import { MainpageChannelsComponent } from './mainpage-channels/mainpage-channels.component';
 import { DialogAddChannelComponent } from './dialog-add-channel/dialog-add-channel.component';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DialogEditChannelComponent } from './dialog-edit-channel/dialog-edit-channel.component';
 import { DialogEmojisComponent } from './dialog-emojis/dialog-emojis.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { MainpageDirectMessageComponent } from './mainpage-direct-message/mainpage-direct-message.component';
+import { DialogChannelMembersComponent } from './dialog-channel-members/dialog-channel-members.component';
+import { DialogChannelAddNewMembersComponent } from './dialog-channel-add-new-members/dialog-channel-add-new-members.component';
+import { DialogUserProfileComponent } from './dialog-user-profile/dialog-user-profile.component';
+import { ImprintComponent } from './imprint/imprint.component';
 
 
 @NgModule({
@@ -60,7 +64,10 @@ import { MainpageDirectMessageComponent } from './mainpage-direct-message/mainpa
     DialogEditChannelComponent,
     DialogEmojisComponent,
     MainpageDirectMessageComponent,
-    
+    DialogUserProfileComponent,
+    DialogChannelMembersComponent,
+    DialogChannelAddNewMembersComponent,
+    ImprintComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,6 +80,7 @@ import { MainpageDirectMessageComponent } from './mainpage-direct-message/mainpa
     MatSidenavModule,
     MatToolbarModule,
     MatDialogModule,
+    MatAutocompleteModule,
     ReactiveFormsModule,
     PickerComponent,
     EmojiComponent,

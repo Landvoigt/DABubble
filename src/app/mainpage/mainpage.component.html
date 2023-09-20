@@ -8,20 +8,20 @@
             [ngStyle]="{ transform: isSidenavOpen ? 'rotate(180deg)' : 'rotate(0)' }">
     </div>
 
-    <app-mainpage-header (closeEvent)="toggleLeftSidenav()"></app-mainpage-header>
+    <app-mainpage-header (closeLeftSidenav)="toggleLeftSidenav()" (closeRightSidenav)="rightSidenav.close()"></app-mainpage-header>
 
     <mat-sidenav-container class="content">
 
         <mat-sidenav #leftSidenav [(opened)]="isSidenavOpen" mode="side" opened="true" class="wrapper">
-            <app-mainpage-channels class="channel-container f-column"></app-mainpage-channels>
+            <app-mainpage-channels class="channel-container f-column" (closeEvent)="rightSidenav.close()"></app-mainpage-channels>
         </mat-sidenav>
 
-        <app-mainpage-chat *ngIf="!channelService.inDirectMessage" class="chat-container d-flex f-column" (openEvent)="openRightSidenav()"></app-mainpage-chat>
+        <app-mainpage-chat *ngIf="!channelService.inDirectMessage" class="chat-container d-flex f-column" (openEvent)="rightSidenav.open()"></app-mainpage-chat>
         <app-mainpage-direct-message *ngIf="channelService.inDirectMessage" class="chat-container d-flex f-column"></app-mainpage-direct-message>
 
         <mat-sidenav #rightSidenav mode="side" opened="false" position="end" class="wrapper">
             <app-mainpage-threads class="threads-container d-flex f-column"
-                (closeEvent)="toggleRightSidenav()"></app-mainpage-threads>
+                (closeEvent)="rightSidenav.toggle()"></app-mainpage-threads>
         </mat-sidenav>
 
     </mat-sidenav-container>

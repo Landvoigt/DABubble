@@ -49,7 +49,7 @@ export class DialogEditChannelComponent implements OnDestroy {
   /**
    * Sets the channel name for editing and toggles the editing flag.
    */
-  editName() {
+  editName(): void {
     this.channelName = this.channelData.name;
     this.inEditName = true;
   }
@@ -58,7 +58,7 @@ export class DialogEditChannelComponent implements OnDestroy {
   /**
    * Sets the channel description for editing and toggles the editing flag.
    */
-  editDescription() {
+  editDescription(): void {
     this.channelDescription = this.channelData.description;
     this.inEditDescription = true;
   }
@@ -68,7 +68,7 @@ export class DialogEditChannelComponent implements OnDestroy {
   * Saves the updated channel name to Firestore if the form is valid.
   * @param {NgForm} form - The form containing the channel name.
   */
-  async saveName(form: NgForm) {
+  async saveName(form: NgForm): Promise<void> {
     if (form.valid) {
       await updateDoc(this.currentChannelRef, {
         name: this.channelName
@@ -82,7 +82,7 @@ export class DialogEditChannelComponent implements OnDestroy {
   * Saves the updated channel description to Firestore if the form is valid.
   * @param {NgForm} form - The form containing the channel description.
   */
-  async saveDescription(form: NgForm) {
+  async saveDescription(form: NgForm): Promise<void> {
     if (form.valid) {
       await updateDoc(this.currentChannelRef, {
         description: this.channelDescription
@@ -93,8 +93,8 @@ export class DialogEditChannelComponent implements OnDestroy {
 
 
   /**
-  * Lifecycle hook that is called when the component is destroyed.
-  */
+   * Unsubscribes from the updates of the current channel.
+   */
   ngOnDestroy(): void {
     if (this.unsubChannel) {
       this.unsubChannel();

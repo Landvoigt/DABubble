@@ -3,24 +3,16 @@
   <img [class.account-created-animation]="isCreated" class="account-created-image"
     src="./assets/img/account-created.png">
 
-
   <div [class.profile-cont-opacity]="isCreated" class="logo-img-cont-always">
     <img src="./assets/img/logo-intro.png">
     <div class="title">DABubble</div>
   </div>
 
-
-
   <mat-card [class.profile-cont-opacity]="isCreated">
-
-
     <div class="profile-card">
-
       <div class="title">Wähle deinen Avatar</div>
-
       <img class="none-profile" [src]="imagePath">
       <div class="name">{{name}}</div>
-
       <div class="info-avatars">
         <div>Aus der Liste wählen</div>
         <div class="avatars-container">
@@ -28,26 +20,17 @@
             src="./assets/img/{{avatar}}">
         </div>
       </div>
-
       <div class="file-input-container">eigenes Bild verwenden
         <input type="file" (change)="uploadImage($event)" id="fileInput" class="custom-file-input">
         <label for="fileInput" class="custom-file-label">Datei hochladen</label>
       </div>
-
-
       <button (click)="checkIntro()" [disabled]="isNotChoose" class="weiter-btn">Weiter</button>
-
     </div>
-
-
-
     <mat-card-actions>
       <button [routerLink]="'/account'" mat-button>
         <mat-icon>arrow_back</mat-icon>
       </button>
     </mat-card-actions>
-
-
   </mat-card>
 
   <footer>

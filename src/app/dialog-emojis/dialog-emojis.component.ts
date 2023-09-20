@@ -9,6 +9,8 @@ import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 })
 export class DialogEmojisComponent {
 
+  content;
+
   constructor(public chatService: ChatServiceService) { }
 
   insertEmoji(event: EmojiEvent) {

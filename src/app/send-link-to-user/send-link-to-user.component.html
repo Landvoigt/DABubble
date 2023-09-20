@@ -5,8 +5,6 @@
     <img src="./assets/img/logo-intro.png">
     <div class="title">DABubble</div>
   </div>
-
-  <!-- <button (click)="checkIntro()" [routerLink]="'/'" >LOGIN</button> -->
   
   <mat-card [class.send-email-opacity]="isSent">
     <div class="send-link">
@@ -56,7 +54,7 @@
   <img [class.email-sent-animation]="isSent" class="email-sent-image" src="./assets/img/email-sent.png">
 
   <footer>
-    <span>Impressum</span>
+    <span  [routerLink]="'/imprint'" >Impressum</span>
     <span>Datenschutz</span>
   </footer>
 

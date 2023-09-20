@@ -36,7 +36,8 @@
                 </div>
 
                 <div class="password-cont">
-                    <input [(ngModel)]="user.password" (ngModelChange)="checkUserPassword()" type="password"
+                    <img class="eye" [src]="showPassword ? './assets/img/eye_open.svg' : './assets/img/eye-slash-regular.svg'" (click)="togglePasswordVisibility()">
+                    <input [(ngModel)]="user.password" (ngModelChange)="checkUserPassword()" type="{{ showPassword ? 'text' : 'password' }}"
                         name="password" placeholder="Passwort" autocomplete="on">
                     <div style="display: none;" [class.warning]="isPasswordExist">Passwort kann man nicht mehr wälen!</div>
                     <div style="display: none;" [class.warning]="isPasswordNotValid && user.password != '' && !isPasswordExist ">
@@ -72,7 +73,7 @@
 
 
     <footer>
-        <span>Impressum</span>
+        <span  [routerLink]="'/imprint'" >Impressum</span>
         <span>Datenschutz</span>
       </footer>
 

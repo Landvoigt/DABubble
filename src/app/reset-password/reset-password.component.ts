@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { AccountServiceService } from '../account-service.service';
-import { Firestore, collection, doc, getDoc, getDocs, setDoc, DocumentReference, DocumentSnapshot, DocumentData, query, where } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDocs, query, where } from '@angular/fire/firestore';
 import { User } from 'src/models/user.class';
 import { updateDoc } from 'firebase/firestore';
 import { Router } from '@angular/router';
-
-
 
 @Component({
   selector: 'app-reset-password',
@@ -20,7 +18,8 @@ export class ResetPasswordComponent {
   isPasswordValid = true;
   isNewPasswordNotValid = false;
   isConfirmPasswordNotValid = false;
-  isPatternNotValid = false;
+  isPatternValid = false;
+  showPassword = false;
   passwordPattern: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
 
@@ -30,10 +29,11 @@ export class ResetPasswordComponent {
 
   async passwordCheck() {
 
+
     const collRef = collection(this.firestore, "users");
     const querySnapshot = await getDocs(collRef);
 
-    let oldPassword: string | undefined; 
+    let oldPassword: string | undefined;
 
     querySnapshot.forEach((queryDocSnapshot) => {
       const userData = queryDocSnapshot.data() as User;
@@ -54,8 +54,6 @@ export class ResetPasswordComponent {
       this.isPasswordValid = true;
     }
 
-
-
     if (this.newPassword === this.confirmPassword) {
       if (this.newPassword != '' && this.confirmPassword != '' && this.passwordPattern.test(this.newPassword)) {
         this.isPasswordValid = false
@@ -71,9 +69,12 @@ export class ResetPasswordComponent {
 
   checkPattern() {
     if (this.passwordPattern.test(this.newPassword)) {
-      this.isPatternNotValid = false;
+      console.log('pattern-test: ', this.passwordPattern.test(this.newPassword));
+
+      this.isPatternValid = true;
     } else {
-      this.isPatternNotValid = true;
+      this.isPatternValid = false;
+      this.confirmPassword = '';
     }
   }
 
@@ -124,6 +125,10 @@ export class ResetPasswordComponent {
     });
     this.isPasswordValid = true;
     console.log('Das Passwort wurde erfolgreich geändert.');
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
 }

@@ -4,12 +4,12 @@
     <span>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein #marketing zum
         Beispiel.</span>
     <b>Channel-Name</b>
-    <input [(ngModel)]="channel.name" name="channelName" placeholder="# z.B. Kooperationsprojekte">
+    <input [(ngModel)]="channel.name" name="channelName" placeholder="# z.B. Kooperationsprojekte" minlength="3" maxlength="30">
     <div class="d-flex">
         <b>Beschreibung</b>
         <span class="grey-span">(optional)</span>
     </div>
-    <input [(ngModel)]="channel.description" name="channelDescription" placeholder="Dein Text hier">
+    <input [(ngModel)]="channel.description" name="channelDescription" placeholder="Dein Text hier" maxlength="160">
     <mat-dialog-actions class="j-end">
         <button class="btn-primary" type="submit" [disabled]="loading">Erstellen</button>
     </mat-dialog-actions>

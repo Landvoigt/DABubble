@@ -3,6 +3,7 @@ import { AccountServiceService } from '../account-service.service';
 import { Firestore, collection, doc, getDoc, getDocs, updateDoc } from '@angular/fire/firestore';
 import { User } from 'src/models/user.class';
 import { Router } from '@angular/router';
+import { ChannelServiceService } from '../channel-service.service';
 
 @Component({
   selector: 'app-mainpage-header',
@@ -10,7 +11,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./mainpage-header.component.scss']
 })
 export class MainpageHeaderComponent {
-  @Output() closeEvent = new EventEmitter<void>();
+  @Output() closeLeftSidenav = new EventEmitter<void>();
+  @Output() closeRightSidenav = new EventEmitter<void>();
 
   showLogoutPopup: boolean = false;
   showProfilePopup: boolean = false;
@@ -24,12 +26,15 @@ export class MainpageHeaderComponent {
   user: User;
   isUserEmail: boolean;
 
-  constructor(public accountService: AccountServiceService,
-    private firestore: Firestore, private router: Router) {
+  constructor(
+    public accountService: AccountServiceService,
+    private channelService: ChannelServiceService,
+    private firestore: Firestore,
+    private router: Router) {
   }
 
   closeChannelSection() {
-    this.closeEvent.emit();
+    this.closeLeftSidenav.emit();
     this.isSidenavOpen = !this.isSidenavOpen;
   }
 
@@ -73,8 +78,16 @@ export class MainpageHeaderComponent {
     this.showEditProfile = !this.showEditProfile;
   }
 
+
+  closeAllChats() {
+    this.closeRightSidenav.emit();
+    this.channelService.inDirectMessage = false;
+    setTimeout(() => {
+      this.channelService.noCurrentChannel = true;
+    });
+  }
+
   saveEditedUserInformation() {
-    /// firebase save
     this.toggleEditProfile();
   }
 

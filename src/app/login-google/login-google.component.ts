@@ -11,19 +11,26 @@ import { AccountServiceService } from '../account-service.service';
   styleUrls: ['./login-google.component.scss']
 })
 export class LoginGoogleComponent implements OnInit, OnDestroy {
-  user = new User();
+  /** Firestore instance for Firebase interactions */
   firestore: Firestore = inject(Firestore);
-
-  googleEmail: string;
-  googleFirstName: string;
-  googleLastName: string;
-  googlePicSrc: string;
-  generatedPassword: string;
-
+  /** Collection reference for users */
+  userCollectionRef = collection(this.firestore, "users");
+  /** User model instance */
+  user = new User();
+  /** Google client ID */
   public clientId = "136417201224-s82t0jk6btp5001rqj6vohm4pkdlfgdn.apps.googleusercontent.com";
 
+  /**
+  * @param {Router} router - Angular router instance for navigation.
+  * @param {AccountServiceService} accountService - Service responsible for account-related functionalities.
+  * @param {NgZone} ngZone - Angular zone instance for running tasks inside Angular.
+  */
   constructor(private router: Router, private accountService: AccountServiceService, private ngZone: NgZone) { }
 
+
+  /**
+  * Opens the google login cross site popup and waites for a response.
+  */
   ngOnInit(): void {
     this.initializeGoogleLogin();
     // @ts-ignore
@@ -46,10 +53,10 @@ export class LoginGoogleComponent implements OnInit, OnDestroy {
     };
   }
 
-  ngOnDestroy(): void {
-    sessionStorage.removeItem('isRefreshed');
-  }
 
+  /**
+  * Initialize Google login process.
+  */
   initializeGoogleLogin() {
     if (!sessionStorage.getItem('isRefreshed')) {
       sessionStorage.setItem('isRefreshed', 'true');
@@ -57,20 +64,38 @@ export class LoginGoogleComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  /**
+  * Handles the response after Google login attempt.
+  * @param {CredentialResponse} response - Response from Google after login attempt.
+  */
   async handleCredentialResponse(response: CredentialResponse) {
     if (!response || typeof response.credential !== 'string') {
       console.error('Invalid JWT token:', response);
       return;
     } else {
-      const decodedPayload = this.decodeJWT(response.credential);
-      this.googleEmail = decodedPayload.email;
-      this.googleFirstName = decodedPayload.given_name;
-      this.googleLastName = decodedPayload.family_name;
-      this.googlePicSrc = decodedPayload.picture;
+      await this.saveGoogleData(this.decodeJWT(response.credential));
       await this.login();
     }
   }
 
+
+  /**
+  * Save the Google user's decoded JWT payload data.
+  * @param {any} decodedPayload - Decoded JWT payload from Google.
+  */
+  async saveGoogleData(decodedPayload: any) {
+    this.user.email = decodedPayload.email;
+    this.user.name = `${decodedPayload.given_name} ${decodedPayload.family_name}`;
+    this.user.avatarSrc = decodedPayload.picture;
+  }
+
+
+  /**
+  * Decodes a JWT.
+  * @param {string} JWT - The JWT to be decoded.
+  * @returns {any|null} The decoded payload or null if the JWT is invalid.
+  */
   decodeJWT(JWT: string) {
     const [headerEncoded, payloadEncoded] = JWT.split('.');
     if (!headerEncoded || !payloadEncoded) {
@@ -82,88 +107,92 @@ export class LoginGoogleComponent implements OnInit, OnDestroy {
     return payload;
   }
 
+
+  /**
+  * Login function to authenticate and redirect user.
+  */
   async login() {
-    const collRef = collection(this.firestore, "users");
-    const querySnapshot = await getDocs(collRef);
     let userFound = false;
-    querySnapshot.forEach(async (queryDocSnapshot) => {
-      const userData = queryDocSnapshot.data() as User;
-
-      if (userData.email === this.googleEmail) {
+    const querySnapshot = await getDocs(this.userCollectionRef);
+    querySnapshot.forEach(async (userDoc) => {
+      const userData = userDoc.data() as User;
+      if (userData.email === this.user.email) {
         userFound = true;
-        const userDocRef = doc(this.firestore, "users", queryDocSnapshot.id);
-        await updateDoc(userDocRef, {
-          loggedIn: true
-        });
-
-        const userDoc = await getDoc(userDocRef);
-        const updatedUserData = userDoc.data() as User;
-        console.log('Benutzerdaten nach dem Einloggen:', updatedUserData);
-        this.accountService.setLoggedInUser(updatedUserData);
-
-        /// Probetest
-        this.accountService.currentUser = updatedUserData;
-        this.ngZone.run(() => {
-          this.router.navigate(['/main']);
-        });
+        await this.setLoggedInStatus(userData);
       }
     });
-    if (!userFound) {
-      await this.createNewUserFromGoogleData();
-    } else {
-      // this.router.navigate(['/main']);
-    }
+    if (!userFound) await this.createNewUser();
   }
 
-  async createNewUserFromGoogleData() {
+
+  /**
+  * Sets the user as logged in and updates the user status.
+  * @param {any} userData - User data to set as logged in.
+  */
+  async setLoggedInStatus(userData: any) {
+    const userDocRef = doc(this.firestore, "users", userData.id);
+    await updateDoc(userDocRef, { loggedIn: true });
+    this.accountService.setLoggedInUser(userData);
+    this.accountService.currentUser = userData;
+    this.ngZone.run(() => this.router.navigate(['/main']));
+  }
+
+
+  /**
+  * Creates a new user entry in Firestore and give the data to the service.
+  */
+  async createNewUser() {
     this.generatePassword();
-    const collRef = collection(this.firestore, "users");
-    const fullName = `${this.googleFirstName} ${this.googleLastName}`;
-    const newUser = await addDoc(collRef, {
-      email: this.googleEmail,
-      name: fullName,
-      password: this.generatedPassword,
-      avatarSrc: this.googlePicSrc,
-      loggedIn: true,
-      isActive: false,
-      friends: [],
-      channels: []
-    });
+
+    const newUser = await addDoc(this.userCollectionRef, this.user.toJSON());
     await this.addIdToUser(newUser.id);
 
-    this.ngZone.run(() => {
-      this.router.navigate(['/main']);
-    });
+    const userDocRef = doc(this.firestore, 'users', newUser.id);
+    const userSnapshot = await getDoc(userDocRef);
+    const userData = userSnapshot.data() as User;
+
+    this.accountService.setLoggedInUser(userData);
+    this.accountService.currentUser = userData;
+    this.ngZone.run(() => this.router.navigate(['/main']));
   }
 
+
+
+  /**
+   * Adds an ID and the logged in status to the user's Firestore document.
+   * @param {string} _id - The ID to be added to the user document.
+   */
   async addIdToUser(_id: string) {
-    try {
-      const userDocRef = doc(this.firestore, 'users', _id);
-      await setDoc(userDocRef, { id: _id }, { merge: true });
-
-    } catch (error) {
-      console.error("Error updating channel:", error);
-    }
+    const userDocRef = doc(this.firestore, 'users', _id);
+    await setDoc(userDocRef, { id: _id, loggedIn: true }, { merge: true });
   }
 
+
+  /**
+  * Generates a random password with 12 digits.
+  */
   generatePassword() {
     const numbers = '0123456789';
     const uppercaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const lowercaseLetters = 'abcdefghijklmnopqrstuvwxyz';
     const allCharacters = numbers + uppercaseLetters + lowercaseLetters;
-
-    // Ensure at least one character from each category is included
     let password = [
       numbers[Math.floor(Math.random() * numbers.length)],
       uppercaseLetters[Math.floor(Math.random() * uppercaseLetters.length)],
       lowercaseLetters[Math.floor(Math.random() * lowercaseLetters.length)]
     ].join('');
 
-    // Fill the rest of the password length
     for (let i = 4; i < 12; i++) {
       password += allCharacters[Math.floor(Math.random() * allCharacters.length)];
     }
+    this.user.password = password.split('').sort(() => 0.5 - Math.random()).join('');
+  }
 
-    this.generatedPassword = password.split('').sort(() => 0.5 - Math.random()).join(''); // Shuffle the password
+
+  /**
+   * Removes the 'isRefreshed' item from the sessionStorage.
+   */
+  ngOnDestroy(): void {
+    sessionStorage.removeItem('isRefreshed');
   }
 }

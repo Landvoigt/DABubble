@@ -10,6 +10,8 @@ import { ChatServiceService } from '../chat-service.service';
 import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEmojisComponent } from '../dialog-emojis/dialog-emojis.component';
+import { Channel } from 'src/models/channel.class';
+import { DialogUserProfileComponent } from '../dialog-user-profile/dialog-user-profile.component';
 
 @Component({
   selector: 'app-mainpage-threads',
@@ -22,30 +24,26 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
 
   private channelSubscription: Subscription;
   private threadSubscription: Subscription;
-
   unsubAnswers: Unsubscribe;
 
-  currentChannel;
-  currentThread;
-
-  hoverPlusIcon: boolean = false;
-  hoverSmileyIcon: boolean = false;
-  hoverAtIcon: boolean = false;
-  loading: boolean = false;
-
-  message_2 = new Thread();  // Hier Änderung, vorher war es "message" , weil MainpageChatComponent hat dei selbe Variable!
+  currentChannel = new Channel();
+  currentThread = new Thread();
+  message_2 = new Thread();  // Hier Änderung, vorher war es "message" , weil MainpageChatComponent hat die selbe Variable!
   threadAnswers = [];
+  
+  loading: boolean = false;
 
   hoveredThreadId: number | null = null;
   ownThreadId: number | null = null;
   inEditMessage: number | null = null;
 
-  loadedMessageContent;
+  loadedMessageContent: string;
 
-  constructor(public dialog: MatDialog, 
-    public channelService: ChannelServiceService, 
+  constructor(public dialog: MatDialog,
+    public channelService: ChannelServiceService,
     public chatService: ChatServiceService,
     public accountService: AccountServiceService) { }
+
 
   ngOnInit() {
     this.channelSubscription = this.channelService.currentChannel$.subscribe(channel => {
@@ -92,6 +90,7 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
       this.message_2.ownerID = this.accountService.getLoggedInUser().id;
       this.message_2.ownerName = this.accountService.getLoggedInUser().name;
       this.message_2.ownerAvatarSrc = this.accountService.getLoggedInUser().avatarSrc;
+      this.message_2.ownerEmail = this.accountService.getLoggedInUser().email;
 
       const threadData = this.message_2.toJSON();
       const newAnswer = await addDoc(answerCollection, threadData);
@@ -147,7 +146,7 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
   }
 
   getFormattedTime(timestamp: any) {
-    const date = timestamp.toDate();
+    const date = this.timestampToDate(timestamp);
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
 
@@ -171,6 +170,13 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
     } else {
       return new Intl.DateTimeFormat('de-DE', options).format(date);
     }
+  }
+
+  threadSentOnNewDate(index: number, threadAnswers: any[]): boolean {
+    if (index === 0) return false;
+    const currentDate = this.getFormattedDate(threadAnswers[index].date);
+    const prevDate = this.getFormattedDate(threadAnswers[index - 1].date);
+    return currentDate !== prevDate;
   }
 
   getAmountOfAnswers() {
@@ -197,6 +203,12 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
     if (this.unsubAnswers) {
       this.unsubAnswers();
     }
+  }
+
+  openDialogThread(currentThread:any) {
+    this.chatService.ownerData = currentThread;
+   // event.preventDefault();
+    this.dialog.open(DialogUserProfileComponent, { restoreFocus: false });
   }
 
   openDialog() {

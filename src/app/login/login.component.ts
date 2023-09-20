@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { User } from 'src/models/user.class';
 import { AccountServiceService } from '../account-service.service';
 import { Firestore, collection, getDocs } from '@angular/fire/firestore';
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
 
   isIntro = true;
   user = new User();
@@ -18,9 +18,11 @@ export class LoginComponent implements OnInit{
   isPasswordExist: boolean = false;
   firestore: Firestore = inject(Firestore);
   isEmailValid: boolean = false;
+  emailPattern: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   isPasswordValid: boolean = false;
+  showPassword = false;
 
-  constructor(public accountService: AccountServiceService,private router: Router, private ref: ChangeDetectorRef) {
+  constructor(public accountService: AccountServiceService, private router: Router, private ref: ChangeDetectorRef) {
     this.isIntro = accountService.isIntro;
   }
 
@@ -32,13 +34,19 @@ export class LoginComponent implements OnInit{
     this.isIntro = false;
   }
 
+
   async checkUserEmail() {
+    if (this.user.email === '' || !this.emailPattern.test(this.user.email)) {
+      this.isEmailValid = true;
+      return;
+    }
     const collRef = collection(this.firestore, "users");
     const querySnapshot = await getDocs(collRef);
     this.isEmailExist = querySnapshot.docs.some((doc) => {
       const userData = doc.data() as User;
       return userData.email === this.user.email;
     });
+
     if (this.isEmailExist) {
       this.isEmailValid = true;
     } else {
@@ -48,6 +56,10 @@ export class LoginComponent implements OnInit{
 
 
   async checkUserPassword() {
+    if (this.user.password === '') {
+      this.isPasswordValid = true;
+      return;
+    }
     const collRef = collection(this.firestore, "users");
     const querySnapshot = await getDocs(collRef);
     this.isPasswordExist = querySnapshot.docs.some((doc) => {
@@ -61,6 +73,7 @@ export class LoginComponent implements OnInit{
       this.isPasswordValid = false;
     }
   }
+
 
 
 
@@ -87,12 +100,12 @@ export class LoginComponent implements OnInit{
             await updateDoc(userDocRef, {
               loggedIn: true
             });
-            this.router.navigate(['/main']);
             const userDoc = await getDoc(userDocRef);
             const updatedUserData = userDoc.data() as User;
             console.log('Benutzerdaten nach dem Einloggen:', updatedUserData);
             this.accountService.setLoggedInUser(updatedUserData);
-
+            
+            this.router.navigate(['/main']);
 
           } else {
             console.log('Falsches Passwort');
@@ -107,5 +120,10 @@ export class LoginComponent implements OnInit{
       console.log('Bitte füllen Sie beide Eingabefelder aus.');
     }
 
+  }
+
+  
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 }
