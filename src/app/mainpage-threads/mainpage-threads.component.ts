@@ -2,7 +2,11 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@ang
 import { ChannelServiceService } from '../channel-service.service';
 import { Subscription } from 'rxjs';
 import { Thread } from 'src/models/thread.class';
+<<<<<<< HEAD
 import { Firestore, addDoc, collection, deleteDoc, doc, getDoc, getDocs, increment, limit, onSnapshot, orderBy, query, updateDoc } from '@angular/fire/firestore';
+=======
+import { Firestore, addDoc, collection, doc, getDoc, increment, onSnapshot, updateDoc } from '@angular/fire/firestore';
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 import { Unsubscribe } from '@angular/fire/auth';
 import { AccountServiceService } from '../account-service.service';
 import { NgForm } from '@angular/forms';
@@ -13,7 +17,10 @@ import { DialogEmojisComponent } from '../dialog-emojis/dialog-emojis.component'
 import { Channel } from 'src/models/channel.class';
 import { DialogUserProfileComponent } from '../dialog-user-profile/dialog-user-profile.component';
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 @Component({
   selector: 'app-mainpage-threads',
   templateUrl: './mainpage-threads.component.html',
@@ -29,16 +36,25 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
 
   currentChannel = new Channel();
   currentThread = new Thread();
+<<<<<<< HEAD
   message_2 = new Thread();
   threadAnswers = [];
 
+=======
+  message_2 = new Thread();  // Hier Änderung, vorher war es "message" , weil MainpageChatComponent hat die selbe Variable!
+  threadAnswers = [];
+  
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   loading: boolean = false;
 
   hoveredThreadId: number | null = null;
   ownThreadId: number | null = null;
   inEditMessage: number | null = null;
+<<<<<<< HEAD
   hoveredThumbUp: number | null = null;
   hoveredThumbDown: number | null = null;
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
   loadedMessageContent: string;
 
@@ -75,8 +91,13 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
       });
 
       this.threadAnswers.sort((a, b) => {
+<<<<<<< HEAD
         const dateA = this.channelService.timestampToDate(a.date);
         const dateB = this.channelService.timestampToDate(b.date);
+=======
+        const dateA = this.timestampToDate(a.date);
+        const dateB = this.timestampToDate(b.date);
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
         return dateA.getTime() - dateB.getTime();
       });
     });
@@ -111,7 +132,10 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
       form.resetForm();
       this.message_2.content = '';
       this.loading = false;
+<<<<<<< HEAD
       this.chatService.isContent = false;
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     }
   }
 
@@ -143,9 +167,50 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
     });
 
     this.inEditMessage = null;
+<<<<<<< HEAD
     this.hoveredThreadId = null;
     this.ownThreadId = null;
     this.chatService.isEditMessageContent = false;
+=======
+  }
+
+  timestampToDate(timestamp: { seconds: number, nanoseconds: number }): Date {
+    return new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+  }
+
+  getFormattedTime(timestamp: any) {
+    const date = this.timestampToDate(timestamp);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    const formattedTime = `${hours}:${minutes} Uhr`;
+    return formattedTime;
+  }
+
+  getFormattedDate(timestamp: { seconds: number, nanoseconds: number }): string {
+    const options: Intl.DateTimeFormatOptions = {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    };
+    const date = this.timestampToDate(timestamp);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const dateToCompare = new Date(date.getTime());
+    dateToCompare.setHours(0, 0, 0, 0);
+    if (dateToCompare.getTime() === today.getTime()) {
+      return 'Heute';
+    } else {
+      return new Intl.DateTimeFormat('de-DE', options).format(date);
+    }
+  }
+
+  threadSentOnNewDate(index: number, threadAnswers: any[]): boolean {
+    if (index === 0) return false;
+    const currentDate = this.getFormattedDate(threadAnswers[index].date);
+    const prevDate = this.getFormattedDate(threadAnswers[index - 1].date);
+    return currentDate !== prevDate;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   }
 
   getAmountOfAnswers() {
@@ -174,6 +239,7 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
     }
   }
 
+<<<<<<< HEAD
   openDialogThread(currentThread: any) {
     this.chatService.ownerData = currentThread;
     // event.preventDefault();
@@ -183,10 +249,21 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
   openDialogEmojisThradsComp() {
     this.chatService.serviceThread = this.message_2;
     this.chatService.isContent = true;
+=======
+  openDialogThread(currentThread:any) {
+    this.chatService.ownerData = currentThread;
+   // event.preventDefault();
+    this.dialog.open(DialogUserProfileComponent, { restoreFocus: false });
+  }
+
+  openDialog() {
+    this.chatService.serviceThread = this.message_2;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     event.preventDefault();
     this.dialog.open(DialogEmojisComponent, { restoreFocus: false });
   }
 
+<<<<<<< HEAD
   // insertEmoji(event: EmojiEvent) {
   //   this.chatService.insertEmoji(event);
   // }
@@ -254,5 +331,9 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
         });
       }
     }
+=======
+  insertEmoji(event: EmojiEvent) {
+    this.chatService.insertEmoji(event);
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   }
 }

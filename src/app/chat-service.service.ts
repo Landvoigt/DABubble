@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 import { ElementRef, Injectable, ViewChild, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { EmojiEvent, Emoji, EmojiData } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { Thread } from 'src/models/thread.class';
 import { Firestore, collection, getDocs } from '@angular/fire/firestore';
+=======
+import { ElementRef, Injectable, ViewChild } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { EmojiEvent, Emoji, EmojiData } from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { Thread } from 'src/models/thread.class';
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +18,7 @@ export class ChatServiceService {
 
   serviceThread:any;
   ownerData:any;
+<<<<<<< HEAD
   isContent = false;
   isEditMessageContent = false;
  
@@ -43,6 +51,19 @@ export class ChatServiceService {
   //    const emojiNative: string = event.emoji.native;
   //   this.serviceThread.content += emojiNative; // Fügt das Emoji-Id dem Text hinzu
   //  }
+=======
+ 
+
+  constructor() { }
+
+
+
+   insertEmoji(event: EmojiEvent) {
+   
+    const emojiNative: string = event.emoji.native;
+    this.serviceThread.content += emojiNative; // Fügt das Emoji-Id dem Text hinzu
+}
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
   //@ViewChild('myTextarea') textarea: ElementRef;
 

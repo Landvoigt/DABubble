@@ -2,10 +2,17 @@
   <mat-icon class="close-icon p-absolute pointer close-icon-extra" (click)="dialogRef.close()">close</mat-icon>
   <h2>Leute hinzufügen</h2>
   <span class="threads-channel"># {{ currentChannel.name }}</span>
+<<<<<<< HEAD
   <input class="dialog-input" placeholder="Name eingeben" matInput [matAutocomplete]="auto" [formControl]="control"
     [class.change-input-border]="auto.isOpen" required>
   <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayUserName" class="autocomplete-container">
     <mat-option class="options" *ngFor="let user of filteredUsers | async" [value]="user">
+=======
+  <input placeholder="Name eingeben" matInput [matAutocomplete]="auto" [formControl]="control"
+    [class.change-input-border]="auto.isOpen" required>
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayUserName" class="autocomplete-container">
+    <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
       {{ user.name }}
     </mat-option>
   </mat-autocomplete>

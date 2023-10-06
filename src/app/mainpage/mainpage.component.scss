@@ -10,10 +10,13 @@
     background-color: transparent !important;
     height: 100%;
     margin-bottom: 20px;
+<<<<<<< HEAD
 
     @media (max-width: 920px) {
         margin-bottom: 0;
     }
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 }
 
 .wrapper {
@@ -23,10 +26,25 @@
 
 .chat-container {
     height: 100%;
+<<<<<<< HEAD
+=======
     background-color: white;
     border-radius: 30px;
     position: relative;
     display: flex;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.threads-container {
+    height: 100%;
+    width: 450px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
+    background-color: white;
+    border-radius: 30px;
+    position: relative;
+    display: flex;
+<<<<<<< HEAD
     margin-left: 20px;
     margin-right: 20px;
     overflow: hidden;
@@ -120,11 +138,31 @@
     }
 }
 
+=======
+    margin-right: 20px;
+}
+
+.channel-container {
+    height: 100%;
+    width: 350px;
+    background-color: white;
+    border-radius: 30px;
+    position: relative;
+    display: flex;
+    margin-left: 20px;
+    overflow: hidden;
+}
+
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 .toggle-sidenav-container {
     position: absolute;
     left: 0;
     bottom: 100px;
+<<<<<<< HEAD
     z-index: 98;
+=======
+    z-index: 96;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     background-color: white;
     border-radius: 50px;
     border-top-right-radius: 0;
@@ -145,11 +183,19 @@
         text-orientation: mixed;
         font-size: 18px;
     }
+<<<<<<< HEAD
 
     .code-symbol {
         object-fit: contain;
         transform: rotate(180deg);
 
+=======
+
+    .code-symbol {
+        object-fit: contain;
+        transform: rotate(180deg);
+
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
         &:hover {
             transform: none;
         }
@@ -158,8 +204,11 @@
     &:hover {
         color: #797EF3;
     }
+<<<<<<< HEAD
 
     @media (max-width: 920px) {
         display: none;
     }
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 }

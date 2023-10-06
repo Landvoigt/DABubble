@@ -81,57 +81,11 @@ export class AccountServiceService {
     this.meinBooleanSubject.next(value);
   }
 
-
-
   handleImageError(event: Event, fallbackUrl: string) {
     const image = event.target as HTMLImageElement;
     image.onerror = null;  // Remove the error handler to prevent looping in case the fallback also fails.
     image.src = fallbackUrl;
-}
 
     
   }
-
-  
-    ////  braucht man nicht
-
-  //  async getLoggedInUsers() {   // Test
-  //    const collRef = collection(this.firestore, "users");
-
-  //    try {
-  //      const querySnapshot = await getDocs(collRef);
-  //      querySnapshot.forEach((doc) => {
-  //        const userData = doc.data() as User;
-  //        const documentId = doc.id;
-
-  //        const loggedInListener = onSnapshot(doc.ref, (snapshot) => {
-  //          const loggedInValue = snapshot.data()?.['loggedIn'];
-  //          //const loggedInName = snapshot.data();
-  //          // console.log('snapshot.data(): ',snapshot.data());
-
-  //          this.loggedInUsersArray.push(snapshot.data())
-  //         // console.log('this.loggedInUsersArray',this.loggedInUsersArray);
-           
-  //          if (loggedInValue !== undefined) {
-  //            if (loggedInValue && userData.email !== this.getLoggedInUser().email) {
-  //              this.firestoreLoggedInUsers.push(userData.name);
-  //              this.firestoreLoggedInUsersImage.push(userData.avatarSrc);
-  //              this.firestoreLoggedInUsersImage.push(userData.email);
-  //              this.getLoggedInUserName = userData.name;
-  //            } else {
-  //            }
-  //          }
-
-  //        });
-  //      });
-
-  //    } catch (error) {
-  //      //console.error('Fehler beim Abrufen der Benutzerdaten:', error);
-  //    }
-  //  }
-
-
-
-
-
-
+}

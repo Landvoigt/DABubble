@@ -1,8 +1,14 @@
 <div class="login-cont">
 
 
+<<<<<<< HEAD
     <div [style.display]="!isIntro ? 'flex' : 'none' ">
         <img class="logo" src="./assets/img/logo.png">
+=======
+    <div [style.display]="!isIntro ? 'flex' : 'none' " class="logo-img-cont-always">
+        <img src="./assets/img/logo-intro.png">
+        <div class="title">DABubble</div>
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     </div>
 
     <div class="to-account">
@@ -10,8 +16,11 @@
         <div (click)="checkIntro()" [routerLink]="'/account'">Konto erstellen</div>
     </div>
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     <div style="position: absolute;">
         <div style="position: relative; width: 100vw; height: 100vh;">
             <div [style.display]="isIntro ? 'flex' : 'none' " class="intro-cont"> </div>
@@ -48,12 +57,18 @@
                 </div>
 
                 <div class="password-cont">
+<<<<<<< HEAD
                     <img class="eye"
                         [src]="showPassword ? './assets/img/eye_open.svg' : './assets/img/eye-slash-regular.svg'"
                         (click)="togglePasswordVisibility()">
                     <input [(ngModel)]="user.password" (ngModelChange)="checkUserPassword()"
                         type="{{ showPassword ? 'text' : 'password' }}" name="password" placeholder="Password"
                         autocomplete="on" ngModel #passwordInput="ngModel">
+=======
+                    <img class="eye" [src]="showPassword ? './assets/img/eye_open.svg' : './assets/img/eye-slash-regular.svg'" (click)="togglePasswordVisibility()">
+                    <input [(ngModel)]="user.password" (ngModelChange)="checkUserPassword()" type="{{ showPassword ? 'text' : 'password' }}"
+                        name="password" placeholder="Password" autocomplete="on" ngModel #passwordInput="ngModel">
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
                     <img src="./assets/img/lock.png">
                     <div [style.display]="passwordInput.touched ? (isPasswordValid ? 'none' : 'flex') : 'none'"
                         [class.warning-invalid]="!isPasswordValid">
@@ -73,9 +88,13 @@
                 <div class="underline"></div>
             </div>
 
+<<<<<<< HEAD
             <div class="google-btn-container flex-center">
                 <div id="buttonDiv"></div>
             </div>
+=======
+            <img class="google-login" src="./assets/img/google-login.png" [routerLink]="'/login-google'">
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
             <div class="btn-cont">
                 <button (click)="login()" [disabled]="!isEmailExist || !isPasswordExist" type="submit"
@@ -89,8 +108,15 @@
     </mat-card>
 
     <footer>
+<<<<<<< HEAD
         <span [routerLink]="'/imprint'">Impressum</span>
         <span>Datenschutz</span>
     </footer>
 
+=======
+        <span [routerLink]="'/imprint'" >Impressum</span>
+        <span>Datenschutz</span>
+    </footer>
+    
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 </div>

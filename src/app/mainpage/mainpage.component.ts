@@ -55,8 +55,6 @@ export class MainpageComponent implements AfterViewInit, OnDestroy {
     ).subscribe(() => this.updateSidenavMode());
   }
 
-
-
   /**
    * Toggles the visibility of the channels sidenav
    */

@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 import { Component, ElementRef, EventEmitter, HostListener, inject, Output, Renderer2, ViewChild } from '@angular/core';
+=======
+import { Component, EventEmitter, Output } from '@angular/core';
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 import { AccountServiceService } from '../account-service.service';
 import { Firestore, collection, doc, getDoc, getDocs, updateDoc } from '@angular/fire/firestore';
 import { User } from 'src/models/user.class';
 import { Router } from '@angular/router';
 import { ChannelServiceService } from '../channel-service.service';
+<<<<<<< HEAD
 import { Channel } from 'src/models/channel.class';
 import { ChatServiceService } from '../chat-service.service';
 import { MainpageChannelsComponent } from '../mainpage-channels/mainpage-channels.component';
@@ -14,6 +19,8 @@ import { ScreenServiceService } from '../screen-service.service';
 import { DialogUserProfileComponent } from '../dialog-user-profile/dialog-user-profile.component';
 import { MatDialog } from '@angular/material/dialog';
 
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
 @Component({
   selector: 'app-mainpage-header',
@@ -21,13 +28,17 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./mainpage-header.component.scss']
 })
 export class MainpageHeaderComponent {
+<<<<<<< HEAD
   @Output() openLeftSidenav = new EventEmitter<void>();
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   @Output() closeLeftSidenav = new EventEmitter<void>();
   @Output() closeRightSidenav = new EventEmitter<void>();
 
   showLogoutPopup: boolean = false;
   showProfilePopup: boolean = false;
   showEditProfile: boolean = false;
+<<<<<<< HEAD
 
   isSidenavOpen: boolean = true;
   user: User;
@@ -46,11 +57,22 @@ export class MainpageHeaderComponent {
   //selectedThreadId:any;
 
   @ViewChild('searchFieldContainer') searchFieldContainer: ElementRef;
+=======
+  hoverCodeIcon: boolean = false;
+  hoverPlusIcon: boolean = false;
+  hoverSmileyIcon: boolean = false;
+  hoverAtIcon: boolean = false;
+  hoverAddClientIcon: boolean = false;
+  isSidenavOpen: boolean = true;
+  user: User;
+  isUserEmail: boolean;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
   constructor(
     public accountService: AccountServiceService,
     private channelService: ChannelServiceService,
     private firestore: Firestore,
+<<<<<<< HEAD
     private chatService: ChatServiceService,
     private router: Router,
     public dialog: MatDialog,
@@ -86,25 +108,42 @@ export class MainpageHeaderComponent {
    * Closes the channels sidenav.
    */
   closeChannelSection(): void {
+=======
+    private router: Router) {
+  }
+
+  closeChannelSection() {
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     this.closeLeftSidenav.emit();
     this.isSidenavOpen = !this.isSidenavOpen;
   }
 
+<<<<<<< HEAD
   
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   /**
    * Toggles the visibility of the logout popup.
    */
   toggleLogoutPopup(): void {
+<<<<<<< HEAD
     if (this.screenService.mobileMode) {
       this.dialog.closeAll();
     }
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     this.showLogoutPopup = !this.showLogoutPopup;
   }
 
 
   /**
+<<<<<<< HEAD
    * Closes the logout popup and resets the state of the edit profile flag.
    */
+=======
+  * Closes the logout popup and resets the state of the edit profile flag.
+  */
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   closeLogoutPopup(): void {
     this.showLogoutPopup = false;
     this.showEditProfile = false;
@@ -135,6 +174,7 @@ export class MainpageHeaderComponent {
   }
 
 
+<<<<<<< HEAD
   /**
    * Closes all active chat sessions and the sidenavs.
    */
@@ -143,12 +183,17 @@ export class MainpageHeaderComponent {
     if (this.screenService.tabletMode) {
       this.openLeftSidenav.emit();
     }
+=======
+  closeAllChats() {
+    this.closeRightSidenav.emit();
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     this.channelService.inDirectMessage = false;
     setTimeout(() => {
       this.channelService.noCurrentChannel = true;
     });
   }
 
+<<<<<<< HEAD
 
   /**
    * Saves the edited user information and toggles the profile editing mode.
@@ -164,6 +209,13 @@ export class MainpageHeaderComponent {
    * @returns {Promise<void>} A promise indicating the completion of the logout operation.
    */
   async logoutUser(): Promise<void> {
+=======
+  saveEditedUserInformation() {
+    this.toggleEditProfile();
+  }
+
+  async logoutUser() {
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     const collRef = collection(this.firestore, "users");
     const querySnapshot = await getDocs(collRef);
     querySnapshot.forEach(async (queryDocSnapshot) => {
@@ -180,6 +232,7 @@ export class MainpageHeaderComponent {
     });
   }
 
+<<<<<<< HEAD
 
   async generalSearch() {
     this.clearSearchResults();
@@ -564,4 +617,9 @@ export class MainpageHeaderComponent {
     const email = this.accountService.getLoggedInUser().email;
     return email.includes('gmail') || email.includes('googlemail');
   }
+=======
+  checkIntro() {
+    this.accountService.isIntro = false;
+  }
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 }

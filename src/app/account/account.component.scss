@@ -15,6 +15,7 @@
         cursor: pointer;
     }
 
+<<<<<<< HEAD
    
 
 }
@@ -23,6 +24,48 @@
     position: absolute;
     left: 50px;
     top: 50px;
+=======
+    .logo {
+        position: absolute;
+        left: 16px;
+        top: 16px;
+        width: 150px;
+        height: auto;
+    }
+
+}
+
+
+
+
+.logo-img-cont-always {
+    position: absolute;
+    width: 250px;
+    left: 50px;
+    top: 50px;
+    display: flex;
+
+    img {
+        height: 70px;
+        width: 150px;
+        object-fit: cover;
+        position: relative;
+    }
+
+    .title {
+        font-size: 30px;
+        font-weight: 500;
+        position: absolute;
+        color: black;
+        top: 35%;
+        right: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+    }
+
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 }
 
 
@@ -34,15 +77,26 @@ mat-card {
     display: flex;
     flex-direction: column;
     align-items: center;
+<<<<<<< HEAD
     //padding-bottom: 64px;
     width: 480px;
     height: 560px;
+=======
+    padding-bottom: 64px;
+    width: 550px;
+    height: 650px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     border-radius: 32px;
 
     mat-card-actions {
         position: absolute;
+<<<<<<< HEAD
         left: 10px;
         top: 15px;
+=======
+        left: 30px;
+        top: 30px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     }
 
     .mat-mdc-button>.mat-icon {
@@ -50,20 +104,31 @@ mat-card {
         border-radius: 100%;
     }
 
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     .mat-mdc-button {
         width: 70px;
         height: 70px;
         border-radius: 100%;
     }
 
+<<<<<<< HEAD
     .mat-mdc-button:not(:disabled):hover {
         color: #444DF2;
     }
+=======
+.mat-mdc-button:not(:disabled):hover {
+    color: #444DF2;
+}
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 }
 
 
 .account-card-cont {
+<<<<<<< HEAD
     height: 100%;
     width: 100%;
     display: flex;
@@ -76,11 +141,29 @@ mat-card {
     .title {
         color: #444DF2;
         font-size: 40px;
+=======
+
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 64px;
+    box-sizing: border-box;
+    gap: 32px;
+
+    .title {
+        color: #444DF2;
+        font-size: 42px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     }
 
     .sub-title {
         text-align: center;
+<<<<<<< HEAD
         font-size: 15px;
+=======
+        font-size: 16px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
         font-weight: 200;
         margin: 24px 0;
     }
@@ -109,9 +192,15 @@ form {
     flex-direction: column;
     align-items: center;
     gap: 32px;
+<<<<<<< HEAD
 
 
 
+=======
+   
+
+   
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     .email-cont,
     .password-cont,
     .name-cont {
@@ -122,7 +211,11 @@ form {
 
         .eye {
             position: absolute;
+<<<<<<< HEAD
             left: 365px;
+=======
+            left: 380px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
             top: 15px;
             width: 20px;
             height: 20px;
@@ -130,26 +223,44 @@ form {
             cursor: pointer;
             opacity: 0.6;
         }
+<<<<<<< HEAD
 
         input {
 
             outline: none;
             height: 42px;
             font-size: 15px;
+=======
+    
+        input {
+    
+            outline: none;
+            height: 48px;
+            font-size: 16px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
             padding-left: 80px;
             border: unset;
             border-radius: 25px;
             background-color: #ECEEFE;
+<<<<<<< HEAD
             width: 330px;
             border: 1px transparent solid;
             cursor: pointer;
         }
 
+=======
+             width: 340px;
+            border: 1px transparent solid;
+            cursor: pointer;
+        }
+    
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
         input:hover {
             border: 1px gray solid;
         }
 
         input::placeholder {
+<<<<<<< HEAD
             color: gray;
         }
 
@@ -162,6 +273,15 @@ form {
             color: transparent;
         }
 
+=======
+            color:gray ;
+          }
+          
+          input:focus::placeholder {
+            color: transparent;
+          }
+    
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
         img {
             position: absolute;
             width: 15px;
@@ -170,7 +290,11 @@ form {
             left: 35px;
             top: 18px;
         }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
         .warning {
             display: block !important;
             position: absolute;
@@ -183,7 +307,11 @@ form {
 
 
 
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 }
 
 
@@ -193,7 +321,11 @@ mat-checkbox {
     display: flex;
     justify-content: flex-start;
     padding-bottom: 64px;
+<<<<<<< HEAD
     margin-left: -110px;
+=======
+    margin-left: -130px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
     a {
         color: #444DF2;
@@ -214,7 +346,10 @@ mat-checkbox {
 .mat-mdc-checkbox label {
     cursor: default !important;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 .account-btn {
     padding: 10px 24px;
     font-size: 18px;
@@ -224,7 +359,11 @@ mat-checkbox {
     color: white;
     position: absolute;
     bottom: 32px;
+<<<<<<< HEAD
     right: 32px;
+=======
+    right: 64px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 }
 
 .account-btn-disabled {
@@ -247,13 +386,21 @@ mat-checkbox {
 
 footer {
     position: absolute;
+<<<<<<< HEAD
     bottom: 48px;
+=======
+    bottom: 64px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     display: flex;
     gap: 32px;
     color: #797EF3;
     cursor: pointer;
+<<<<<<< HEAD
     font-size: 16px;
 
+=======
+    font-size: 18px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     span {
         border: 1px solid transparent;
         cursor: pointer;
@@ -266,6 +413,7 @@ footer {
             transition: all 225ms ease-in-out;
         }
     }
+<<<<<<< HEAD
 }
 
 @media screen and (max-width: 1200px) {
@@ -293,4 +441,6 @@ footer {
     }
 
 
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 }

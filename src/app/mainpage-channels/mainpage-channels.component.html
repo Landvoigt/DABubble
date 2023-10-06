@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div *ngIf="!screenService.tabletMode" class="channels-header d-flex ai-center g-20">
     <img src="assets/img/code_learning.png">
     <span class="channels-headline">Code Learning</span>
@@ -32,12 +33,25 @@
                 </div> -->
             </div>
         </div>
+=======
+<div class="channels-header d-flex ai-center g-20">
+    <img src="assets/img/code_learning.png">
+    <span class="channels-headline">Code Learning</span>
+    <div class="new-message-icon flex-center pointer">
+        <span class="material-symbols-outlined">
+            edit_square
+        </span>
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     </div>
 </div>
 
 <div class="channels-content d-flex f-column">
     <div class="channels-section d-flex f-column">
+<<<<<<< HEAD
         <div class="d-flex ai-center j-between channel-hl-mobile" style="margin-bottom: 15px;">
+=======
+        <div class="d-flex ai-center j-between" style="margin-bottom: 15px;">
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
             <div class="d-flex g-10 ai-center pointer sub-headline-hover">
                 <mat-icon [ngClass]="{'rotate': !isDropdownOpenChannel}" (click)="channelSectionToggle()"
                     class="mr-10">arrow_drop_down</mat-icon>
@@ -80,11 +94,15 @@
         </div>
 
         <div class="friends-wrapper" [ngClass]="{'up': !isDropdownOpenDm}">
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
             <div class="friends-section d-flex">
                 <div (click)="openSelfMessage()" class="d-flex ai-center friend-box pointer"
                     [class.channel-open]="channelService.inDirectMessage && accountService.getLoggedInUser().id === currentSelectedUser_ID">
                     <div class="p-relative mr-20 d-flex">
+<<<<<<< HEAD
                         <img class="friends-avatar"
                             [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar_small.png'"
                             (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
@@ -99,21 +117,37 @@
             </div>
 
 
+=======
+                        <img class="friends-avatar" src="{{ accountService.getLoggedInUser().avatarSrc }}">
+                    </div>
+                    <span class="font-adjust user-name-wrap">{{ accountService.getLoggedInUser().name }} (Du)</span>
+                </div>
+            </div>
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
             <div class="friends-section d-flex" *ngFor="let user of allUsers">
                 <div (click)="openDirectMessage(user)" class="d-flex ai-center friend-box pointer"
                     [class.channel-open]="channelService.inDirectMessage && user.id === currentSelectedUser_ID">
                     <div class="p-relative mr-20 d-flex">
+<<<<<<< HEAD
                         <!-- <img class="friends-avatar" [src]="user.avatarSrc || 'assets/img/avatar_small.png'"> -->
                         <img class="friends-avatar" [src]="user.avatarSrc || 'assets/img/avatar_small.png'"
                             (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
                         <div class="status-check" [class.status-online]="user.loggedIn && !user.isActive"
                             [class.status-offline]="!user.loggedIn && !user.isActive"
                             [class.status-active]="user.loggedIn && user.isActive"></div>
+=======
+                        <img class="friends-avatar" [src]="user.avatarSrc || 'assets/img/avatar_small.png'">
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
                     </div>
                     <span class="font-adjust user-name-wrap">{{ user.name }}</span>
                 </div>
             </div>
         </div>
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     </div>
 </div>

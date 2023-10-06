@@ -1,5 +1,6 @@
 .content {
     min-width: 380px;
+<<<<<<< HEAD
     gap: 20px;
     padding-top: 5px;
 
@@ -26,6 +27,13 @@ h2 {
 
     @media (max-width: 450px) {
         margin: 0 0 0 20px !important;
+=======
+
+    h2 {
+        margin-bottom: 20px !important;
+        padding-top: 5px;
+        padding-left: 15px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     }
 }
 
@@ -34,6 +42,7 @@ h2 {
     right: 0 !important;
 }
 
+<<<<<<< HEAD
 mat-option {
     font-size: 16px;
     padding: 6px 20px;
@@ -51,6 +60,20 @@ mat-option {
     @media (max-width: 450px) {
         font-size: 15px;
         padding: 0 20px;
+=======
+input {
+    outline: none;
+    color: #686868;
+    font-size: 18px;
+    background: none;
+    border: 1px solid #ADB0D9;
+    border-radius: 50px;
+    padding: 18px 20px;
+    margin: 0 11px 0 15px;
+
+    &::placeholder {
+        font-family: 'Nunito', sans-serif;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     }
 }
 
@@ -61,10 +84,19 @@ mat-option {
     border-bottom: 0;
 }
 
+<<<<<<< HEAD
+=======
+button {
+    margin-top: 12px;
+    margin-bottom: -8px;
+}
+
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 .threads-channel {
     font-size: 18px;
     font-weight: 500;
     color: #797EF3;
+<<<<<<< HEAD
     margin-left: 20px;
 
     @media (max-width: 1550px) or (max-height: 750px) {
@@ -78,4 +110,8 @@ mat-option {
     @media (max-width: 450px) {
         font-size: 16px;
     }
+=======
+    margin-left: 15px;
+    margin-bottom: 20px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 }

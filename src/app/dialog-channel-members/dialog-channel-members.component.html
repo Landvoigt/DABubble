@@ -4,21 +4,33 @@
     <div class="members-section d-flex ai-center j-between" style="margin-top: 30px;">
         <div class="d-flex ai-center member-box pointer" (click)="openProfile()">
             <div class="p-relative mr-20 d-flex">
+<<<<<<< HEAD
                 <img class="members-avatar"
                     [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar_small.png'"
                     (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
             </div>
             <span class="dialog-span font-adjust user-name-wrap">{{ accountService.getLoggedInUser().name }} (Du)</span>
+=======
+                <img class="members-avatar" src="{{ accountService.getLoggedInUser().avatarSrc }}">
+            </div>
+            <span class="font-adjust user-name-wrap">{{ accountService.getLoggedInUser().name }} (Du)</span>
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
         </div>
         <mat-icon *ngIf="channelService.channelOwnerEqualCurrentUser" class="channel-owner-icon">star</mat-icon>
     </div>
     <div class="members-section d-flex ai-center j-between" *ngFor="let member of channelMembers">
         <div class="d-flex ai-center member-box pointer" (click)="openProfile()">
             <div class="p-relative mr-20 d-flex">
+<<<<<<< HEAD
                 <img class="members-avatar" [src]="member.avatarSrc || 'assets/img/avatar_small.png'"
                     (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
             </div>
             <span class="dialog-span font-adjust user-name-wrap">{{ member.name }}</span>
+=======
+                <img class="members-avatar" [src]="member.avatarSrc || 'assets/img/avatar_small.png'">
+            </div>
+            <span class="font-adjust user-name-wrap">{{ member.name }}</span>
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
         </div>
         <mat-icon *ngIf="currentChannel.owner === member.id" class="channel-owner-icon">star</mat-icon>
     </div>
@@ -30,7 +42,11 @@
             <div class="add-client-icon-box flex-center pointer">
                 <mat-icon class="add-client-icon">person_add_alt</mat-icon>
             </div>
+<<<<<<< HEAD
             <span *ngIf="!showNoPerm" class="dialog-span font-adjust add-member">Mitglieder hinzufügen</span>
+=======
+            <span *ngIf="!showNoPerm" class="font-adjust add-member">Mitglieder hinzufügen</span>
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
             <span *ngIf="!channelService.channelOwnerEqualCurrentUser && showNoPerm" class="font-adjust add-member">Only
                 channel admin</span>
         </div>

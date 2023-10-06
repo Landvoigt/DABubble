@@ -11,11 +11,10 @@ import { AccountServiceService } from '../account-service.service';
 })
 export class ImprintComponent {
 
-
-constructor(public location:Location, public accountService:AccountServiceService) {}
+  constructor(public location: Location, public accountService: AccountServiceService) { }
   close() {
-this.location.back();
-this.checkIntro();
+    this.location.back();
+    this.checkIntro();
   }
 
   checkIntro() {

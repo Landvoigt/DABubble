@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
+=======
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ChannelServiceService } from '../channel-service.service';
 import { AccountServiceService } from '../account-service.service';
 import { ChatServiceService } from '../chat-service.service';
 import { DialogEmojisComponent } from '../dialog-emojis/dialog-emojis.component';
+<<<<<<< HEAD
 import { DocumentData, DocumentReference, Firestore, addDoc, collection, deleteDoc, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { Subscription } from 'rxjs';
 import { Unsubscribe, User } from '@angular/fire/auth';
@@ -12,6 +17,13 @@ import { Thread } from 'src/models/thread.class';
 import { DirectMessage } from 'src/models/direct-message.class';
 import { DialogUserProfileComponent } from '../dialog-user-profile/dialog-user-profile.component';
 import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
+=======
+import { Firestore, addDoc, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
+import { Subscription } from 'rxjs';
+import { Unsubscribe } from '@angular/fire/auth';
+import { Thread } from 'src/models/thread.class';
+import { DirectMessage } from 'src/models/direct-message.class';
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
 @Component({
   selector: 'app-mainpage-direct-message',
@@ -19,8 +31,11 @@ import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
   styleUrls: ['./mainpage-direct-message.component.scss']
 })
 export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
+<<<<<<< HEAD
   @Output() openLeftSidenav = new EventEmitter<void>();
 
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   firestore: Firestore = inject(Firestore);
   usersCollection = collection(this.firestore, 'users');
   dmCollection = collection(this.firestore, 'direct-messages');
@@ -41,8 +56,11 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
   hoveredThreadId: number | null = null;
   ownThreadId: number | null = null;
   inEditMessage: number | null = null;
+<<<<<<< HEAD
   hoveredThumbUp: number | null = null;
   hoveredThumbDown: number | null = null;
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
   loadedMessageContent: string;
 
@@ -102,8 +120,13 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
    */
   sortThreads(): void {
     this.threads.sort((a, b) => {
+<<<<<<< HEAD
       const dateA = this.channelService.timestampToDate(a.date);
       const dateB = this.channelService.timestampToDate(b.date);
+=======
+      const dateA = this.timestampToDate(a.date);
+      const dateB = this.timestampToDate(b.date);
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
       return dateB.getTime() - dateA.getTime();
     });
   }
@@ -165,6 +188,7 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
 
 
   /**
+<<<<<<< HEAD
    * Add a reaction to a thread.
    */
   async addReaction(threadId: string, reactionType: string, userName: string) {
@@ -213,6 +237,8 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
 
 
   /**
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
    * Opens the edit message input.
    * @param {any} threadId - The ID of the thread that contains the message to edit.
    * @param {number} i - The index of the message in the threads array.
@@ -243,6 +269,7 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
       content: this.threads[i].editMessageContent
     });
     this.inEditMessage = null;
+<<<<<<< HEAD
     this.hoveredThreadId = null;
     this.ownThreadId = null;
     this.chatService.isEditMessageContent = false;
@@ -252,11 +279,69 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
   /**
    * Closes the edit message content form
    */
+=======
+  }
+
+
+  timestampToDate(timestamp: { seconds: number, nanoseconds: number }): Date {
+    return new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+  }
+
+
+  getFormattedTime(timestamp: any) {
+    const date = this.timestampToDate(timestamp);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    const formattedTime = `${hours}:${minutes} Uhr`;
+    return formattedTime;
+  }
+
+
+  getFormattedDate(timestamp: { seconds: number, nanoseconds: number }): string {
+    const options: Intl.DateTimeFormatOptions = {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    };
+    const date = this.timestampToDate(timestamp);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const dateToCompare = new Date(date.getTime());
+    dateToCompare.setHours(0, 0, 0, 0);
+    if (dateToCompare.getTime() === today.getTime()) {
+      return 'Heute';
+    } else {
+      return new Intl.DateTimeFormat('de-DE', options).format(date);
+    }
+  }
+
+
+  threadSentOnNewDate(index: number, threads: any[]): boolean {
+    if (index === threads.length - 1) return false;
+    const currentDate = this.getFormattedDate(threads[index].date);
+    const nextDate = this.getFormattedDate(threads[index + 1].date);
+    return currentDate === nextDate;
+  }
+
+
+  openDialog() {
+    this.dialog.open(DialogEmojisComponent, { restoreFocus: false });
+  }
+
+
+  openDialogThread(thread) {
+
+  }
+
+
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   closeEdit() {
     this.inEditMessage = null;
   }
 
 
+<<<<<<< HEAD
   closeDirectMessageMobile() {
     this.openLeftSidenav.emit();
     this.channelService.inDirectMessage = false;
@@ -310,6 +395,11 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
     //console.log(content);
   }
 
+=======
+  // insertEmoji(event: EmojiEvent) {
+  //   this.chatService.insertEmoji(event);
+  // }
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
   ngOnDestroy() {
     this.unsubscribeDirectMessage();
@@ -317,7 +407,10 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
     this.unsubscribeThreads();
   }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   /**
    * Unsubscribes from the direct message subscription if active.
    */
@@ -344,4 +437,8 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
       this.unsubThreads();
     }
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8

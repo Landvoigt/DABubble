@@ -8,9 +8,13 @@
     </span>
     <div class="d-flex ai-center p-relative">
         <div (click)="openMembers()" class="d-flex ai-center mr-20 assigned-clients-box pointer">
+<<<<<<< HEAD
             <img *ngFor="let member of currentChannelMembers | slice:0:3" class="member-avatar"
                 [src]="member.avatarSrc || 'assets/img/avatar_small.png'"
                 (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
+=======
+            <img *ngFor="let member of currentChannelMembers | slice:0:3" class="avatar-small" [src]="member.avatarSrc">
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
             <span class="assigned-client-count">{{ currentChannel.members.length }}</span>
         </div>
         <div class="add-client-icon-box flex-center pointer"
@@ -19,6 +23,7 @@
             <mat-icon class="add-client-icon">person_add_alt</mat-icon>
         </div>
     </div>
+<<<<<<< HEAD
     <mat-icon class="close-icon-responsive flex-center p-absolute pointer" (click)="closeChannelMobile()">close</mat-icon>
 </div>
 
@@ -30,6 +35,17 @@
             [ngStyle]="{ 'margin-top': i === threads.length - 1 ? '120px' : '30px' }">
             <div class="message-date-line"></div>
             <span class="message-date">{{ channelService.getFormattedDate(thread.date) }}</span>
+=======
+</div>
+
+<div *ngIf="!channelService.noCurrentChannel" class="chat-content">
+    <div *ngFor="let thread of threads; let i = index" class="d-flex f-column">
+
+        <div *ngIf="!threadSentOnNewDate(i, threads)" class="d-flex ai-center message-date-container"
+            [ngStyle]="{ 'margin-top': i === threads.length - 1 ? '120px' : '30px' }">
+            <div class="message-date-line"></div>
+            <span class="message-date">{{ getFormattedDate(thread.date) }}</span>
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
             <div class="message-date-line"></div>
         </div>
 
@@ -39,6 +55,7 @@
             (mouseleave)="hoveredThreadId = null">
 
             <img (click)="openDialogThread(thread)" class="thread-avatar pointer"
+<<<<<<< HEAD
                 [src]="thread.ownerAvatarSrc || 'assets/img/avatar_small.png'"
                 (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
 
@@ -192,6 +209,72 @@
                     </div>
                 </div>
 
+=======
+                [src]="thread.ownerAvatarSrc || 'assets/img/avatar_small.png'">
+
+            <div class="d-flex f-column g-10"
+                [class.thread-creator-reverse]="thread.ownerID === accountService.getLoggedInUser().id"
+                [class.w-100]="inEditMessage === i">
+                <div class="d-flex ai-baseline"
+                    [class.thread-message-box-reverse]="thread.ownerID === accountService.getLoggedInUser().id">
+                    <span (click)="openDialogThread(thread)" class="thread-creator pointer">{{ thread.ownerName
+                        }}</span>
+                    <span class="thread-time"
+                        [class.thread-time-reverse]="thread.ownerID === accountService.getLoggedInUser().id">{{
+                        getFormattedTime(thread.date) }}</span>
+                </div>
+                <span *ngIf="!(inEditMessage === i)" class="thread-text pointer"
+                    [class.thread-text-reverse]="thread.ownerID === accountService.getLoggedInUser().id"
+                    (click)="openThreads(thread.id)">{{ thread.content }}</span>
+                <div *ngIf="inEditMessage === i" class="d-flex j-between f-column edit-msg-input-box">
+                    <textarea [(ngModel)]="thread.editMessageContent" class="edit-msg-input"
+                        [class.edit-msg-input-reverse]="thread.ownerID === accountService.getLoggedInUser().id"
+                        maxlength="1500">
+                        {{ loadedMessageContent }}
+                    </textarea>
+                    <div class="btn-container btn-container-extra">
+                        <button class="btn-secondary btn-secondary-medium" (click)="closeEdit()">Abbrechen</button>
+                        <button class="btn-primary btn-primary-medium"
+                            (click)="editMessage(thread.id, i)">Speichern</button>
+                    </div>
+                </div>
+                <!-- <div class="emoji-section d-flex ai-center g-10"
+                    [class.flex-row-reverse]="thread.ownerID === accountService.getLoggedInUser().id">
+                    <div class="flex-center add-emoji-box">
+                        <img src="assets/img/icons/add_reaction_blue.png" class="add-emoji pointer"
+                            (mouseenter)="addFilter($event)" (mouseleave)="removeFilter($event)">
+                    </div>
+                    <div class="emoji-box flex-center pointer">
+                        <img src="assets/img/icons/rocket.png">
+                        <span>1</span>
+                    </div>
+                    <div class="emoji-box flex-center pointer">
+                        <img src="assets/img/icons/checkmark.png">
+                        <span>1</span>
+                    </div>
+                </div> -->
+                <div *ngIf="thread.amountOfAnswers">
+                    <span class="thread-answer-count" (click)="openThreads(thread.id)">{{
+                        formatAnswerCount(thread.amountOfAnswers) }}</span>
+                    <span class="thread-time">Letzte Antwort - {{ getFormattedTime(thread.lastAnswerTime) }}</span>
+                </div>
+            </div>
+            <div *ngIf="hoveredThreadId === i && !(inEditMessage === i)"
+                class="thread-reaction-container flex-center g-10"
+                [class.thread-reaction-container-reverse]="thread.ownerID === accountService.getLoggedInUser().id">
+                <div class="emoji-icon flex-center pointer">
+                    <span class="material-symbols-outlined">add_reaction</span>
+                </div>
+                <mat-icon (click)="openThreads(thread.id)">comment</mat-icon>
+                <div *ngIf="thread.ownerID === accountService.getLoggedInUser().id" class="p-relative"
+                    (mouseenter)="ownThreadId = i" (mouseleave)="ownThreadId = null">
+                    <mat-icon class="edit-msg-icon">keyboard_control</mat-icon>
+                    <div *ngIf="(hoveredThreadId === i) && (ownThreadId === i)" class="thread-edit-btn pointer"
+                        (click)="openEditMessage(thread.id, i)">
+                        Nachricht bearbeiten
+                    </div>
+                </div>
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
             </div>
         </div>
     </div>
@@ -201,7 +284,11 @@
     (ngSubmit)="sendMessage(chatMessageForm)">
 
     <textarea (keydown.enter)="sendMessage(chatMessageForm)" name="main-chat-input"
+<<<<<<< HEAD
         placeholder="Nachricht an #{{ currentChannel.name }}" [(ngModel)]="message.content" maxlength="1500"
+=======
+        placeholder="Nachricht an # {{ currentChannel.name }}" [(ngModel)]="message.content" maxlength="1500"
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
         required></textarea>
 
     <div class="d-flex message-icons">
@@ -212,17 +299,31 @@
             </span>
             <div class="message-hover-icon" class="icon-divider-line"></div>
 
+<<<<<<< HEAD
             <span (click)="openDialogEmojis()"
+=======
+            <!-- hallo barnabas der nachfolgende span ist dein emoji-button :)  -->
+            <span (click)="openDialog()"
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
                 class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust">
                 sentiment_satisfied
             </span>
 
+<<<<<<< HEAD
             <!-- <span class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust">
                 alternate_email
             </span> -->
 
         </div>
         <button class="message-send-btn flex-center" type="submit" [disabled]="loading">
+=======
+            <span class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust">
+                alternate_email
+            </span>
+
+        </div>
+        <button class="message-send-btn" type="submit" [disabled]="loading">
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
             <img *ngIf="!loading" class="message-send-icon" src="assets/img/icons/arrow_send.png">
             <div *ngIf="loading" class="loading-icon"></div>
         </button>

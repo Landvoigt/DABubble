@@ -110,7 +110,6 @@ export class LoginComponent implements OnInit {
             const updatedUserData = userDoc.data() as User;
             console.log('Benutzerdaten nach dem Einloggen:', updatedUserData);
             this.accountService.setLoggedInUser(updatedUserData);
-
             this.router.navigate(['/main']);
 
           } else {

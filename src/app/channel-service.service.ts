@@ -6,7 +6,10 @@ import { Thread } from 'src/models/thread.class';
 import { DirectMessage } from 'src/models/direct-message.class';
 import { AccountServiceService } from './account-service.service';
 import { User } from 'src/models/user.class';
+<<<<<<< HEAD
 import { ReactionCountPipe } from './reaction-count.pipe';
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
 @Injectable({
   providedIn: 'root'
@@ -14,18 +17,31 @@ import { ReactionCountPipe } from './reaction-count.pipe';
 export class ChannelServiceService {
   firestore: Firestore = inject(Firestore);
 
+<<<<<<< HEAD
   private _currentChannel_ID = new BehaviorSubject<string | null>(null);
   private _currentChannel = new BehaviorSubject<Channel | null>(null);
 
   private _currentThread_ID = new BehaviorSubject<string | null>(null);
   private _currentThread = new BehaviorSubject<Thread | null>(null);
 
+=======
+  // currentChannel: Channel;
+  private _currentChannel_ID = new BehaviorSubject<string | null>(null);
+  private _currentChannel = new BehaviorSubject<Channel | null>(null);
+
+  // currentThread: Thread;
+  private _currentThread_ID = new BehaviorSubject<string | null>(null);
+  private _currentThread = new BehaviorSubject<Thread | null>(null);
+
+  // currentDmChannel: DirectMessage;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   private _currentDmChannel_ID = new BehaviorSubject<string | null>(null);
   private _currentDmChannel = new BehaviorSubject<DirectMessage | null>(null);
 
   savedDmPartner: User = new User();
   savedChannel_ID: string;
 
+<<<<<<< HEAD
   private _isOwnDmChannel = new BehaviorSubject<boolean>(false);
   noCurrentChannel: boolean = true;
   inDirectMessage: boolean = false;
@@ -37,14 +53,27 @@ export class ChannelServiceService {
   /**
    * Observable to get the currently opened channel.
    */
+=======
+  noCurrentChannel: boolean = true;
+  // noCurrentDm: boolean = true;
+  inDirectMessage: boolean = false;
+  channelOwnerEqualCurrentUser: boolean = false;
+  private _isOwnDmChannel = new BehaviorSubject<boolean>(false);
+
+  constructor(private accountService: AccountServiceService) { }
+
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   get currentChannel$() {
     return this._currentChannel.asObservable();
   }
 
+<<<<<<< HEAD
 
   /**
    * Setter to set the current channel ID and fetch its data.
    */
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   set currentChannel_ID(value: string) {
     this._currentChannel_ID.next(value);
 
@@ -59,18 +88,24 @@ export class ChannelServiceService {
     });
   }
 
+<<<<<<< HEAD
 
   /**
    * Observable to get the currently opened thread.
    */
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   get currentThread$() {
     return this._currentThread.asObservable();
   }
 
+<<<<<<< HEAD
 
   /**
    * Setter to set the current thread ID and fetch its data.
    */
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   set currentThread_ID(value: string) {
     this._currentThread_ID.next(value);
 
@@ -85,18 +120,24 @@ export class ChannelServiceService {
     });
   }
 
+<<<<<<< HEAD
 
   /**
    * Observable to get the currently opened direct message channel.
    */
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   get currentDmChannel$() {
     return this._currentDmChannel.asObservable();
   }
 
+<<<<<<< HEAD
 
   /**
    * Setter to set the current direct message channel ID and fetch its data.
    */
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   set currentDmChannel_ID(value: string) {
     this._currentDmChannel_ID.next(value);
 
@@ -110,11 +151,14 @@ export class ChannelServiceService {
     });
   }
 
+<<<<<<< HEAD
 
   /**
    * Checks if the logged-in user is the owner of the opened direct message  channel.
    * @param {Channel} channel - The channel to check against.
    */
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   checkChannelOwner(channel: Channel) {
     const loggedInUserId = this.accountService.getLoggedInUser().id;
     if (channel.owner === loggedInUserId) {
@@ -122,14 +166,18 @@ export class ChannelServiceService {
     }
   }
 
+<<<<<<< HEAD
 
   /**
    * Observable to get the status if the current direct message channel is owned by the logged-in user.
    */
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   get isOwnDmChannel$(): Observable<boolean> {
     return this._isOwnDmChannel.asObservable();
   }
 
+<<<<<<< HEAD
 
   /**
    * Setter to set the status if the current direct message channel is owned by the logged-in user.
@@ -239,4 +287,9 @@ export class ChannelServiceService {
     }
     return messageParts;
   }
+=======
+  set isOwnDmChannel(value: boolean) {
+    this._isOwnDmChannel.next(value);
+  }
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 }

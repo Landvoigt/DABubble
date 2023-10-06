@@ -251,6 +251,23 @@ b {
     }
 }
 
+.btn-primary-medium,
+.btn-secondary-medium {
+    padding: 8px 16px !important;
+    font-size: 16px !important;
+}
+
+.btn-container-small {
+    margin-top: 0 !important;
+    gap: 10px !important;
+}
+
+.btn-primary-small,
+.btn-secondary-small {
+    padding: 3px 6px !important;
+    font-size: 13px !important;
+}
+
 ::-webkit-scrollbar {
     width: 0;
     height: 0;

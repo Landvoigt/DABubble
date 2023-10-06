@@ -1,6 +1,10 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { ChannelServiceService } from '../channel-service.service';
+<<<<<<< HEAD
 import { Firestore, addDoc, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, updateDoc, where } from '@angular/fire/firestore';
+=======
+import { Firestore, addDoc, collection, doc, getDoc, getDocs, onSnapshot, query, updateDoc, where } from '@angular/fire/firestore';
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 import { Unsubscribe } from '@angular/fire/database';
 import { Subscription } from 'rxjs';
 import { Thread } from 'src/models/thread.class';
@@ -17,14 +21,22 @@ import { DialogChannelMembersComponent } from '../dialog-channel-members/dialog-
 import { DialogChannelAddNewMembersComponent } from '../dialog-channel-add-new-members/dialog-channel-add-new-members.component';
 import { Channel } from 'src/models/channel.class';
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 @Component({
   selector: 'app-mainpage-chat',
   templateUrl: './mainpage-chat.component.html',
   styleUrls: ['./mainpage-chat.component.scss']
 })
 export class MainpageChatComponent implements OnInit, OnDestroy {
+<<<<<<< HEAD
   @Output() openRightSidenav = new EventEmitter<void>();
   @Output() openLeftSidenav = new EventEmitter<void>();
+=======
+  @Output() openEvent = new EventEmitter<void>();
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   firestore: Firestore = inject(Firestore);
   userCollectionRef = collection(this.firestore, 'users');
 
@@ -43,6 +55,7 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
   hoveredThreadId: number | null = null;
   ownThreadId: number | null = null;
   inEditMessage: number | null = null;
+<<<<<<< HEAD
   hoveredThumbUp: number | null = null;
   hoveredThumbDown: number | null = null;
 
@@ -50,6 +63,10 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
   event: EmojiEvent
   //@ViewChild('threadId', { static: false }) threadIdElementRef: ElementRef;
   // @ViewChildren('threadId') threadElements: QueryList<ElementRef>;
+=======
+
+  loadedMessageContent: string;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
   constructor(
     public dialog: MatDialog,
@@ -58,6 +75,7 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
     public chatService: ChatServiceService) {
   }
 
+<<<<<<< HEAD
 
   // ngAfterViewInit() {
   //     // Nachdem die Vorlage gerendert wurde, kannst du auf die Elemente zugreifen
@@ -69,6 +87,8 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
   // }
 
 
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   containsVisibleCharacter(control) {
     const value = control.value;
     const visibleCharacterPattern = /[^\s\p{C}]/u; // Überprüft, ob mindestens ein sichtbares Zeichen (Buchstabe oder Emoji) vorhanden ist
@@ -95,6 +115,7 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
       const channelCollection = collection(this.firestore, 'channels');
       const channelDocRef = doc(channelCollection, this.currentChannel.id);
       const threadCollection = collection(channelDocRef, 'threads');
+<<<<<<< HEAD
       const userCollection = collection(this.firestore, 'users');
 
       const querySnapshot = await getDocs(userCollection);
@@ -108,6 +129,8 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
           }, 180000);
         }
       });
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
       this.message.date = new Date();
       this.message.ownerID = this.accountService.getLoggedInUser().id;
@@ -126,7 +149,10 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
       form.resetForm();
       this.message.content = '';
       this.loading = false;
+<<<<<<< HEAD
       this.chatService.isContent = false;
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     }
   }
 
@@ -140,12 +166,21 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
         const threadData = element.data();
         this.threads.push(threadData);
 
+<<<<<<< HEAD
 
       });
 
       this.threads.sort((a, b) => {
         const dateA = this.channelService.timestampToDate(a.date);
         const dateB = this.channelService.timestampToDate(b.date);
+=======
+   
+      });
+
+      this.threads.sort((a, b) => {
+        const dateA = this.timestampToDate(a.date);
+        const dateB = this.timestampToDate(b.date);
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
         return dateB.getTime() - dateA.getTime();
       });
     });
@@ -156,7 +191,11 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
     const querySnapshot = await getDocs(this.userCollectionRef);
     querySnapshot.forEach((userDoc) => {
       const userData = userDoc.data() as User;
+<<<<<<< HEAD
       if (members.includes(userData.id) && !this.currentChannelMembers.some(member => member.id === userData.id)) {
+=======
+      if (members.includes(userData.id)) {
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
         this.currentChannelMembers.push(userData);
       }
     });
@@ -197,7 +236,10 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
     this.inEditMessage = null;
   }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   async openEditMessage(threadId: any, i: number) {
     this.inEditMessage = i;
     const channelDocRef = doc(this.firestore, 'channels', this.currentChannel.id);
@@ -209,15 +251,23 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
     }
   }
 
+<<<<<<< HEAD
 
   async editMessage(threadId: any, i: number) {
     const channelDocRef = doc(this.firestore, 'channels', this.currentChannel.id);
     const threadDocRef = doc(channelDocRef, 'threads', threadId);
+=======
+  async editMessage(threadId: any, i: number) {
+    const channelDocRef = doc(this.firestore, 'channels', this.currentChannel.id);
+    const threadDocRef = doc(channelDocRef, 'threads', threadId);
+
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     await updateDoc(threadDocRef, {
       content: this.threads[i].editMessageContent
     });
 
     this.inEditMessage = null;
+<<<<<<< HEAD
     this.hoveredThreadId = null;
     this.ownThreadId = null;
     this.chatService.isEditMessageContent = false;
@@ -225,6 +275,12 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
 
   openThreads(_id: string) {
     this.openRightSidenav.emit();
+=======
+  }
+
+  openThreads(_id: string) {
+    this.openEvent.emit();
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     this.channelService.currentThread_ID = _id;
   }
 
@@ -246,6 +302,47 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
     }
   }
 
+<<<<<<< HEAD
+=======
+  getFormattedTime(timestamp: any) {
+    const date = this.timestampToDate(timestamp);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    const formattedTime = `${hours}:${minutes} Uhr`;
+    return formattedTime;
+  }
+
+  getFormattedDate(timestamp: { seconds: number, nanoseconds: number }): string {
+    const options: Intl.DateTimeFormatOptions = {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    };
+    const date = this.timestampToDate(timestamp);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const dateToCompare = new Date(date.getTime());
+    dateToCompare.setHours(0, 0, 0, 0);
+    if (dateToCompare.getTime() === today.getTime()) {
+      return 'Heute';
+    } else {
+      return new Intl.DateTimeFormat('de-DE', options).format(date);
+    }
+  }
+
+  timestampToDate(timestamp: { seconds: number, nanoseconds: number }): Date {
+    return new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+  }
+
+  threadSentOnNewDate(index: number, threads: any[]): boolean {
+    if (index === threads.length - 1) return false;
+    const currentDate = this.getFormattedDate(threads[index].date);
+    const nextDate = this.getFormattedDate(threads[index + 1].date);
+    return currentDate === nextDate;
+  }
+
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   // isOwnerDifferentFromPrevious(index: number, threads: any[]): boolean {
   //   if (index === 0) return false;
   //   return threads[index].owner !== threads[index - 1].owner;
@@ -279,12 +376,17 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
     }
   }
 
+<<<<<<< HEAD
   openDialogThread(thread) {
+=======
+  openDialogThread(thread: any) {
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     this.chatService.ownerData = thread;
     this.dialog.open(DialogUserProfileComponent, { restoreFocus: false });
   }
 
 
+<<<<<<< HEAD
   openDialogEmojis() {  // Textarea für channel und hier wird emojis ins chat eingefügt
     this.chatService.serviceThread = this.message;
     this.chatService.isContent = true;
@@ -334,5 +436,18 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.channelService.noCurrentChannel = true;
     });
+=======
+  openDialog() {
+    this.chatService.serviceThread = this.message;
+    event.preventDefault();
+
+    const dialog = this.dialog.open(DialogEmojisComponent, { restoreFocus: false });
+    dialog.componentInstance.content = this.message;
+
+  }
+
+  insertEmoji(event: EmojiEvent) {
+    // this.chatService.insertEmoji(event);
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   }
 }

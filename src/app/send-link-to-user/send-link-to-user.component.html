@@ -1,10 +1,18 @@
 <div class="send-email-cont">
 
+<<<<<<< HEAD
   <img class="logo" src="./assets/img/logo.png">
   <!-- <div class="logo-img-cont-always">
     <img src="./assets/img/logo-intro.png">
     <div class="title">DABubble</div>
   </div> -->
+=======
+
+  <div class="logo-img-cont-always">
+    <img src="./assets/img/logo-intro.png">
+    <div class="title">DABubble</div>
+  </div>
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   
   <mat-card [class.send-email-opacity]="isSent">
     <div class="send-link">
@@ -19,7 +27,11 @@
         
         <div [style.display]="isEmailExist ? 'none' : 'flex'">
           <div [style.display]="emailInput.touched ? (isEmailValid ? 'none' : 'flex') : 'none'"
+<<<<<<< HEAD
             [class.warning-invalid]="isEmailValid && email !=''">*Diese E-Mail-Adresse ist leider ungültig.</div>
+=======
+            [class.warning-invalid]="!isEmailValid">*Diese E-Mail-Adresse ist leider ungültig.</div>
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
         </div>
 
         <div [style.display]="isEmailExist ? 'none' : 'flex'">

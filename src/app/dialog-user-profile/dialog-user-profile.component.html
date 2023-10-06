@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <mat-icon class="close-icon close-icon-dialog p-absolute pointer" (click)="dialogRef.close()">close</mat-icon>
 <div class="content d-flex f-column p-relative">
     <h2 class="profile-text">Profil</h2>
@@ -32,4 +33,42 @@
     <div class="btn-container mt-30">
         <button class="btn-primary" (click)="openDirectMessage(chatService.ownerData)">Nachricht</button>
     </div>
+=======
+<div class="user-profile-container-wrapper">
+
+    <span class="profile-text">Profil</span>
+    <mat-icon class="icon-position pointer" (click)="closeThreads()">close</mat-icon>
+
+    <div class="user-profile-container">
+
+        <div class="profil-image-container">
+            <img class="profile-image"
+                [src]="this.chatService.ownerData.ownerAvatarSrc || 'assets/img/avatar_small.png'">
+        </div>
+
+        <span class="user-name">{{ this.chatService.ownerData.ownerName }}</span>
+
+        <div class="active-container">
+            <img class="online-dot" src="assets/img/icons/online.png">
+            <span class="online-text">Aktiv</span>
+        </div>
+
+        <div class="email-icon-text-container">
+            <img src="assets/img/icons/email.png">
+            <span>E-Mail-Adresse</span>
+        </div>
+
+        <span class="user-email">{{ this.chatService.ownerData.ownerEmail }}</span>
+
+        <!-- <div class="nachricht-btn">
+            <img (click)="closeThreads()" src="./assets/img/nachricht.png">
+        </div> -->
+
+        <div class="btn-container">
+            <button class="btn-primary btn-primary-medium" (click)="closeThreads()">Nachricht</button>
+        </div>
+
+    </div>
+
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 </div>

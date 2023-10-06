@@ -1,5 +1,9 @@
 import { Component, inject } from '@angular/core';
+<<<<<<< HEAD
 import { Firestore, addDoc, collection, doc, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
+=======
+import { Firestore, addDoc, collection, doc, updateDoc } from '@angular/fire/firestore';
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 import { NgForm } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Channel } from 'src/models/channel.class';
@@ -46,7 +50,10 @@ export class DialogAddChannelComponent {
 
     this.loading = true;
 
+<<<<<<< HEAD
     await this.checkForChannelExistence();
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     this.setChannelProperties();
     await this.createNewChannel();
 
@@ -56,6 +63,7 @@ export class DialogAddChannelComponent {
 
 
   /**
+<<<<<<< HEAD
    * Adds an additional number if the channel already exists
    */
   async checkForChannelExistence() {
@@ -82,6 +90,8 @@ export class DialogAddChannelComponent {
 
 
   /**
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
    * Sets the properties for the channel that's about to be added. It sets the owner (current user),
    * adds the owner to the members list, and sets the current date for the creation date of the channel.
    */

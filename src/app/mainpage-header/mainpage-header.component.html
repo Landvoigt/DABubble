@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="main-page-header d-flex ai-center j-between">
     <div class="logo-container ">
         <img class="pointer" src="assets/img/logo/logo_&_name.png" (click)="closeAllChats()">
@@ -133,10 +134,47 @@
 
                 <div *ngIf="!showEditProfile" class="d-flex w-100 j-between">
                     <span class="popup-name" *ngIf="accountService.loggedInUser != null">
+=======
+<div class="main-page-header d-flex ai-center">
+    <div class="logo-container flex-center">
+        <img class="pointer" src="assets/img/logo/logo_&_name.png" (click)="closeAllChats()">
+    </div>
+    <div class="search-container flex-center">
+        <div class="search-field d-flex ai-center">
+            <input name="search-field" placeholder="Code learning durchsuchen">
+            <img class="pointer" src="assets/img/icons/loupe.png">
+        </div>
+    </div>
+    <div class="profile-container d-flex ai-center j-end p-relative">
+        <span class="name pointer" (click)="$event.stopPropagation(); toggleLogoutPopup()"
+            [ngClass]="{'cancel-hover': showProfilePopup || showLogoutPopup}">
+            {{ accountService.getLoggedInUser().name }}
+        </span>
+        <img class="user-avatar pointer" src="{{ accountService.getLoggedInUser().avatarSrc }}"
+            (click)="$event.stopPropagation(); toggleLogoutPopup()">
+        <mat-icon class="arrow-icon pointer" (click)="$event.stopPropagation(); toggleLogoutPopup()"
+            [ngClass]="{'cancel-hover': showProfilePopup || showLogoutPopup}">keyboard_arrow_down</mat-icon>
+        <div *ngIf="showLogoutPopup" class="overlay" (click)="closeLogoutPopup()">
+            <div class="logout-popup p-absolute flex-center f-column" (click)="$event.stopPropagation()">
+                <span class="pointer" (click)="closeLogoutPopup(); toggleProfilePopup()">Profil</span>
+                <span class="pointer" (click)="logoutUser()">Logout</span>
+            </div>
+        </div>
+        <div *ngIf="showProfilePopup" class="overlay" (click)="closeProfilePopup()">
+            <div class="profile-popup p-absolute d-flex f-column j-start" (click)="$event.stopPropagation()">
+                <mat-icon class="close-icon p-absolute pointer" (click)="closeProfilePopup()">close</mat-icon>
+                <span *ngIf="!showEditProfile" class="popup-header-text">Profil</span>
+                <span *ngIf="showEditProfile" class="popup-header-text">Dein Profil bearbeiten</span>
+                <img class="avatar-big mt-40 mb-40" src="{{ accountService.getLoggedInUser().avatarSrc }}">
+
+                <div *ngIf="!showEditProfile" class="d-flex w-100 j-between">
+                    <span class="name" *ngIf="accountService.loggedInUser != null">
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
                         {{ accountService.getLoggedInUser().name }}
                     </span>
                     <a class="pointer" (click)="toggleEditProfile()">Bearbeiten</a>
                 </div>
+<<<<<<< HEAD
                 <div *ngIf="!showEditProfile" class="status-container d-flex ai-center w-100 g-20 mt-20">
 
                     <!-- <div class="status-container g-20"> -->
@@ -165,10 +203,26 @@
                     <span class="material-symbols-outlined email-icon">
                         account_circle
                     </span>
+=======
+                <div *ngIf="!showEditProfile" class="d-flex w-100 g-20 mt-30">
+                    <img class="online-dot" src="assets/img/icons/online.png">
+                    <span class="online-text">Aktiv</span>
+                </div>
+                <div *ngIf="!showEditProfile" class="d-flex w-100 g-20 mt-40">
+                    <img src="assets/img/icons/email.png">
+                    <span>E-Mail-Adresse</span>
+                </div>
+                <span *ngIf="!showEditProfile" class="popup-email mt-30">
+                    {{ accountService.getLoggedInUser().email }}
+                </span>
+                <div *ngIf="showEditProfile" class="d-flex ai-center w-100 g-20 mb-20">
+                    <img src="assets/img/icons/person_in_circle.png">
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
                     <span>Vollständiger Name</span>
                 </div>
                 <input *ngIf="showEditProfile" class="edit-profile-input"
                     value="{{ accountService.getLoggedInUser().name }}">
+<<<<<<< HEAD
                 <div *ngIf="showEditProfile" class="d-flex ai-end w-100 g-20 mt-30 mb-20"
                     [ngClass]="{'opa-03': isGoogleEmail()}">
                     <span class="material-symbols-outlined email-icon">
@@ -180,6 +234,15 @@
                     value="{{ accountService.getLoggedInUser().email }}" [ngClass]="{'opa-03': isGoogleEmail()}">
                 <span *ngIf="showEditProfile && isGoogleEmail()" class="email-change-alert">* Änderung der Email bei Google-Login nicht möglich.</span>
                 <div *ngIf="showEditProfile" class="btn-container mt-30">
+=======
+                <div *ngIf="showEditProfile" class="d-flex ai-center w-100 g-20 mt-40 mb-20">
+                    <img src="assets/img/icons/email.png">
+                    <span>E-Mail-Adresse</span>
+                </div>
+                <input *ngIf="showEditProfile" class="edit-profile-input"
+                    value="{{ accountService.getLoggedInUser().email }}">
+                <div *ngIf="showEditProfile" class="btn-container">
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
                     <button class="btn-secondary" (click)="toggleEditProfile()">Abbrechen</button>
                     <button class="btn-primary" (click)="saveEditedUserInformation()">Speichern</button>
                 </div>

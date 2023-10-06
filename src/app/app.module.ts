@@ -28,6 +28,10 @@ import { MainpageChatComponent } from './mainpage-chat/mainpage-chat.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
+<<<<<<< HEAD
+=======
+import { LoginGoogleComponent } from './login-google/login-google.component';
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 import { SuccessBannerComponent } from './success-banner/success-banner.component';
 import { MainpageChannelsComponent } from './mainpage-channels/mainpage-channels.component';
 import { DialogAddChannelComponent } from './dialog-add-channel/dialog-add-channel.component';
@@ -42,10 +46,13 @@ import { DialogChannelMembersComponent } from './dialog-channel-members/dialog-c
 import { DialogChannelAddNewMembersComponent } from './dialog-channel-add-new-members/dialog-channel-add-new-members.component';
 import { DialogUserProfileComponent } from './dialog-user-profile/dialog-user-profile.component';
 import { ImprintComponent } from './imprint/imprint.component';
+<<<<<<< HEAD
 import { MatListModule } from '@angular/material/list';
 import { HttpClientModule } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactionCountPipe } from './reaction-count.pipe';
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
 
 @NgModule({
@@ -60,6 +67,10 @@ import { ReactionCountPipe } from './reaction-count.pipe';
     MainpageHeaderComponent,
     MainpageThreadsComponent,
     MainpageChatComponent,
+<<<<<<< HEAD
+=======
+    LoginGoogleComponent,
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     SuccessBannerComponent,
     MainpageChannelsComponent,
     DialogAddChannelComponent,
@@ -70,7 +81,10 @@ import { ReactionCountPipe } from './reaction-count.pipe';
     DialogChannelMembersComponent,
     DialogChannelAddNewMembersComponent,
     ImprintComponent,
+<<<<<<< HEAD
     ReactionCountPipe,
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   ],
   imports: [
     BrowserModule,
@@ -87,9 +101,12 @@ import { ReactionCountPipe } from './reaction-count.pipe';
     ReactiveFormsModule,
     PickerComponent,
     EmojiComponent,
+<<<<<<< HEAD
     MatListModule,
     HttpClientModule,
     MatFormFieldModule,
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),

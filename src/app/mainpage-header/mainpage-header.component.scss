@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 $black-rgba-01: rgba(0, 0, 0, 0.1);
 $project-bg: #ECEEFE;
 
@@ -51,10 +52,29 @@ $project-bg: #ECEEFE;
 
             @media (max-width: 920px) {
                 height: 50px;
+=======
+.main-page-header {
+    min-height: 110px;
+    width: 100vw;
+    max-width: 100%;
+
+    .logo-container {
+        height: 100%;
+        width: 385px;
+        gap: 20px;
+
+        .code-symbol {
+            transform: rotate(180deg);
+            transition: all 125 ease-in-out;
+
+            &:hover {
+                transform: none;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
             }
         }
     }
 
+<<<<<<< HEAD
 
     .search-main-container {
         // position: absolute;
@@ -89,18 +109,36 @@ $project-bg: #ECEEFE;
             @media (max-width: 1550px) or (max-height: 750px) {
                 height: 55px;
             }
+=======
+    .search-container {
+        flex: 1;
+
+        .search-field {
+            height: 65px;
+            width: 90%;
+            background-color: white;
+            padding-left: 30px;
+            padding-right: 30px;
+            gap: 20px;
+            border-radius: 50px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
             input {
                 height: 30px;
                 width: 100%;
                 border: none;
                 outline: none;
+<<<<<<< HEAD
                 font-size: 20px;
+=======
+                font-size: 22px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
                 background: none;
 
                 &::placeholder {
                     font-family: 'Nunito', sans-serif;
                 }
+<<<<<<< HEAD
 
                 @media (max-width: 1550px) or (max-height: 750px) {
                     font-size: 18px;
@@ -123,10 +161,13 @@ $project-bg: #ECEEFE;
                 @media (max-width: 1550px) or (max-height: 750px) {
                     width: 30px;
                 }
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
             }
         }
     }
 
+<<<<<<< HEAD
 
 
     // .border-radius-bottom-none {
@@ -274,6 +315,17 @@ $project-bg: #ECEEFE;
             @media (max-width:700px) {
                 display: none;
             }
+=======
+    .profile-container {
+        height: 100%;
+        width: 467px;
+        margin-right: 20px;
+        gap: 20px;
+
+        .name {
+            font-size: 30px;
+            font-weight: 700;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
             &:hover {
                 color: #797EF3;
@@ -281,6 +333,7 @@ $project-bg: #ECEEFE;
         }
 
         .user-avatar {
+<<<<<<< HEAD
             height: 65px;
             object-fit: contain;
             border-radius: 50%;
@@ -301,6 +354,18 @@ $project-bg: #ECEEFE;
             font-weight: 600;
             padding-bottom: 2px;
             margin-left: 20px;
+=======
+            height: 70px;
+            object-fit: contain;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 0, 0, 0.904);
+        }
+
+        .arrow-icon {
+            font-size: 28px;
+            font-weight: 600;
+            padding-bottom: 2px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
             &:hover {
                 color: #797EF3;
@@ -309,6 +374,7 @@ $project-bg: #ECEEFE;
     }
 }
 
+<<<<<<< HEAD
 .status-container {
     // display: flex;
     // color: #92C83E;
@@ -398,6 +464,8 @@ $project-bg: #ECEEFE;
     color: #444DF2;
 }
 
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 .cancel-hover {
     &:hover {
         color: black !important;
@@ -408,6 +476,7 @@ $project-bg: #ECEEFE;
 .logout-popup {
     top: 110px;
     right: 20px;
+<<<<<<< HEAD
     width: 145px;
     background-color: white;
     border-radius: 30px;
@@ -439,10 +508,19 @@ $project-bg: #ECEEFE;
         padding: 20px 40px;
         gap: 20px;
     }
+=======
+    height: 150px;
+    width: 250px;
+    background-color: white;
+    border-radius: 30px;
+    border-top-right-radius: 0;
+    gap: 45px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
     span {
         font-size: 24px;
         font-weight: 600;
+<<<<<<< HEAD
         gap: 20px;
 
         span {
@@ -473,6 +551,8 @@ $project-bg: #ECEEFE;
                 font-size: 22px;
             }
         }
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
         &:hover {
             color: #797EF3;
@@ -484,6 +564,7 @@ $project-bg: #ECEEFE;
 .profile-popup {
     top: 110px;
     right: 20px;
+<<<<<<< HEAD
     width: 350px;
     background-color: white;
     border-radius: 30px;
@@ -508,10 +589,18 @@ $project-bg: #ECEEFE;
         height: calc(100% - 80px);
         border-radius: 0;
     }
+=======
+    width: 330px;
+    background-color: white;
+    border-radius: 30px;
+    border-top-right-radius: 0;
+    padding: 45px 40px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
     span {
         font-size: 18px;
         font-weight: 700;
+<<<<<<< HEAD
 
         @media (max-width: 1550px) or (max-height: 750px) {
             font-size: 17px;
@@ -520,12 +609,15 @@ $project-bg: #ECEEFE;
         @media (max-width: 700px) {
             font-size: 18px;
         }
+=======
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     }
 
     a {
         font-size: 16px;
         font-weight: 600;
         color: #535AF1;
+<<<<<<< HEAD
         margin-left: 65px;
     }
 }
@@ -534,4 +626,49 @@ $project-bg: #ECEEFE;
     font-size: 12px !important;
     font-weight: 400 !important;
     margin-top: 10px;
+=======
+    }
+}
+
+.avatar-big {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    align-self: center;
+}
+
+.popup-header-text {
+    font-size: 24px !important;
+}
+
+.online-dot {
+    width: 16px;
+    height: 16px;
+}
+
+.online-text {
+    font-size: 20;
+    font-weight: 400;
+    color: #92C83E;
+}
+
+.popup-email {
+    font-size: 18px;
+    font-weight: 400;
+    color: #535AF1;
+    margin-left: 47px;
+}
+
+.edit-profile-input {
+    font-size: 18px;
+    font-weight: 500;
+    padding: 15px 20px;
+    border-radius: 30px;
+    border: 1px solid #ADB0D9;
+
+    &:focus-visible {
+        outline: none;
+        border: 1px solid #444DF2;
+    }
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 }

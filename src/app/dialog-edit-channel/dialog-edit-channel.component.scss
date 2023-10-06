@@ -1,4 +1,5 @@
 .content {
+<<<<<<< HEAD
     min-width: 750px;
     gap: 20px;
     padding-top: 10px;
@@ -42,6 +43,42 @@
 
 b {
     font-weight: 700;
+=======
+    width: 700px;
+    font-family: 'Nunito', sans-serif !important;
+    border-radius: 30px;
+    gap: 20px;
+    padding-top: 10px;
+}
+
+h2 {
+    margin: 0 !important;
+}
+
+.hashtag {
+    margin-right: 10px;
+    font-size: 26px;
+    padding-right: 2px;
+    padding-bottom: 2px;
+}
+
+input {
+    outline: none;
+    color: #686868;
+    font-size: 18px;
+    background: none;
+    border: 1px solid #ADB0D9;
+    border-radius: 50px;
+    padding: 18px 20px;
+
+    &::placeholder {
+        font-family: 'Nunito', sans-serif;
+    }
+}
+
+span {
+    font-size: 18px;
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 }
 
 .edit-span {
@@ -64,6 +101,7 @@ b {
     font-size: 24px;
     font-weight: 500;
     color: #535AF1;
+<<<<<<< HEAD
 
     @media (max-width: 1550px) or (max-height: 750px) {
         font-size: 22px;
@@ -78,6 +116,14 @@ b {
     }
 }
 
+=======
+}
+
+b {
+    font-size: 18px;
+    font-weight: 700;
+}
+>>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
 .pl-10 {
     padding-left: 10px;
