@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'Slack-DABuble'`, () => {
+  it(`should have as title 'slack-firestore'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('Slack-DABuble');
+    expect(app.title).toEqual('slack-firestore');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('Slack-DABuble app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('slack-firestore app is running!');
   });
 });

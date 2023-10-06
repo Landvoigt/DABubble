@@ -1,0 +1,232 @@
+<div class="chat-header d-flex">
+    <div class="chat-headline d-flex ai-center g-20 pointer">
+        <img (click)="openDialogProfileDmHeader()" class="dm-headline-avatar"
+            [src]="channelService.savedDmPartner.avatarSrc || 'assets/img/avatar_small.png'"
+            (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
+        <span (click)="openDialogProfileDmHeader()" *ngIf="!isOwnDmChannel">{{ channelService.savedDmPartner.name
+            }}</span>
+        <span *ngIf="isOwnDmChannel">{{ channelService.savedDmPartner.name }} (Du)</span>
+    </div>
+    <mat-icon class="close-icon-responsive flex-center p-absolute pointer" (click)="closeDirectMessageMobile()">close</mat-icon>
+</div>
+
+<div *ngIf="!isThreadsEmpty" class="chat-content">
+
+    <div *ngFor="let thread of threads; let i = index" class="d-flex f-column">
+
+        <div *ngIf="!channelService.threadSentOnNewDate(i, threads)" class="d-flex ai-center message-date-container"
+            [ngStyle]="{ 'margin-top': i === threads.length - 1 ? '120px' : '30px' }">
+            <div class="message-date-line"></div>
+            <span class="message-date">{{ channelService.getFormattedDate(thread.date) }}</span>
+            <div class="message-date-line"></div>
+        </div>
+
+        <div class="main-thread-container d-flex ai-start g-20 p-relative"
+            [class.own-thread-container]="thread.ownerID === accountService.getLoggedInUser().id"
+            [class.hover-main-thread]="inEditMessage === i" (mouseenter)="hoveredThreadId = i"
+            (mouseleave)="hoveredThreadId = null">
+
+            <img (click)="openDialogDm(thread)" class="thread-avatar pointer"
+                [src]="thread.ownerAvatarSrc || 'assets/img/avatar_small.png'"
+                (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
+
+            <div class="d-flex f-column g-10"
+                [class.thread-creator-reverse]="thread.ownerID === accountService.getLoggedInUser().id"
+                [class.w-100]="inEditMessage === i">
+
+                <div class="d-flex ai-baseline"
+                    [class.thread-message-box-reverse]="thread.ownerID === accountService.getLoggedInUser().id">
+                    <span (click)="openDialogDm(thread)" class="thread-creator">{{ thread.ownerName }}</span>
+                    <span class="thread-time"
+                        [class.thread-time-reverse]="thread.ownerID === accountService.getLoggedInUser().id">
+                        {{ channelService.getFormattedTime(thread.date) }}
+                    </span>
+                </div>
+
+                <span *ngIf="!(inEditMessage === i)" class="thread-text"
+                    [class.thread-text-reverse]="thread.ownerID === accountService.getLoggedInUser().id">
+                    {{ thread.content }}
+                </span>
+
+                <form *ngIf="inEditMessage === i" #dmForm="ngForm" name="editDmContent_{{i}}"
+                    class="d-flex j-between f-column edit-msg-input-box">
+
+                    <textarea [(ngModel)]="thread.editMessageContent" name="editDmContent_{{i}}" class="edit-msg-input"
+                        [class.edit-msg-input-reverse]="thread.ownerID === accountService.getLoggedInUser().id"
+                        minlength="1" maxlength="1500" required>
+                        {{ loadedMessageContent }}
+                    </textarea>
+
+                    <div class="btn-container btn-container-extra">
+                        <span (click)="openDialogEmojisEditDm(thread)"
+                            class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust">
+                            sentiment_satisfied
+                        </span>
+                        <button class="btn-secondary btn-secondary-medium" (click)="closeEdit()">Abbrechen</button>
+                        <button class="btn-primary btn-primary-medium" (click)="editMessage(thread.id, i)"
+                            [disabled]="!thread.editMessageContent?.trim() || !dmForm.valid">Speichern</button>
+                    </div>
+
+                </form>
+
+                <div class="reaction-section d-flex ai-center g-20"
+                    [class.reaction-section-reverse]="thread.ownerID === accountService.getLoggedInUser().id"
+                    [class.box-align-no-answer]="!thread.amountOfAnswers">
+
+                    <div class="d-flex g-10">
+
+                        <div *ngIf="channelService.hasReactions(thread.userReactions, '+')"
+                            (click)="addReaction(thread.id, '+', accountService.getLoggedInUser().name)"
+                            class="reaction-box flex-center p-relative pointer"
+                            [class.reaction-box-reacted]="channelService.userHasReacted(thread, '+', accountService.getLoggedInUser().name)"
+                            (mouseenter)="hoveredThumbUp = i" (mouseleave)="hoveredThumbUp = null">
+
+                            <span class="material-symbols-rounded thumb-icon-small"
+                                [ngStyle]="{'color': channelService.userHasReacted(thread, '+', accountService.getLoggedInUser().name) ? '#444DF2' : 'inherit'}">
+                                thumb_up
+                            </span>
+                            <span class="reaction-amount"
+                                [ngStyle]="{'font-weight': channelService.userHasReacted(thread, '+', accountService.getLoggedInUser().name) ? '700' : 'inherit'}">
+                                {{ thread.userReactions | reactionCount: '+' }}
+                            </span>
+
+                            <div *ngIf="hoveredThumbUp === i" class="reacted-users-box flex-center"
+                                [class.reacted-users-box-reverse]="thread.ownerID === accountService.getLoggedInUser().id">
+                                <span class="reacted-user-span"
+                                    [class.reacted-user-span-reverse]="thread.ownerID === accountService.getLoggedInUser().id">
+                                    <ng-container
+                                        *ngFor="let part of channelService.getReactionMessage(thread.userReactions, '+')">
+                                        <b *ngIf="part.isName">{{ part.text }}</b>
+                                        <span *ngIf="!part.isName">{{ part.text }}</span>
+                                    </ng-container>
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div *ngIf="channelService.hasReactions(thread.userReactions, '-')"
+                            (click)="addReaction(thread.id, '-', accountService.getLoggedInUser().name)"
+                            class="reaction-box flex-center p-relative pointer"
+                            [class.reaction-box-reacted]="channelService.userHasReacted(thread, '-', accountService.getLoggedInUser().name)"
+                            (mouseenter)="hoveredThumbDown = i" (mouseleave)="hoveredThumbDown = null">
+
+                            <span class="material-symbols-rounded thumb-icon-small"
+                                [ngStyle]="{'color': channelService.userHasReacted(thread, '-', accountService.getLoggedInUser().name) ? '#444DF2' : 'inherit'}">
+                                thumb_down
+                            </span>
+                            <span class="reaction-amount"
+                                [ngStyle]="{'font-weight': channelService.userHasReacted(thread, '-', accountService.getLoggedInUser().name) ? '700' : 'inherit'}">
+                                {{ thread.userReactions | reactionCount: '-' }}
+                            </span>
+
+                            <div *ngIf="hoveredThumbUp === i" class="reacted-users-box flex-center"
+                                [class.reacted-users-box-reverse]="thread.ownerID === accountService.getLoggedInUser().id">
+                                <span class="reacted-user-span"
+                                    [class.reacted-user-span-reverse]="thread.ownerID === accountService.getLoggedInUser().id">
+                                    <ng-container
+                                        *ngFor="let part of channelService.getReactionMessage(thread.userReactions, '-')">
+                                        <b *ngIf="part.isName">{{ part.text }}</b>
+                                        <span *ngIf="!part.isName">{{ part.text }}</span>
+                                    </ng-container>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="hoveredThreadId === i && !(inEditMessage === i)"
+                class="thread-reaction-container flex-center g-10"
+                [class.thread-reaction-container-reverse]="thread.ownerID === accountService.getLoggedInUser().id">
+
+                <div (click)="addReaction(thread.id, '+', accountService.getLoggedInUser().name)"
+                    class="thumb-icon flex-center pointer">
+                    <span class="material-symbols-rounded"
+                        [ngStyle]="{'color': channelService.userHasReacted(thread, '+', accountService.getLoggedInUser().name) ? '#444DF2' : 'inherit'}">
+                        thumb_up
+                    </span>
+                </div>
+
+                <div (click)="addReaction(thread.id, '-', accountService.getLoggedInUser().name)"
+                    class="thumb-icon flex-center pointer">
+                    <span class="material-symbols-rounded"
+                        [ngStyle]="{'color': channelService.userHasReacted(thread, '-', accountService.getLoggedInUser().name) ? '#444DF2' : 'inherit'}">
+                        thumb_down
+                    </span>
+                </div>
+
+                <div *ngIf="thread.ownerID === accountService.getLoggedInUser().id" class="p-relative"
+                    (mouseenter)="ownThreadId = i" (mouseleave)="ownThreadId = null">
+                    <mat-icon class="edit-msg-icon">keyboard_control</mat-icon>
+                    <div *ngIf="(hoveredThreadId === i) && (ownThreadId === i)"
+                        class="thread-edit-btn d-flex f-column ai-end">
+                        <span (click)="openEditMessage(thread.id, i)" class="pointer">Nachricht bearbeiten</span>
+                        <span (click)="deleteMessage(thread.id)" class="pointer">Nachricht löschen</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<form #chatMessageForm="ngForm" class="message-container d-flex f-column" (ngSubmit)="sendMessage(chatMessageForm)">
+
+    <textarea (keydown.enter)="sendMessage(chatMessageForm)" [(ngModel)]="directMessage.content" name="main-chat-input"
+        placeholder="Nachricht an #Entwicklerteam" maxlength="1500" required></textarea>
+
+    <div class="d-flex message-icons">
+        <div class="d-flex ai-center">
+
+            <span class="material-symbols-outlined message-hover-icon flex-center pointer">
+                add
+            </span>
+            <div class="message-hover-icon" class="icon-divider-line"></div>
+
+            <span (click)="openDialogEmojis()"
+                class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust">
+                sentiment_satisfied
+            </span>
+
+            <!-- <span class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust">
+                alternate_email
+            </span> -->
+
+        </div>
+        <button class="message-send-btn flex-center" type="submit" [disabled]="loading">
+            <img *ngIf="!loading" class="message-send-icon" src="assets/img/icons/arrow_send.png">
+            <div *ngIf="loading" class="loading-icon"></div>
+        </button>
+    </div>
+</form>
+
+<div *ngIf="isThreadsEmpty && !isOwnDmChannel" class="chat-content-before-msg">
+    <div class="d-flex ai-end">
+        <img class="thread-avatar-big pointer" (click)="openExtra(channelService.savedDmPartner)"
+            [src]="channelService.savedDmPartner.avatarSrc || 'assets/img/avatar_small.png'"
+            (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
+        <span (click)="openExtra(channelService.savedDmPartner)" class="chat-headline headline-no-hover pointer">{{
+            channelService.savedDmPartner.name }}</span>
+    </div>
+    <span class="no-content-span">
+        Diese Unterhaltung findet nur zwischen
+        <span>
+            @{{ channelService.savedDmPartner.name }}
+        </span>
+        und dir statt.
+    </span>
+</div>
+
+<div *ngIf="isThreadsEmpty && isOwnDmChannel" class="chat-content-before-msg">
+    <div class="d-flex ai-end">
+        <img class="thread-avatar-big pointer" (click)="openExtra(accountService.getLoggedInUser())"
+            [src]="channelService.savedDmPartner.avatarSrc || 'assets/img/avatar_small.png'"
+            (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
+        <span class="chat-headline mb-10 headline-no-hover pointer">{{ channelService.savedDmPartner.name }} (Du)</span>
+    </div>
+    <span class="no-content-span">
+        <b>Dieser Channel ist nur für dich da.</b>Mache dir Notizen, liste To-dos auf oder bewahre Links und Dateien
+        griffbereit auf. Du kannst hier auch gerne Dinge mit dir selbst besprechen.
+    </span>
+</div>

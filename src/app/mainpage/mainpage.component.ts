@@ -1,67 +1,79 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
+import { ChannelServiceService } from '../channel-service.service';
+import { ViewEncapsulation } from '@angular/core';
+import { Subscription, debounceTime, fromEvent } from 'rxjs';
+import { ScreenServiceService } from '../screen-service.service';
 
 @Component({
   selector: 'app-mainpage',
   templateUrl: './mainpage.component.html',
-  styleUrls: ['./mainpage.component.scss']
+  styleUrls: ['./mainpage.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
-export class MainpageComponent {
-  showLogoutPopup: boolean = false;
-  showProfilePopup: boolean = false;
-  showEditProfile: boolean = false;
+export class MainpageComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('leftSidenav', { static: false }) leftSidenav: MatSidenav;
+  @ViewChild('rightSidenav', { static: false }) rightSidenav: MatSidenav;
   hoverCodeIcon: boolean = false;
-  hoverPlusIcon: boolean = false;
-  hoverSmileyIcon: boolean = false;
-  hoverAtIcon: boolean = false;
-  hoverAddClientIcon: boolean = false;
+  isLeftSidenavOpen: boolean = true;
+
+  sidenavMode: 'over' | 'side' = 'side';
+  showChat: boolean = true;
+  resizeSubscription: Subscription;
+
+  constructor(public channelService: ChannelServiceService, private cdRef: ChangeDetectorRef, private screenService: ScreenServiceService) {
+    this.updateSidenavMode();
+  }
+
+  updateSidenavMode() {
+    if (this.screenService.tabletMode) {
+      this.sidenavMode = 'over';
+    } else {
+      this.sidenavMode = 'side';
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.resizeSubscription) {
+      this.resizeSubscription.unsubscribe();
+    }
+  }
+
+  isRightSidenavActive(): boolean {
+    return this.rightSidenav && this.rightSidenav.opened;
+  }
+
+  isLeftSidenavActive(): boolean {
+    return this.leftSidenav && this.leftSidenav.opened;
+  }
+
+  ngAfterViewInit() {
+    this.cdRef.detectChanges();
+
+    this.resizeSubscription = fromEvent(window, 'resize').pipe(
+      debounceTime(100)
+    ).subscribe(() => this.updateSidenavMode());
+  }
+
 
 
   /**
-   * Toggles the visibility of the logout popup.
+   * Toggles the visibility of the channels sidenav
    */
-  toggleLogoutPopup(): void {
-    this.showLogoutPopup = !this.showLogoutPopup;
+  toggleLeftSidenav() {
+    this.leftSidenav.toggle();
+    this.isLeftSidenavOpen = !this.isLeftSidenavOpen;
+
+    if (this.screenService.tabletMode) {
+      if (!this.showChat) {
+        this.showChat = true;
+      } else {
+        this.showChat = false;
+      }
+    }
   }
 
-
-  /**
-  * Closes the logout popup and resets the state of the edit profile flag.
-  */
-  closeLogoutPopup(): void {
-    this.showLogoutPopup = false;
-    this.showEditProfile = false;
-  }
-
-
-  /**
-   * Toggles the visibility of the profile information popup.
-   */
-  toggleProfilePopup(): void {
-    this.showProfilePopup = !this.showProfilePopup;
-  }
-
-
-  /**
-   * Closes the profile information popup.
-   */
-  closeProfilePopup(): void {
-    this.showProfilePopup = false;
-  }
-
-
-  /**
-   * Toggles the edit profile mode.
-   */
-  toggleEditProfile(): void {
-    this.showEditProfile = !this.showEditProfile;
-  }
-
-  saveEditedUserInformation() {
-    /// firebase save
-    this.toggleEditProfile();
-  }
-
-  logoutUser() {
-    // login out
+  toggleChatInMobile() {
+    this.showChat = true;
   }
 }

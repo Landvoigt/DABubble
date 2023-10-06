@@ -1,0 +1,77 @@
+.imprint-cont {
+    width: 100vw;
+    max-width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ECEEFE;
+    position: relative;
+
+
+   
+
+
+    .logo {
+        position: absolute;
+        left: 50px;
+        top: 50px;
+    }
+
+   
+mat-card {
+     margin-top: 100px;
+        max-width: 50vw;
+        height: 70vh;
+        padding-top: 75px;
+        padding-left: 32px;
+        padding-right: 32px;
+        padding-bottom: 32px;
+        border-radius: 25px;
+        position: relative;
+
+        .close-icon {
+            position: absolute;
+            left: 32px;
+            top: 24px;
+            padding: 5px;
+            border-radius: 100%;
+            &:hover {
+                border-radius: 100%;
+            }
+        }
+}
+    .content {
+       width: 100%;
+       height: 100%;
+        color: balck;
+     
+       // background-color: rgba(0, 0, 0, 0.1);
+        overflow: scroll;
+       
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    mat-card {
+       // scale: 0.9;
+    }
+
+    .logo {
+        scale: 0.8;
+    }
+
+   
+}
+
+@media screen and (max-width: 800px) {
+
+    .logo {
+        top: 50px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        margin-left: -25px !important;
+    }
+
+
+}

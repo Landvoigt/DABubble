@@ -1,0 +1,104 @@
+.threads-headline {
+    font-size: 24px;
+    font-weight: 700;
+    white-space: nowrap;
+
+    img {
+        margin-left: 10px;
+    }
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 20px;
+    }
+
+    @media (max-width: 920px) {
+        font-size: 18px;
+    }
+}
+
+.cancel-thread-hl-overflow {
+    max-width: 340px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        max-width: 240px;
+    }
+}
+
+.threads-channel {
+    font-size: 15px;
+    font-weight: 500;
+    color: #797EF3;
+    margin-left: 22px;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 13px;
+        margin-left: 4px;
+    }
+}
+
+.threads-content {
+    flex-direction: column !important;
+}
+
+.thread-divider {
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+
+    span {
+        font-size: 16px;
+        font-weight: 400;
+        color: #ADB0D9;
+        white-space: nowrap;
+        margin-left: 40px;
+
+        @media (max-width: 1550px) or (max-height: 750px) {
+            font-size: 14px;
+        }
+    }
+
+    .thread-divider-line {
+        height: 1px;
+        flex-grow: 1;
+        background-color: rgba(171, 174, 216, 0.85);
+        margin-right: 40px;
+    }
+}
+
+.thread-input-small {
+    @media (max-width: 1550px) or (max-height: 750px) {
+        width: 150px;
+        height: 180px;
+        padding: 10px;
+
+        .btn-container {
+            font-size: 12px !important;
+        }
+    }
+    @media (max-width: 1300px) {
+        width: unset !important;
+        height: unset !important;
+        padding: 20px;
+    }
+}
+
+.thread-edit-close-btn {
+    @media (max-width: 1550px) or (max-height: 750px) {
+        display: none !important;
+    }
+    @media (max-width: 1300px) {
+        display: flex !important;
+    }
+}
+
+.thread-edit-close-icon {
+    @media (max-width: 1550px) or (max-height: 750px) {
+        display: flex;
+    }
+    @media (max-width: 1300px) {
+        display: none;
+    }
+}

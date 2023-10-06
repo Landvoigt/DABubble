@@ -1,0 +1,225 @@
+<mat-icon class="close-icon p-absolute pointer" (click)="closeThreads()">close</mat-icon>
+
+<div *ngIf="currentChannel" class="threads-header d-flex">
+    <span class="threads-headline cancel-thread-hl-overflow">
+        Thread
+        <span class="threads-channel">
+            # {{ currentChannel.name }}</span>
+    </span>
+</div>
+
+<div *ngIf="currentThread" class="chat-content threads-content">
+
+    <div class="main-thread-container d-flex ai-start g-20"
+        [class.own-thread-container]="currentThread.ownerID === accountService.getLoggedInUser().id">
+        <img (click)="openDialogThread(currentThread)" class="thread-avatar pointer"
+            [src]="currentThread.ownerAvatarSrc || 'assets/img/avatar_small.png'"
+            (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
+        <div class="d-flex f-column g-10"
+            [class.thread-creator-reverse]="currentThread.ownerID === accountService.getLoggedInUser().id">
+            <div class="d-flex ai-baseline"
+                [class.thread-message-box-reverse]="currentThread.ownerID === accountService.getLoggedInUser().id">
+                <span (click)="openDialogThread(currentThread)" class="thread-creator pointer">{{
+                    currentThread.ownerName }}</span>
+                <span class="thread-time"
+                    [class.thread-time-reverse]="currentThread.ownerID === accountService.getLoggedInUser().id">
+                    {{ channelService.getFormattedTime(currentThread.date) }}
+                </span>
+            </div>
+            <span class="thread-text"
+                [class.thread-text-reverse]="currentThread.ownerID === accountService.getLoggedInUser().id">
+                {{ currentThread.content }}
+            </span>
+        </div>
+    </div>
+
+    <div class="thread-divider d-flex ai-center g-20">
+        <span>{{ getAmountOfAnswers() }}</span>
+        <div class="thread-divider-line"></div>
+    </div>
+
+    <div *ngFor="let answer of threadAnswers; let i = index" class="d-flex f-column">
+
+        <div *ngIf="channelService.threadSentOnNewDate(i, threadAnswers)"
+            class="d-flex ai-center message-date-container">
+            <div class="message-date-line"></div>
+            <span class="message-date">{{ channelService.getFormattedDate(answer.date) }}</span>
+            <div class="message-date-line"></div>
+        </div>
+
+        <div class="main-thread-container d-flex ai-start g-20 p-relative"
+            [class.own-thread-container]="answer.ownerID === accountService.getLoggedInUser().id"
+            (mouseenter)="hoveredThreadId = i" (mouseleave)="hoveredThreadId = null">
+
+            <img (click)="openDialogThread(answer)" class="thread-avatar pointer"
+                [src]="answer.ownerAvatarSrc || 'assets/img/avatar_small.png'"
+                (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
+
+            <div class="d-flex f-column g-10"
+                [class.thread-creator-reverse]="answer.ownerID === accountService.getLoggedInUser().id"
+                [class.w-100]="inEditMessage === i">
+
+                <div class="d-flex ai-baseline"
+                    [class.thread-message-box-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
+
+                    <span class="thread-creator">{{ answer.ownerName }}</span>
+                    <span class="thread-time"
+                        [class.thread-time-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
+                        {{ channelService.getFormattedTime(answer.date) }}
+                    </span>
+
+                </div>
+
+                <span *ngIf="!(inEditMessage === i)" class="thread-text"
+                    [class.thread-text-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
+                    {{ answer.content }}
+                </span>
+
+                <form *ngIf="inEditMessage === i" #answerForm="ngForm" name="editAnswerContent_{{i}}"
+                    class="d-flex j-between f-column edit-msg-input-box thread-input-small">
+
+                    <textarea [(ngModel)]="answer.editMessageContent" name="editAnswerContent_{{i}}"
+                        class="edit-msg-input"
+                        [class.edit-msg-input-reverse]="answer.ownerID === accountService.getLoggedInUser().id"
+                        minlength="1" maxlength="1500" required>
+                        {{ loadedMessageContent }}
+                    </textarea>
+
+                    <div class="btn-container btn-container-extra">
+                        <!-- <div (click)="handleDivClick($event)" class="btn-container btn-container-extra"> -->
+                        <!-- <span (click)="openDialogEmojis(answer)"
+                            class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust">
+                            sentiment_satisfied
+                        </span> -->
+                        <button class="btn-secondary btn-secondary-small thread-edit-close-btn"
+                            (click)="closeEdit()">Abbrechen</button>
+                        <mat-icon class="close-icon thread-edit-close-icon pointer"
+                            (click)="closeEdit()">close</mat-icon>
+                        <button class="btn-primary btn-primary-small" (click)="editMessage(answer.id, i)"
+                            [disabled]="!answer.editMessageContent?.trim() || !answerForm.valid">Speichern</button>
+                    </div>
+
+                </form>
+
+                <div class="reaction-section d-flex ai-center g-20"
+                    [class.reaction-section-reverse]="answer.ownerID === accountService.getLoggedInUser().id"
+                    [class.box-align-no-answer]="!answer.amountOfAnswers">
+
+                    <div class="d-flex g-10">
+
+                        <div *ngIf="channelService.hasReactions(answer.userReactions, '+')"
+                            (click)="addReaction(answer.id, '+', accountService.getLoggedInUser().name)"
+                            class="reaction-box flex-center p-relative pointer"
+                            [class.reaction-box-reacted]="channelService.userHasReacted(answer, '+', accountService.getLoggedInUser().name)"
+                            (mouseenter)="hoveredThumbUp = i" (mouseleave)="hoveredThumbUp = null">
+
+                            <span class="material-symbols-rounded thumb-icon-small"
+                                [ngStyle]="{'color': channelService.userHasReacted(answer, '+', accountService.getLoggedInUser().name) ? '#444DF2' : 'inherit'}">
+                                thumb_up
+                            </span>
+                            <span class="reaction-amount"
+                                [ngStyle]="{'font-weight': channelService.userHasReacted(answer, '+', accountService.getLoggedInUser().name) ? '700' : 'inherit'}">
+                                {{ answer.userReactions | reactionCount: '+' }}
+                            </span>
+
+                            <div *ngIf="hoveredThumbUp === i" class="reacted-users-box flex-center"
+                                [class.reacted-users-box-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
+                                <span class="reacted-user-span"
+                                    [class.reacted-user-span-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
+                                    <ng-container
+                                        *ngFor="let part of channelService.getReactionMessage(answer.userReactions, '+')">
+                                        <b *ngIf="part.isName">{{ part.text }}</b>
+                                        <span *ngIf="!part.isName">{{ part.text }}</span>
+                                    </ng-container>
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div *ngIf="channelService.hasReactions(answer.userReactions, '-')"
+                            (click)="addReaction(answer.id, '-', accountService.getLoggedInUser().name)"
+                            class="reaction-box flex-center p-relative pointer"
+                            [class.reaction-box-reacted]="channelService.userHasReacted(answer, '-', accountService.getLoggedInUser().name)"
+                            (mouseenter)="hoveredThumbDown = i" (mouseleave)="hoveredThumbDown = null">
+
+                            <span class="material-symbols-rounded thumb-icon-small"
+                                [ngStyle]="{'color': channelService.userHasReacted(answer, '-', accountService.getLoggedInUser().name) ? '#444DF2' : 'inherit'}">
+                                thumb_down
+                            </span>
+                            <span class="reaction-amount"
+                                [ngStyle]="{'font-weight': channelService.userHasReacted(answer, '-', accountService.getLoggedInUser().name) ? '700' : 'inherit'}">
+                                {{ answer.userReactions | reactionCount: '-' }}
+                            </span>
+
+                            <div *ngIf="hoveredThumbUp === i" class="reacted-users-box flex-center"
+                                [class.reacted-users-box-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
+                                <span class="reacted-user-span"
+                                    [class.reacted-user-span-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
+                                    <ng-container
+                                        *ngFor="let part of channelService.getReactionMessage(answer.userReactions, '-')">
+                                        <b *ngIf="part.isName">{{ part.text }}</b>
+                                        <span *ngIf="!part.isName">{{ part.text }}</span>
+                                    </ng-container>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="hoveredThreadId === i && !(inEditMessage === i)"
+                class="thread-reaction-container flex-center g-10"
+                [class.thread-reaction-container-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
+                <div (click)="addReaction(answer.id, '+', accountService.getLoggedInUser().name)"
+                    class="thumb-icon flex-center pointer">
+                    <span class="material-symbols-rounded"
+                        [ngStyle]="{'color': channelService.userHasReacted(answer, '+', accountService.getLoggedInUser().name) ? '#444DF2' : 'inherit'}">
+                        thumb_up
+                    </span>
+                </div>
+                <div (click)="addReaction(answer.id, '-', accountService.getLoggedInUser().name)"
+                    class="thumb-icon flex-center pointer">
+                    <span class="material-symbols-rounded"
+                        [ngStyle]="{'color': channelService.userHasReacted(answer, '-', accountService.getLoggedInUser().name) ? '#444DF2' : 'inherit'}">
+                        thumb_down
+                    </span>
+                </div>
+                <div *ngIf="answer.ownerID === accountService.getLoggedInUser().id" class="p-relative"
+                    (mouseenter)="ownThreadId = i" (mouseleave)="ownThreadId = null">
+                    <mat-icon class="edit-msg-icon">keyboard_control</mat-icon>
+                    <div *ngIf="(hoveredThreadId === i) && (ownThreadId === i)"
+                        class="thread-edit-btn d-flex f-column ai-end">
+                        <span (click)="openEditMessage(answer.id, i)" class="pointer">Nachricht bearbeiten</span>
+                        <span (click)="deleteMessage(answer.id)" class="pointer">Nachricht löschen</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form #chatMessageForm="ngForm" class="message-container d-flex f-column" (ngSubmit)="sendMessage(chatMessageForm)">
+    <textarea (keydown.enter)="sendMessage(chatMessageForm)" name="thread-answer-input" placeholder="Antworten..."
+        [(ngModel)]="message_2.content" maxlength="1500" required></textarea>
+
+    <div class="d-flex message-icons">
+        <div class="d-flex ai-center">
+
+            <span class="material-symbols-outlined message-hover-icon flex-center pointer">
+                add
+            </span>
+            <div class="message-hover-icon" class="icon-divider-line"></div>
+
+            <span (click)="openDialogEmojisThradsComp()"
+                class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust">
+                sentiment_satisfied
+            </span>
+
+        </div>
+        <button class="message-send-btn flex-center" type="submit" [disabled]="loading">
+            <img *ngIf="!loading" class="message-send-icon" src="assets/img/icons/arrow_send.png">
+            <div *ngIf="loading" class="loading-icon"></div>
+        </button>
+    </div>
+</form>

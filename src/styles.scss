@@ -1,3 +1,7 @@
+@import 'assets/fonts.scss';
+@import '@ctrl/ngx-emoji-mart/picker';
+
+
 html,
 body {
     height: 100%;
@@ -7,6 +11,12 @@ body {
     margin: 0;
     font-family: 'Nunito', sans-serif !important;
     overflow: hidden;
+    background-color: #ECEEFE;
+    font-size: 18px;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 16px;
+    }
 }
 
 .flex-center {
@@ -20,7 +30,7 @@ body {
 }
 
 .d-none {
-    display: none;
+    display: none !important;
 }
 
 .j-center {
@@ -32,7 +42,7 @@ body {
 }
 
 .j-end {
-    justify-content: flex-end;
+    justify-content: flex-end !important;
 }
 
 .j-between {
@@ -51,6 +61,10 @@ body {
     align-items: flex-end;
 }
 
+.ai-baseline {
+    align-items: baseline;
+}
+
 .f-column {
     flex-direction: column;
 }
@@ -67,6 +81,10 @@ body {
     cursor: pointer;
 }
 
+.flex-row-reverse {
+    flex-direction: row-reverse !important;
+}
+
 .w-100 {
     width: 100%;
 }
@@ -79,12 +97,28 @@ body {
     margin-top: 30px;
 }
 
+.mt-20 {
+    margin-top: 20px;
+}
+
 .mb-40 {
     margin-bottom: 40px;
 }
 
+.mb-30 {
+    margin-bottom: 30px;
+}
+
 .mb-20 {
     margin-bottom: 20px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mr-10 {
+    margin-right: 10px;
 }
 
 .mr-20 {
@@ -107,18 +141,39 @@ body {
     gap: 40px;
 }
 
+.opa-03 {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
 h2 {
-    font-size: 24px !important;
+    font-size: 28px !important;
     font-weight: 700 !important;
     font-family: 'Nunito', sans-serif !important;
-    margin: 0 !important;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 26px !important;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 28px !important;
+    }
+
+    @media (max-width: 450px) {
+        font-size: 24px !important;
+    }
+}
+
+b {
+    font-size: 28px;
+    font-weight: 800;
+    margin-right: 10px;
 }
 
 .btn-container {
     display: flex;
     align-self: center;
     gap: 40px;
-    margin-top: 40px;
 }
 
 .btn-primary {
@@ -132,9 +187,15 @@ h2 {
     font-weight: 600;
     cursor: pointer;
     transition: all 125ms ease-in-out;
+    white-space: nowrap;
 
     &:hover {
         filter: opacity(0.7)
+    }
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        padding: 8px 16px !important;
+        font-size: 16px !important;
     }
 }
 
@@ -150,10 +211,43 @@ h2 {
     outline: none;
     cursor: pointer;
     transition: all 125ms ease-in-out;
+    white-space: nowrap;
 
     &:hover {
         background-color: #444DF2;
         color: white;
+    }
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        padding: 8px 16px !important;
+        font-size: 16px !important;
+    }
+}
+
+.btn-primary-medium,
+.btn-secondary-medium {
+    padding: 8px 16px !important;
+    font-size: 16px !important;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        padding: 4px 12px !important;
+        font-size: 14px !important;
+    }
+}
+
+.btn-container-small {
+    margin-top: 0 !important;
+    gap: 10px !important;
+}
+
+.btn-primary-small,
+.btn-secondary-small {
+    padding: 3px 6px !important;
+    font-size: 13px !important;
+
+    @media (max-width: 1300px) {
+        padding: 4px 12px !important;
+        font-size: 14px !important;
     }
 }
 
@@ -180,156 +274,936 @@ h2 {
     height: 0;
 }
 
-/* nunito-300 - latin */
-@font-face {
-    font-display: swap;
-    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 300;
-    src: url('assets/fonts/nunito-v25-latin-300.woff2') format('woff2');
-    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+textarea {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 18px;
 }
 
-/* nunito-300italic - latin */
-@font-face {
-    font-display: swap;
-    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: italic;
-    font-weight: 300;
-    src: url('assets/fonts/nunito-v25-latin-300italic.woff2') format('woff2');
-    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* nunito-regular - latin */
-@font-face {
-    font-display: swap;
-    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 400;
-    src: url('assets/fonts/nunito-v25-latin-regular.woff2') format('woff2');
-    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* nunito-italic - latin */
-@font-face {
-    font-display: swap;
-    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: italic;
-    font-weight: 400;
-    src: url('assets/fonts/nunito-v25-latin-italic.woff2') format('woff2');
-    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* nunito-500 - latin */
-@font-face {
-    font-display: swap;
-    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 500;
-    src: url('assets/fonts/nunito-v25-latin-500.woff2') format('woff2');
-    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* nunito-500italic - latin */
-@font-face {
-    font-display: swap;
-    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: italic;
-    font-weight: 500;
-    src: url('assets/fonts/nunito-v25-latin-500italic.woff2') format('woff2');
-    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* nunito-600 - latin */
-@font-face {
-    font-display: swap;
-    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: normal;
+.close-icon {
+    height: unset !important;
+    width: unset !important;
     font-weight: 600;
-    src: url('assets/fonts/nunito-v25-latin-600.woff2') format('woff2');
-    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    top: 30px;
+    right: 38px;
+    z-index: 10;
+    border-radius: 50px;
+    padding: 8px;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+        background-color: #ECEEFE;
+        color: #797EF3;
+    }
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        top: 25px;
+        right: 20px;
+        padding: 5px;
+        font-size: 20px;
+    }
+
+    @media (max-width: 920px) {
+        top: 12px;
+    }
 }
 
-/* nunito-600italic - latin */
-@font-face {
-    font-display: swap;
-    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: italic;
-    font-weight: 600;
-    src: url('assets/fonts/nunito-v25-latin-600italic.woff2') format('woff2');
-    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+.close-icon-dialog {
+    top: 45px !important;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        top: 40px !important;
+        right: 38px !important;
+        padding: 5px;
+        font-size: 20px;
+    }
+
+    @media (max-width: 450px) {
+        top: 30px !important;
+        right: 20px !important;
+    }
 }
 
-/* nunito-700 - latin */
-@font-face {
-    font-display: swap;
-    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: normal;
+.close-icon-responsive {
+    display: none !important;
+    height: unset !important;
+    width: unset !important;
+
+    @media (max-width: 920px) {
+        display: flex !important;
+        top: 12px;
+        right: 20px;
+        padding: 5px;
+        font-weight: 600;
+        font-size: 20px;
+        z-index: 10;
+        border-radius: 50px;
+
+        &:hover {
+            background-color: #ECEEFE;
+            color: #797EF3;
+        }
+    }
+
+    @media (max-width: 450px) {
+        right: 10px;
+    }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+}
+
+.hide-overlay {
+    @media (max-width: 700px) {
+        top: 80px;
+    }
+}
+
+.cdk-overlay-container {
+    @media (max-width: 700px) {
+        margin-top: 80px;
+    }
+}
+
+.cdk-overlay-pane {
+    @media (max-width: 700px) {
+        width: 100%;
+        height: 100%;
+        max-width: unset !important;
+        max-height: unset;
+    }
+}
+
+.mdc-dialog__surface {
+    border-radius: 30px !important;
+    padding: 40px;
+
+    @media (max-width: 700px) {
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    @media (max-width: 450px) {
+        padding: 30px 20px;
+    }
+}
+
+.cdk-overlay-pane:not(.mat-mdc-autocomplete-panel-above) div.mat-mdc-autocomplete-panel {
+    border-radius: 30px;
+    border: 1px solid #ADB0D9;
+    padding: 0;
+}
+
+.mat-drawer-backdrop.mat-drawer-shown {
+    display: none;
+}
+
+.mat-drawer {
+    box-shadow: none !important;
+}
+
+.mat-drawer-inner-container {
+    overflow: hidden !important;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+////  Chat Styles for Main-Chat, Threads and Direct Messages
+
+.threads-header,
+.chat-header {
+    height: 100px;
+    padding: 0 40px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    align-items: center;
+    -webkit-box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+    justify-content: space-between;
+    margin-bottom: 15px;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        padding: 0 25px;
+        height: 85px;
+    }
+
+    @media (max-width: 920px) {
+        border-radius: 0;
+        height: 55px;
+    }
+
+    @media (max-width: 450px) {
+        padding: 0 15px;
+    }
+}
+
+.chat-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column-reverse;
+    overflow-y: scroll;
+    margin-bottom: 180px;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        margin-bottom: 170px;
+    }
+}
+
+.main-thread-container {
+    padding: 14px 40px 18px 40px;
+    word-break: break-word;
+
+    &:hover {
+        background-color: #ECEEFE;
+
+        .thread-text {
+            background-color: white;
+        }
+
+        .emoji-box {
+            background-color: white;
+        }
+
+        .add-emoji-box {
+            background-color: white;
+        }
+    }
+}
+
+.hover-main-thread {
+    background-color: #ECEEFE;
+}
+
+.thread-avatar {
+    height: 60px;
+    border-radius: 50%;
+    object-fit: contain;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        height: 50px;
+    }
+}
+
+.thread-creator {
+    font-size: 18px;
     font-weight: 700;
-    src: url('assets/fonts/nunito-v25-latin-700.woff2') format('woff2');
-    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    word-break: break-word;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 16px;
+    }
 }
 
-/* nunito-700italic - latin */
-@font-face {
-    font-display: swap;
-    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: italic;
-    font-weight: 700;
-    src: url('assets/fonts/nunito-v25-latin-700italic.woff2') format('woff2');
-    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+.thread-time {
+    font-size: 14px;
+    font-weight: 500;
+    color: #686868;
+    margin-left: 20px;
+    white-space: nowrap;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 12px;
+    }
+
+    @media (max-width: 540px) {
+        display: none;
+    }
 }
 
-/* nunito-800 - latin */
-@font-face {
-    font-display: swap;
-    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 800;
-    src: url('assets/fonts/nunito-v25-latin-800.woff2') format('woff2');
-    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+.thread-text {
+    font-size: 18px;
+    font-weight: 400;
+    padding: 15px 20px;
+    border-radius: 50px;
+    border-top-left-radius: 0;
+    background-color: #ECEEFE;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 15px;
+    }
 }
 
-/* nunito-800italic - latin */
-@font-face {
-    font-display: swap;
-    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: italic;
-    font-weight: 800;
-    src: url('assets/fonts/nunito-v25-latin-800italic.woff2') format('woff2');
-    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+.thread-answer-container-reverse {
+    justify-content: flex-end;
 }
 
-/* nunito-900 - latin */
-@font-face {
-    font-display: swap;
-    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 900;
-    src: url('assets/fonts/nunito-v25-latin-900.woff2') format('woff2');
-    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+.thread-answer-count {
+    font-size: 17px;
+    font-weight: 500;
+    color: #797EF3;
+    cursor: pointer;
+    white-space: nowrap;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 15px;
+    }
 }
 
-/* nunito-900italic - latin */
-@font-face {
-    font-display: swap;
-    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: italic;
-    font-weight: 900;
-    src: url('assets/fonts/nunito-v25-latin-900italic.woff2') format('woff2');
-    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+.reaction-section {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-right: 10px;
+}
+
+.box-align-no-answer {
+    justify-content: flex-end;
+    margin-right: 20px;
+}
+
+.reaction-section-reverse {
+    flex-direction: row-reverse;
+    margin-left: 10px;
+    margin-right: 20px;
+}
+
+.reaction-box {
+    padding: 2px 8px;
+    border: 1px solid #ADB0D9;
+    border-radius: 50px;
+    gap: 5px;
+    justify-content: baseline;
+
+    &:hover {
+        border: 1px solid #797EF3;
+    }
+
+    .reaction-amount {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        padding: 1px 4px;
+
+        .reaction-amount {
+            font-size: 12px;
+            margin: -1px 0 -1px 0;
+        }
+    }
+}
+
+.reaction-box-reacted {
+    border: 1px solid #797EF3 !important;
+}
+
+.reacted-users-box {
+    width: auto;
+    max-width: 200px;
+    position: absolute;
+    z-index: 10;
+    bottom: 23px;
+    right: 28px;
+    background-color: #797EF3;
+    border-radius: 15px;
+    padding: 6px 10px;
+    text-align: center;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        bottom: 19px;
+        right: 19px;
+        padding: 4px 8px;
+    }
+}
+
+.reacted-users-box-reverse {
+    right: unset !important;
+    left: 28px;
+    background-color: white;
+    box-shadow: inset 0 0 0 1px #797EF3;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        left: 19px;
+    }
+}
+
+.reacted-user-span {
+    min-width: 110px;
+    color: white;
+    margin-bottom: -2px;
+    display: grid;
+    place-items: center;
+
+    b {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    span {
+        font-size: 14px;
+        font-weight: 300;
+    }
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        min-width: 90px;
+        margin: -1px 0 -3px 0;
+
+        b {
+            font-size: 14px;
+        }
+
+        span {
+            font-size: 12px;
+            font-weight: 400;
+        }
+    }
+}
+
+.reacted-user-span-reverse {
+    color: black !important;
+}
+
+.own-thread-container {
+    flex-direction: row-reverse;
+
+    .thread-message-box-reverse {
+        flex-direction: row-reverse;
+    }
+
+    .thread-time-reverse {
+        margin-left: 0 !important;
+        margin-right: 20px;
+    }
+
+    .thread-text-reverse {
+        border-radius: 30px !important;
+        border-top-right-radius: 0 !important;
+        background-color: #797EF3 !important;
+        color: white;
+        font-size: 500;
+        text-align: end;
+    }
+}
+
+.thread-container-reverse {
+    flex-direction: row-reverse;
+
+    .thread-message-box-reverse {
+        flex-direction: row-reverse;
+    }
+
+    .thread-time-reverse {
+        margin-left: 0 !important;
+        margin-right: 20px;
+    }
+
+    .thread-text-reverse {
+        border-radius: 30px !important;
+        border-top-right-radius: 0 !important;
+        color: white;
+        font-size: 500;
+    }
+}
+
+.thread-reaction-container {
+    position: absolute;
+    top: -22px;
+    right: 40px;
+    z-index: 8;
+    background-color: white;
+    padding: 3px 10px;
+    border-radius: 50px;
+    border-bottom-left-radius: 0;
+    border: 1px solid #ADB0D9;
+
+    &:hover {
+        border: 1px solid #797EF3;
+    }
+
+    mat-icon {
+        font-size: 20px;
+        padding: 5px;
+        border-radius: 50%;
+        cursor: pointer;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            color: #797EF3;
+            background-color: #ECEEFE;
+        }
+    }
+
+    .thumb-icon {
+        font-weight: 600;
+        border-radius: 50%;
+        padding: 6px;
+
+        span {
+            font-size: 21px;
+        }
+
+        &:hover {
+            background-color: #ECEEFE;
+        }
+    }
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        top: -19px;
+        gap: 3px !important;
+        padding: 2px 6px;
+
+        mat-icon {
+            padding: 1px;
+            font-size: 17px;
+        }
+
+        .thumb-icon {
+            padding: 4px;
+
+            span {
+                font-size: 18px;
+            }
+        }
+    }
+}
+
+.thumb-icon-small {
+    font-size: 16px;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 14px;
+    }
+}
+
+.thread-reaction-container-reverse {
+    border-radius: 50px !important;
+    border-bottom-right-radius: 0 !important;
+    right: unset !important;
+    left: 40px;
+}
+
+.thread-edit-btn {
+    position: absolute;
+    left: 25px;
+    top: 18px;
+    padding: 8px 18px 8px 12px;
+    border-radius: 50px;
+    border-top-left-radius: 0;
+    font-weight: 400;
+    font-size: 18px;
+    white-space: nowrap;
+    background-color: white;
+    border: 1px solid #ADB0D9;
+    gap: 10px;
+
+    &:hover {
+        border: 1px solid #797EF3;
+    }
+
+    span {
+        &:hover {
+            font-weight: 600;
+            color: #797EF3;
+        }
+    }
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        left: 20px;
+        top: 14px;
+        font-size: 14px;
+        gap: 3px;
+        padding: 4px 9px 4px 6px;
+    }
+}
+
+.material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 100,
+        'wght' 300,
+        'GRAD' 0,
+        'opsz' 24
+}
+
+.edit-msg-icon {
+    transform: rotate(90deg);
+}
+
+.edit-msg-input-box {
+    min-height: 75px;
+    padding: 20px;
+    gap: 10px;
+    border-radius: 20px;
+    border-top-right-radius: 0;
+    border: 1px solid #ADB0D9;
+    background-color: white;
+}
+
+.edit-msg-input {
+    font-family: 'Nunito', sans-serif !important;
+    height: 100%;
+    outline: none;
+    border: none;
+    resize: none;
+    font-size: 16px;
+    font-weight: 400;
+    background-color: white;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 15px;
+    }
+}
+
+.btn-container-extra {
+    align-self: flex-end;
+    gap: 10px !important;
+    margin-top: 0 !important;
+
+    @media (max-width: 1300px) {
+        gap: 20px !important;
+    }
+}
+
+.message-date-container {
+    margin: 10px 35px;
+}
+
+.message-date {
+    border: 1px solid #ADB0D9;
+    border-radius: 50px;
+    padding: 4px 15px;
+    padding-top: 6px;
+    font-size: 17px;
+    font-weight: 500;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 15px;
+        padding: 3px 11px 2px 11px;
+    }
+}
+
+.message-date-line {
+    flex: 1;
+    height: 1px;
+    background-color: #ADB0D9;
+}
+
+.message-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    height: 140px;
+    border: 1px solid rgba(171, 174, 216, 0.85);
+    border-radius: 20px;
+    background-color: white;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        height: 130px;
+    }
+
+    @media (max-height: 750px) {
+        height: 120px;
+    }
+
+    textarea {
+        height: 60%;
+        outline: none;
+        border: none;
+        padding: 15px 20px;
+        border-radius: 20px;
+        resize: none;
+        overflow: scroll;
+        font-size: 16px;
+        font-weight: 500;
+        color: #686868;
+
+        &::placeholder {
+            font-family: 'Nunito', sans-serif;
+        }
+
+        @media (max-width: 1550px) or (max-height: 750px) {
+            font-size: 14px;
+        }
+
+        @media (max-height: 750px) {
+            padding: 10px 15px;
+        }
+    }
+
+    .message-icons {
+        padding-left: 15px;
+        padding-right: 20px;
+        padding-bottom: 15px;
+        justify-content: space-between;
+
+        @media (max-height: 750px) {
+            padding-left: 10px;
+            padding-right: 15px;
+            padding-bottom: 10px;
+        }
+
+        .icon-divider-line {
+            height: 40px;
+            width: 1px;
+            background-color: #ADB0D9;
+            margin-left: 5px;
+
+            @media (max-width: 1550px) or (max-height: 750px) {
+                height: 35px;
+            }
+        }
+
+        .message-hover-icon {
+            font-size: 28px;
+            padding: 3px;
+            color: #686868;
+
+            &:hover {
+                color: #535AF1;
+                border-radius: 50%;
+                background-color: #ECEEFE;
+            }
+
+            @media (max-width: 1550px) or (max-height: 750px) {
+                font-size: 24px;
+            }
+        }
+
+        .icon-size-adjust {
+            font-size: 25px !important;
+            margin-left: 5px;
+            padding: 5px !important;
+
+            &:hover {
+                font-weight: 600;
+            }
+
+            @media (max-width: 1550px) or (max-height: 750px) {
+                font-size: 22px !important;
+            }
+        }
+    }
+
+    .message-send-btn {
+        outline: none;
+        background-color: unset;
+        border: none;
+    }
+
+    .message-send-icon {
+        object-fit: contain;
+        cursor: pointer;
+        height: 18px;
+        width: 18px;
+
+        &:hover {
+            filter: opacity(0.7)
+        }
+
+        @media (max-width: 1550px) or (max-height: 750px) {
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    .loading-icon {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        animation: rotate .25s linear infinite;
+        border: 2px solid transparent;
+        border-top-color: #444DF2;
+
+        @media (max-width: 1550px) or (max-height: 750px) {
+            width: 12px;
+            height: 12px;
+        }
+    }
+}
+
+
+
+/// dialog styles  
+
+.dialog-h2 {
+    margin: 0 0 10px 0 !important;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        margin: 0 !important;
+    }
+
+    @media (max-width: 700px) {
+        margin: 0 0 10px 0 !important;
+    }
+
+    @media (max-width: 450px) {
+        margin: 0 !important;
+    }
+}
+
+.dialog-span {
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 16px;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 18px;
+    }
+
+    @media (max-width: 450px) {
+        font-size: 16px;
+    }
+}
+
+.dialog-input {
+    font-family: 'Nunito', sans-serif;
+    outline: none;
+    color: #686868;
+    font-size: 18px;
+    background: none;
+    border: 1px solid #ADB0D9;
+    border-radius: 50px;
+    padding: 18px 20px;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 16px;
+        padding: 12px 20px;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 18px;
+        padding: 15px 20px;
+    }
+
+    @media (max-width: 450px) {
+        font-size: 16px;
+        padding: 12px 20px;
+    }
+}
+
+
+
+
+
+/// profile popup 
+
+
+.popup-name {
+    font-size: 28px !important;
+    font-weight: 700 !important;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 26px !important;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 28px !important;
+    }
+}
+
+.avatar-big {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    align-self: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        width: 135px;
+        height: 135px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    @media (max-width: 700px) {
+        width: 150px;
+        height: 150px;
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+}
+
+.popup-header-text {
+    font-size: 24px !important;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 22px !important;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 24px !important;
+    }
+}
+
+.popup-email {
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    color: #535AF1;
+    margin-left: 45px;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 16px !important;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 17px !important;
+    }
+}
+
+.edit-profile-input {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 15px 20px;
+    border-radius: 30px;
+    border: 1px solid #ADB0D9;
+
+    &:focus-visible {
+        outline: none;
+        border: 1px solid #444DF2;
+    }
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 16px;
+        padding: 12px 20px;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 18px;
+        padding: 15px 20px;
+    }
+}
+
+.hide-name {
+    @media (max-width:1300px) {
+        display: none;
+    }
+}
+
+.email-icon {
+    font-size: 24px !important;
+    font-weight: 500 !important;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 22px !important;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 24px !important;
+    }
 }

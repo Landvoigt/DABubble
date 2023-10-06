@@ -1,0 +1,38 @@
+<div class="content p-relative">
+    <mat-icon class="close-icon p-absolute pointer close-icon-extra" (click)="dialogRef.close()">close</mat-icon>
+    <h2>Mitglieder</h2>
+    <div class="members-section d-flex ai-center j-between" style="margin-top: 30px;">
+        <div class="d-flex ai-center member-box pointer" (click)="openProfile()">
+            <div class="p-relative mr-20 d-flex">
+                <img class="members-avatar"
+                    [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar_small.png'"
+                    (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
+            </div>
+            <span class="dialog-span font-adjust user-name-wrap">{{ accountService.getLoggedInUser().name }} (Du)</span>
+        </div>
+        <mat-icon *ngIf="channelService.channelOwnerEqualCurrentUser" class="channel-owner-icon">star</mat-icon>
+    </div>
+    <div class="members-section d-flex ai-center j-between" *ngFor="let member of channelMembers">
+        <div class="d-flex ai-center member-box pointer" (click)="openProfile()">
+            <div class="p-relative mr-20 d-flex">
+                <img class="members-avatar" [src]="member.avatarSrc || 'assets/img/avatar_small.png'"
+                    (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
+            </div>
+            <span class="dialog-span font-adjust user-name-wrap">{{ member.name }}</span>
+        </div>
+        <mat-icon *ngIf="currentChannel.owner === member.id" class="channel-owner-icon">star</mat-icon>
+    </div>
+    <div class="members-section d-flex">
+        <div class="d-flex ai-center member-box pointer add-member-hover p-relative"
+            (click)="channelService.channelOwnerEqualCurrentUser ? openAddMembers() : null"
+            [class.add-member-hover-grey]="!channelService.channelOwnerEqualCurrentUser" (mouseenter)="startHover()"
+            (mouseleave)="stopHover()">
+            <div class="add-client-icon-box flex-center pointer">
+                <mat-icon class="add-client-icon">person_add_alt</mat-icon>
+            </div>
+            <span *ngIf="!showNoPerm" class="dialog-span font-adjust add-member">Mitglieder hinzufügen</span>
+            <span *ngIf="!channelService.channelOwnerEqualCurrentUser && showNoPerm" class="font-adjust add-member">Only
+                channel admin</span>
+        </div>
+    </div>
+</div>

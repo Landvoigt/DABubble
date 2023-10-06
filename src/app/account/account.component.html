@@ -1,0 +1,81 @@
+<div class="account-cont">
+
+
+
+    <!-- <div class="logo-img-cont-always">
+        <img src="./assets/img/logo-intro.png">
+        <div class="title">DABubble</div>
+    </div> -->
+
+    <img class="logo" src="./assets/img/logo.png">
+
+
+    <mat-card>
+
+        <div class="account-card-cont">
+
+
+            <div class="title">Konto erstellen</div>
+            <div class="sub-title">Mit deinem Namen und deiner E-mail-Adresse hast <br> du dein neuesDABubble-Konto.</div>
+
+            <form (ngSubmit)="saveUser(accountForm)" #accountForm='ngForm'>
+                <div class="name-cont">
+                    <input [(ngModel)]="user.name" (ngModelChange)="checkUserName()" type="text" name="name"
+                        placeholder="Name und Nachname" autocomplete="on">
+                        <div style="display: none;" [class.warning]="isValidName && user.name != ''">
+                            Nur Buchstaben erlaubt!</div>
+                    <img src="./assets/img/person.png">
+                </div>
+
+                <div class="email-cont">
+                    <input [(ngModel)]="user.email" (ngModelChange)="checkUserEmail()" type="email" name="email"
+                        placeholder="E-mail" autocomplete="on">
+                    <div style="display: none;" [class.warning]="isEmailExist">Existiert bereits!</div>
+                    <div style="display: none;" [class.warning]="isEmailNotValid  && user.email != '' && !isEmailExist ">beispielname@email.com</div>
+                    <img src="./assets/img/mail.png">
+                </div>
+
+                <div class="password-cont">
+                    <img class="eye" [src]="showPassword ? './assets/img/eye_open.svg' : './assets/img/eye-slash-regular.svg'" (click)="togglePasswordVisibility()">
+                    <input [(ngModel)]="user.password" (ngModelChange)="checkUserPassword()" type="{{ showPassword ? 'text' : 'password' }}"
+                        name="password" placeholder="Passwort" autocomplete="on">
+                    <div style="display: none;" [class.warning]="isPasswordExist">Passwort kann man nicht mehr wälen!</div>
+                    <div style="display: none;" [class.warning]="isPasswordNotValid && user.password != '' && !isPasswordExist ">
+                        mind. 8 Karakter: a-z-A-Z-0-9</div>
+                    <img src="./assets/img/lock.png">
+                </div>
+
+
+            </form>
+
+            <button class="account-btn" [routerLink]="'/profile'" (click)="saveCurrentUser()"
+                [class.account-btn-active]="!isValidName && !isValidEmail && !isValidPassword"
+                [disabled]="isValidName || isValidEmail || isValidPassword || !isChecked"
+                [class.account-btn-disabled]="isValidName || isValidEmail || isValidPassword || !isChecked">Weiter</button>
+
+            <mat-checkbox class="custom-checkbox" [color]="task.color" [(ngModel)]="isChecked">
+                     <label>Ich stimme der</label><a href="#"> Datenschutzerklärung </a><label>zu.</label>
+            </mat-checkbox>
+
+
+        </div>
+
+
+
+      
+
+        <mat-card-actions>
+            <button (click)="checkIntro()" [routerLink]="'/'" mat-button>
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </mat-card-actions>
+    </mat-card>
+
+
+    <footer>
+        <span  [routerLink]="'/imprint'" >Impressum</span>
+        <span>Datenschutz</span>
+      </footer>
+
+      
+</div>

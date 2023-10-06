@@ -1,251 +1,42 @@
-<div class="main-page-bg">
-    <div class="main-page-header d-flex ai-center">
-        <div class="logo-container flex-center">
-            <img class="pointer" src="assets/img/logo/logo_&_name.png">
-            <img class="code-symbol pointer"
-                [src]="hoverCodeIcon ? 'assets/img/icons/code_symbol_purple.png' : 'assets/img/icons/code_symbol.png'"
-                (mouseenter)="hoverCodeIcon = true" (mouseleave)="hoverCodeIcon = false">
-        </div>
-        <div class="search-container flex-center">
-            <div class="search-field d-flex ai-center">
-                <input placeholder="Code learning durchsuchen">
-                <img class="pointer" src="assets/img/icons/loupe.png">
-            </div>
-        </div>
-        <div class="profile-container d-flex ai-center j-end p-relative">
-            <span class="name pointer">Vorname Nachname</span>
-            <img class="pointer" src="assets/img/avatar_1.png">
-            <img class="pointer" src="assets/img/icons/arrow_down_simple.png"
-                (click)="$event.stopPropagation(); toggleLogoutPopup()">
-            <div *ngIf="showLogoutPopup" class="overlay" (click)="closeLogoutPopup()">
-                <div class="logout-popup p-absolute flex-center f-column" (click)="$event.stopPropagation()">
-                    <span class="pointer" (click)="closeLogoutPopup(); toggleProfilePopup()">Profil</span>
-                    <span class="pointer" (click)="logoutUser()">Logout</span>
-                </div>
-            </div>
-            <div *ngIf="showProfilePopup" class="overlay" (click)="closeProfilePopup()">
-                <div class="profile-popup p-absolute d-flex f-column j-start" (click)="$event.stopPropagation()">
-                    <img class="close-icon p-absolute pointer" src="assets/img/icons/close.png"
-                        (click)="closeProfilePopup()">
-                    <span *ngIf="!showEditProfile" class="popup-header-text">Profil</span>
-                    <span *ngIf="showEditProfile" class="popup-header-text">Dein Profil bearbeiten</span>
-                    <img class="avatar-big mt-40 mb-40" src="assets/img/avatar_big.png">
-
-                    <div *ngIf="!showEditProfile" class="d-flex w-100 j-between">
-                        <span class="name">Vorname Name</span>
-                        <a class="pointer" (click)="toggleEditProfile()">Bearbeiten</a>
-                    </div>
-                    <div *ngIf="!showEditProfile" class="d-flex w-100 g-20 mt-30">
-                        <img class="online-dot" src="assets/img/icons/online.png">
-                        <span class="online-text">Aktiv</span>
-                    </div>
-                    <div *ngIf="!showEditProfile" class="d-flex w-100 g-20 mt-40">
-                        <img src="assets/img/icons/email.png">
-                        <span>E-Mail-Adresse</span>
-                    </div>
-                    <span *ngIf="!showEditProfile" class="popup-email mt-30">name.vorname@gmail.com</span>
-
-                    <div *ngIf="showEditProfile" class="d-flex ai-center w-100 g-20 mb-20">
-                        <img src="assets/img/icons/person_in_circle.png">
-                        <span>Vollständiger Name</span>
-                    </div>
-                    <input *ngIf="showEditProfile" class="edit-profile-input">
-                    <div *ngIf="showEditProfile" class="d-flex ai-center w-100 g-20 mt-40 mb-20">
-                        <img src="assets/img/icons/email.png">
-                        <span>E-Mail-Adresse</span>
-                    </div>
-                    <input *ngIf="showEditProfile" class="edit-profile-input">
-                    <div *ngIf="showEditProfile" class="btn-container">
-                        <button class="btn-secondary" (click)="toggleEditProfile()">Abbrechen</button>
-                        <button class="btn-primary" (click)="saveEditedUserInformation()">Speichern</button>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+<div class="main-page-bg p-relative">
+    <div *ngIf="showChat" class="toggle-sidenav-container pointer" (click)="toggleLeftSidenav()"
+        (mouseenter)="hoverCodeIcon = true" (mouseleave)="hoverCodeIcon = false" [ngClass]="{
+            'hide-sidenav-toggle-div': isRightSidenavActive()}">
+        <span *ngIf="isLeftSidenavOpen">Workspace-Menü schließen</span>
+        <span *ngIf="!isLeftSidenavOpen">Workspace-Menü öffnen</span>
+        <img class="code-symbol"
+            [src]="hoverCodeIcon ? 'assets/img/icons/code_symbol_purple.png' : 'assets/img/icons/code_symbol.png'"
+            [ngStyle]="{ transform: isLeftSidenavOpen ? 'rotate(180deg)' : 'rotate(0)' }">
     </div>
 
-    <div class="content d-flex j-end g-20">
+    <app-mainpage-header (openLeftSidenav)="leftSidenav.open()" (closeLeftSidenav)="toggleLeftSidenav()"
+        (closeRightSidenav)="rightSidenav.close()"></app-mainpage-header>
 
-        <div class="chat-container d-flex f-column">
-            <div class="chat-header d-flex">
-                <span class="chat-headline d-flex ai-center"><b>#</b> Entwicklerteam<img
-                        src="assets/img/icons/arrow_down_simple.png"></span>
-                <div class="d-flex ai-center">
-                    <div class="d-flex ai-center mr-20 assigned-clients-box pointer">
-                        <img class="avatar-small" src="assets/img/avatar_big.png">
-                        <img class="avatar-small" src="assets/img/avatar_big.png">
-                        <img class="avatar-small" src="assets/img/avatar_big.png">
-                        <span class="assigned-client-count">3</span>
-                    </div>
-                    <div class="add-client-icon flex-center pointer" (mouseenter)="hoverAddClientIcon = true"
-                        (mouseleave)="hoverAddClientIcon = false">
-                        <img
-                            [src]="hoverAddClientIcon ? 'assets/img/icons/add_client_blue.png' : 'assets/img/icons/add_client.png'">
-                    </div>
-                </div>
-            </div>
-            <div class="chat-content">
+    <mat-sidenav-container class="content">
 
-                <div class="main-thread-container d-flex ai-start g-20">
-                    <img class="thread-avatar" src="assets/img/avatar_small.png">
-                    <div class="d-flex f-column g-10">
-                        <div>
-                            <span class="thread-creator">Name Name</span>
-                            <span class="thread-time">00:00 Uhr</span>
-                        </div>
-                        <span class="thread-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Neque
-                            adipisci
-                            dolorum magni
-                            provident, ipsam, odit voluptatibus, repellendus sunt</span>
-                    </div>
-                </div>
+        <mat-sidenav #leftSidenav [mode]="sidenavMode" [(opened)]="isLeftSidenavOpen" position="start" opened="true"
+            class="wrapper">
+            <app-mainpage-channels class="channel-container f-column" (closeRightSidenav)="rightSidenav.close()"
+                (closeLeftSidenav)="leftSidenav.toggle()" (openChat)="toggleChatInMobile()"></app-mainpage-channels>
+        </mat-sidenav>
 
-            </div>
-            <div class="message-container d-flex f-column">
-                <textarea placeholder="Nachricht an #Entwicklerteam"></textarea>
-                <div class="d-flex message-icons">
-                    <div class="d-flex ai-center">
-                        <img class="message-hover-icon"
-                            [src]="hoverPlusIcon ? 'assets/img/icons/plus_blue.png' : 'assets/img/icons/plus.png'"
-                            (mouseenter)="hoverPlusIcon = true" (mouseleave)="hoverPlusIcon = false">
-                        <div class="message-hover-icon" class="icon-divider-line"></div>
-                        <img class="message-hover-icon"
-                            [src]="hoverSmileyIcon ? 'assets/img/icons/smiley_blue.png' : 'assets/img/icons/smiley.png'"
-                            (mouseenter)="hoverSmileyIcon = true" (mouseleave)="hoverSmileyIcon = false">
-                        <img class="message-hover-icon"
-                            [src]="hoverAtIcon ? 'assets/img/icons/at_blue.png' : 'assets/img/icons/at.png'"
-                            (mouseenter)="hoverAtIcon = true" (mouseleave)="hoverAtIcon = false">
-                    </div>
-                    <img class="message-send-icon" src="assets/img/icons/arrow_send.png">
-                </div>
-            </div>
-        </div>
-        <!-- space for other main page divs -->
+        <app-mainpage-chat *ngIf="!channelService.inDirectMessage" class="chat-container d-flex f-column" [ngClass]="{
+                    'hide-chat-container': isRightSidenavActive(),
+                    'hide-main-chat' : !showChat
+                }" (openRightSidenav)="rightSidenav.open()" (openLeftSidenav)="leftSidenav.open()"></app-mainpage-chat>
 
-        <div class="threads-container d-flex f-column">
-            <img class="close-icon p-absolute pointer" src="assets/img/icons/close.png" (click)="closeProfilePopup()">
-            <div class="threads-header d-flex">
-                <span class="threads-headline">Thread<span class="threads-channel"># Entwicklerteam</span></span>
-            </div>
+        <app-mainpage-direct-message *ngIf="channelService.inDirectMessage" class="chat-container d-flex f-column"
+            [ngClass]="{
+                'hide-chat-container': isRightSidenavActive(),
+                'hide-main-chat' : !showChat
+            }" (openLeftSidenav)="leftSidenav.open()"></app-mainpage-direct-message>
 
-            <div class="threads-content">
-                <div class="main-thread-container d-flex ai-start g-20">
-                    <img class="thread-avatar" src="assets/img/avatar_small.png">
-                    <div class="d-flex f-column g-10">
-                        <div>
-                            <span class="thread-creator">Name Name</span>
-                            <span class="thread-time">00:00 Uhr</span>
-                        </div>
-                        <span class="thread-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Neque
-                            adipisci</span>
-                    </div>
-                </div>
-                <div class="thread-divider d-flex ai-center g-20">
-                    <span>2 Antworten</span>
-                    <div class="thread-divider-line"></div>
-                </div>
+        <mat-sidenav #rightSidenav [mode]="sidenavMode" opened="false" position="end" class="wrapper">
+            <app-mainpage-threads class="threads-container d-flex f-column" [ngClass]="{
+                    'thread-full-width': isRightSidenavActive()}" (closeEvent)="rightSidenav.toggle()">
+            </app-mainpage-threads>
+        </mat-sidenav>
 
-                <div class="main-thread-container d-flex ai-start g-20">
-                    <img class="thread-avatar" src="assets/img/avatar_small.png">
-                    <div class="d-flex f-column g-10">
-                        <div>
-                            <span class="thread-creator">Name Name</span>
-                            <span class="thread-time">00:00 Uhr</span>
-                        </div>
-                        <span class="thread-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Neque
-                            adipisci
-                            dolorum magni
-                            provident, ipsam, odit voluptatibus, repellendus sunt</span>
-                    </div>
-                </div>
+    </mat-sidenav-container>
 
-                <div class="main-thread-container d-flex ai-start g-20 thread-container-reverse">
-                    <img class="thread-avatar" src="assets/img/avatar_small.png">
-                    <div class="d-flex f-column g-10 thread-creator-reverse">
-                        <div class="d-flex thread-message-box-reverse">
-                            <span class="thread-creator">Name Name</span>
-                            <span class="thread-time thread-time-reverse">00:00 Uhr</span>
-                        </div>
-                        <span class="thread-text thread-text-reverse">Lorem ipsum dolor sit amet consectetur,
-                            adipisicing</span>
-                    </div>
-                </div>
-                <div class="main-thread-container d-flex ai-start g-20 thread-container-reverse">
-                    <img class="thread-avatar" src="assets/img/avatar_small.png">
-                    <div class="d-flex f-column g-10 thread-creator-reverse">
-                        <div class="d-flex thread-message-box-reverse">
-                            <span class="thread-creator">Name Name</span>
-                            <span class="thread-time thread-time-reverse">00:00 Uhr</span>
-                        </div>
-                        <span class="thread-text thread-text-reverse">Lorem ipsum dolor sit amet consectetur,
-                            adipisicing</span>
-                    </div>
-                </div>
-                <div class="main-thread-container d-flex ai-start g-20 thread-container-reverse">
-                    <img class="thread-avatar" src="assets/img/avatar_small.png">
-                    <div class="d-flex f-column g-10 thread-creator-reverse">
-                        <div class="d-flex thread-message-box-reverse">
-                            <span class="thread-creator">Name Name</span>
-                            <span class="thread-time thread-time-reverse">00:00 Uhr</span>
-                        </div>
-                        <span class="thread-text thread-text-reverse">Lorem ipsum dolor sit amet consectetur,
-                            adipisicing</span>
-                    </div>
-                </div>
-                <div class="main-thread-container d-flex ai-start g-20 thread-container-reverse">
-                    <img class="thread-avatar" src="assets/img/avatar_small.png">
-                    <div class="d-flex f-column g-10 thread-creator-reverse">
-                        <div class="d-flex thread-message-box-reverse">
-                            <span class="thread-creator">Name Name</span>
-                            <span class="thread-time thread-time-reverse">00:00 Uhr</span>
-                        </div>
-                        <span class="thread-text thread-text-reverse">Lorem ipsum dolor sit amet consectetur,
-                            adipisicing</span>
-                    </div>
-                </div>
-
-                <div class="main-thread-container d-flex ai-start g-20 thread-container-reverse">
-                    <img class="thread-avatar" src="assets/img/avatar_small.png">
-                    <div class="d-flex f-column g-10 thread-creator-reverse">
-                        <div class="d-flex thread-message-box-reverse">
-                            <span class="thread-creator">Name Name</span>
-                            <span class="thread-time thread-time-reverse">00:00 Uhr</span>
-                        </div>
-                        <span class="thread-text thread-text-reverse">Lorem ipsum dolor sit amet consectetur,
-                            adipisicing</span>
-                    </div>
-                </div>
-                <div class="main-thread-container d-flex ai-start g-20 thread-container-reverse">
-                    <img class="thread-avatar" src="assets/img/avatar_small.png">
-                    <div class="d-flex f-column g-10 thread-creator-reverse">
-                        <div class="d-flex thread-message-box-reverse">
-                            <span class="thread-creator">Name Name</span>
-                            <span class="thread-time thread-time-reverse">00:00 Uhr</span>
-                        </div>
-                        <span class="thread-text thread-text-reverse">Lorem ipsum dolor sit amet consectetur,
-                            adipisicing</span>
-                    </div>
-                </div>
-                <div class="message-container d-flex f-column">
-                    <textarea placeholder="Antworten..."></textarea>
-                    <div class="d-flex message-icons">
-                        <div class="d-flex ai-center">
-                            <img class="message-hover-icon"
-                                [src]="hoverPlusIcon ? 'assets/img/icons/plus_blue.png' : 'assets/img/icons/plus.png'"
-                                (mouseenter)="hoverPlusIcon = true" (mouseleave)="hoverPlusIcon = false">
-                            <div class="message-hover-icon" class="icon-divider-line"></div>
-                            <img class="message-hover-icon"
-                                [src]="hoverSmileyIcon ? 'assets/img/icons/smiley_blue.png' : 'assets/img/icons/smiley.png'"
-                                (mouseenter)="hoverSmileyIcon = true" (mouseleave)="hoverSmileyIcon = false">
-                            <img class="message-hover-icon"
-                                [src]="hoverAtIcon ? 'assets/img/icons/at_blue.png' : 'assets/img/icons/at.png'"
-                                (mouseenter)="hoverAtIcon = true" (mouseleave)="hoverAtIcon = false">
-                        </div>
-                        <img class="message-send-icon" src="assets/img/icons/arrow_send.png">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>

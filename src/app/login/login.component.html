@@ -1,0 +1,96 @@
+<div class="login-cont">
+
+
+    <div [style.display]="!isIntro ? 'flex' : 'none' ">
+        <img class="logo" src="./assets/img/logo.png">
+    </div>
+
+    <div class="to-account">
+        <span> Neu bei DABubble?</span>
+        <div (click)="checkIntro()" [routerLink]="'/account'">Konto erstellen</div>
+    </div>
+
+
+
+    <div style="position: absolute;">
+        <div style="position: relative; width: 100vw; height: 100vh;">
+            <div [style.display]="isIntro ? 'flex' : 'none' " class="intro-cont"> </div>
+            <div [style.display]="isIntro ? 'flex' : 'none' " class="animation-cont">
+                <div class="intro-logo-title">
+                    <div class="logo-img-cont">
+                        <img src="./assets/img/logo-intro.png">
+                        <div class="title">DABubble</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <mat-card>
+
+        <div class="mat-card-cont">
+
+            <div class="title">Anmeldung</div>
+
+            <div class="sub-title">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die<br>du bei der Arbeit verwendest
+            </div>
+
+            <form #loginForm="ngForm" (ngSubmit)="login()">
+                <div class="email-cont">
+                    <input [(ngModel)]="user.email" (ngModelChange)="checkUserEmail()" type="email" name="email"
+                        placeholder="E-mail" autocomplete="on" ngModel #emailInput="ngModel">
+                    <img src="./assets/img/mail.png">
+                    <div [style.display]="emailInput.touched ? (isEmailValid ? 'none' : 'flex') : 'none'"
+                        [class.warning-invalid]="!isEmailValid">
+                        * Diese E-Mail-Adresse ist leider ungültig.
+                    </div>
+                </div>
+
+                <div class="password-cont">
+                    <img class="eye"
+                        [src]="showPassword ? './assets/img/eye_open.svg' : './assets/img/eye-slash-regular.svg'"
+                        (click)="togglePasswordVisibility()">
+                    <input [(ngModel)]="user.password" (ngModelChange)="checkUserPassword()"
+                        type="{{ showPassword ? 'text' : 'password' }}" name="password" placeholder="Password"
+                        autocomplete="on" ngModel #passwordInput="ngModel">
+                    <img src="./assets/img/lock.png">
+                    <div [style.display]="passwordInput.touched ? (isPasswordValid ? 'none' : 'flex') : 'none'"
+                        [class.warning-invalid]="!isPasswordValid">
+                        * Das Passwort ist ungültig.
+                    </div>
+                </div>
+
+
+            </form>
+
+
+            <div [routerLink]="'/send-link'" class="password-forgot">Passwort vergessen ?</div>
+
+            <div class="oder">
+                <div class="underline"></div>
+                <div class="oder-text">ODER</div>
+                <div class="underline"></div>
+            </div>
+
+            <div class="google-btn-container flex-center">
+                <div id="buttonDiv"></div>
+            </div>
+
+            <div class="btn-cont">
+                <button (click)="login()" [disabled]="!isEmailExist || !isPasswordExist" type="submit"
+                    class="login-btn">Anmelden</button>
+                <button [routerLink]="'/main'" class="guest-login-btn">Gäste-Login</button>
+            </div>
+
+        </div>
+
+
+    </mat-card>
+
+    <footer>
+        <span [routerLink]="'/imprint'">Impressum</span>
+        <span>Datenschutz</span>
+    </footer>
+
+</div>
