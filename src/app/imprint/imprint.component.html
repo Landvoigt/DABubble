@@ -1,51 +1,27 @@
-<div class="imprint-cont flex-center">
-   
-    <img class="logo" src="./assets/img/logo.png">
-<<<<<<< HEAD
-
-
-    <mat-card>
-<div class="content">
-=======
-    <mat-card>
-
-    <div class="content">
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-        <mat-icon class="close-icon pointer" (click)="close()">arrow_back</mat-icon>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quibusdam, voluptates ut.
-            Tempore, quis. Officiis, voluptas nulla quo deserunt maxime cupiditate id quae
-            praesentium! Provident, accusamus consectetur nemo voluptatem animi nihil?</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quibusdam, voluptates ut.
-            Tempore, quis. Officiis, voluptas nulla quo deserunt maxime cupiditate id quae
-            praesentium! Provident, accusamus consectetur nemo voluptatem animi nihil?</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quibusdam, voluptates ut.
-            Tempore, quis. Officiis, voluptas nulla quo deserunt maxime cupiditate id quae
-            praesentium! Provident, accusamus consectetur nemo voluptatem animi nihil?</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quibusdam, voluptates ut.
-            Tempore, quis. Officiis, voluptas nulla quo deserunt maxime cupiditate id quae
-            praesentium! Provident, accusamus consectetur nemo voluptatem animi nihil?</p>
-<<<<<<< HEAD
-       
+<div class="login-dialog-content flex-center p-relative">
+    <img class="logo-and-title p-absolute hide-mobile pointer" src="assets/img/logo/logo_&_name.png" (click)="locateToMainpage()">
+    <div class="hide-desktop logo-box d-flex ai-center p-absolute animation-stop pointer" (click)="locateToMainpage()">
+        <img class="logo" src="assets/img/logo/logo.png">
+        <span>DABubble</span>
     </div>
-</mat-card>
-  
-=======
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quibusdam, voluptates ut.
-            Tempore, quis. Officiis, voluptas nulla quo deserunt maxime cupiditate id quae
-            praesentium! Provident, accusamus consectetur nemo voluptatem animi nihil?</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quibusdam, voluptates ut.
-            Tempore, quis. Officiis, voluptas nulla quo deserunt maxime cupiditate id quae
-            praesentium! Provident, accusamus consectetur nemo voluptatem animi nihil?</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quibusdam, voluptates ut.
-            Tempore, quis. Officiis, voluptas nulla quo deserunt maxime cupiditate id quae
-            praesentium! Provident, accusamus consectetur nemo voluptatem animi nihil?</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quibusdam, voluptates ut.
-            Tempore, quis. Officiis, voluptas nulla quo deserunt maxime cupiditate id quae
-            praesentium! Provident, accusamus consectetur nemo voluptatem animi nihil?</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quibusdam, voluptates ut.
-            Tempore, quis. Officiis, voluptas nulla quo deserunt maxime cupiditate id quae
-            praesentium! Provident, accusamus consectetur nemo voluptatem animi nihil?</p>
-    </div>
-</mat-card>
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
+
+    <mat-card class="login-card d-flex f-column ai-center">
+        <h1>Impressum</h1>
+        <div class="content text-center">
+            <h3>Gemäß § 5 TMG</h3>
+            <div class="d-flex f-column g-10">
+                <h4>Adresse</h4>
+                <p>Tim Voigt<br>
+                    Bogenackerstr. 24<br>
+                    8632 Tann
+                </p>
+                <h4>Kontakt</h4>
+                <span class="d-flex f-column"><b>Telefon:</b>+41764419871</span>
+                <span class="d-flex f-column"><b>E-Mail:</b>tim.voigt@ok.de</span>
+                <h4>Quelle:</h4>
+                <span><a href="https://www.e-recht24.de">e-recht24.de</a></span>
+            </div>
+        </div>
+        <mat-icon class="go-back-icon p-absolute pointer flex-center" (click)="close()">arrow_back</mat-icon>
+    </mat-card>
 </div>

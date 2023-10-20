@@ -1,122 +1,89 @@
-<div class="login-cont">
-
-
-<<<<<<< HEAD
-    <div [style.display]="!isIntro ? 'flex' : 'none' ">
-        <img class="logo" src="./assets/img/logo.png">
-=======
-    <div [style.display]="!isIntro ? 'flex' : 'none' " class="logo-img-cont-always">
-        <img src="./assets/img/logo-intro.png">
-        <div class="title">DABubble</div>
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
+<div class="login-cont flex-center p-relative">
+    <div class="hide-mobile" [style.display]="!accountService.playIntro ? 'flex' : 'none' ">
+        <img class="logo-after-intro p-absolute hide-mobile" src="assets/img/logo/logo_&_name.png">
     </div>
 
-    <div class="to-account">
-        <span> Neu bei DABubble?</span>
-        <div (click)="checkIntro()" [routerLink]="'/account'">Konto erstellen</div>
+    <div class="create-account-box d-flex f-column ai-end p-absolute">
+        <span class="dialog-span hide-mobile">Neu bei DABubble?</span>
+        <span class="dialog-span create-account-span policy-span hide-mobile pointer" (click)="cancelIntro()"
+            [routerLink]="'/account'">Konto erstellen</span>
     </div>
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-    <div style="position: absolute;">
-        <div style="position: relative; width: 100vw; height: 100vh;">
-            <div [style.display]="isIntro ? 'flex' : 'none' " class="intro-cont"> </div>
-            <div [style.display]="isIntro ? 'flex' : 'none' " class="animation-cont">
-                <div class="intro-logo-title">
-                    <div class="logo-img-cont">
-                        <img src="./assets/img/logo-intro.png">
-                        <div class="title">DABubble</div>
+    <div class="p-absolute">
+        <div class="p-relative" style="width: 100vw; height: 100vh;">
+            <div [style.display]="accountService.playIntro ? 'flex' : 'none' " class="intro-cont p-absolute"></div>
+            <div [style.display]="accountService.playIntro ? 'flex' : 'none' "
+                class="animation-cont p-absolute hide-mobile">
+                <div class="intro-logo-title hide-mobile">
+                    <div class="logo-img-cont p-relative">
+                        <img src="assets/img/logo/logo-intro.png">
+                        <div class="title d-flex ai-center j-end p-absolute">DABubble</div>
                     </div>
                 </div>
+            </div>
+            <div class="hide-desktop logo-box d-flex ai-center p-absolute"
+                [class.animation-stop]="!accountService.playIntro">
+                <img class="logo" src="assets/img/logo/logo_&_name.png">
             </div>
         </div>
     </div>
 
-
-    <mat-card>
-
-        <div class="mat-card-cont">
-
-            <div class="title">Anmeldung</div>
-
-            <div class="sub-title">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die<br>du bei der Arbeit verwendest
+    <mat-card class="d-flex f-column ai-center">
+        <form #loginForm="ngForm" (ngSubmit)="login()" class="d-flex f-column ai-center">
+            <h1>Anmeldung</h1>
+            <span class="dialog-span sub-title">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit
+                verwendest
+            </span>
+            <div class="login-input-container d-flex ai-center j-start pointer p-relative">
+                <img class="input-icon" src="assets/img/icons/mail.png">
+                <input [(ngModel)]="user.email" (ngModelChange)="checkUserEmail()" type="email" name="email"
+                    placeholder="E-mail" autocomplete="on" #emailInput="ngModel">
+                <span *ngIf="!isEmailValid && emailInput.touched && emailInput.value !== ''" class="warn p-absolute">
+                    *Diese E-Mail-Adresse ist leider ungültig.
+                </span>
+            </div>
+            <div class="login-input-container d-flex ai-center j-start pointer p-relative">
+                <img class="input-icon" src="assets/img/icons/lock.png">
+                <input [(ngModel)]="user.password" (ngModelChange)="checkUserPassword()"
+                    type="{{ showPassword ? 'text' : 'password' }}" name="password" placeholder="Passwort"
+                    autocomplete="on" #passwordInput="ngModel">
+                <img class="privacy-icon pointer"
+                    [src]="showPassword ? 'assets/img/eye_open.svg' : 'assets/img/eye-slash-regular.svg'"
+                    (click)="togglePasswordVisibility()">
+                <span *ngIf="!isPasswordValid && passwordInput.touched && passwordInput.value !== ''"
+                    class="warn p-absolute">
+                    *Das Passwort ist ungültig.
+                </span>
             </div>
 
-            <form #loginForm="ngForm" (ngSubmit)="login()">
-                <div class="email-cont">
-                    <input [(ngModel)]="user.email" (ngModelChange)="checkUserEmail()" type="email" name="email"
-                        placeholder="E-mail" autocomplete="on" ngModel #emailInput="ngModel">
-                    <img src="./assets/img/mail.png">
-                    <div [style.display]="emailInput.touched ? (isEmailValid ? 'none' : 'flex') : 'none'"
-                        [class.warning-invalid]="!isEmailValid">
-                        * Diese E-Mail-Adresse ist leider ungültig.
-                    </div>
-                </div>
+            <span [routerLink]="'/send-link'" class="dialog-span password-forgot pointer">Passwort vergessen ?</span>
 
-                <div class="password-cont">
-<<<<<<< HEAD
-                    <img class="eye"
-                        [src]="showPassword ? './assets/img/eye_open.svg' : './assets/img/eye-slash-regular.svg'"
-                        (click)="togglePasswordVisibility()">
-                    <input [(ngModel)]="user.password" (ngModelChange)="checkUserPassword()"
-                        type="{{ showPassword ? 'text' : 'password' }}" name="password" placeholder="Password"
-                        autocomplete="on" ngModel #passwordInput="ngModel">
-=======
-                    <img class="eye" [src]="showPassword ? './assets/img/eye_open.svg' : './assets/img/eye-slash-regular.svg'" (click)="togglePasswordVisibility()">
-                    <input [(ngModel)]="user.password" (ngModelChange)="checkUserPassword()" type="{{ showPassword ? 'text' : 'password' }}"
-                        name="password" placeholder="Password" autocomplete="on" ngModel #passwordInput="ngModel">
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-                    <img src="./assets/img/lock.png">
-                    <div [style.display]="passwordInput.touched ? (isPasswordValid ? 'none' : 'flex') : 'none'"
-                        [class.warning-invalid]="!isPasswordValid">
-                        * Das Passwort ist ungültig.
-                    </div>
-                </div>
-
-
-            </form>
-
-
-            <div [routerLink]="'/send-link'" class="password-forgot">Passwort vergessen ?</div>
-
-            <div class="oder">
+            <div class="divider-container d-flex">
                 <div class="underline"></div>
-                <div class="oder-text">ODER</div>
+                <span class="oder-text">ODER</span>
                 <div class="underline"></div>
             </div>
 
-<<<<<<< HEAD
-            <div class="google-btn-container flex-center">
-                <div id="buttonDiv"></div>
-            </div>
-=======
-            <img class="google-login" src="./assets/img/google-login.png" [routerLink]="'/login-google'">
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
+            <img class="google-btn-container pointer" src="assets/img/google-login.png" (click)="goToGoogleLogin()">
 
             <div class="btn-cont">
-                <button (click)="login()" [disabled]="!isEmailExist || !isPasswordExist" type="submit"
-                    class="login-btn">Anmelden</button>
-                <button [routerLink]="'/main'" class="guest-login-btn">Gäste-Login</button>
+                <button (click)="login()" [disabled]="!isEmailValid || !isPasswordValid" type="submit"
+                    class="btn-primary">Anmelden</button>
+                <button class="btn-secondary" (click)="guestLogin()">Gäste-Login</button>
             </div>
-
-        </div>
-
-
+        </form>
     </mat-card>
-
     <footer>
-<<<<<<< HEAD
-        <span [routerLink]="'/imprint'">Impressum</span>
-        <span>Datenschutz</span>
+        <div class="d-flex g-40 footer-links-mobile text-center gap-adjust">
+            <span class="dialog-span policy-span pointer" [routerLink]="'/imprint'">Impressum</span>
+            <span class="dialog-span policy-span pointer"
+                [routerLink]="'/privacy-policy'">Datenschutz</span>
+        </div>
+        <div class="footer-divider-line hide-desktop"></div>
+        <div class="d-flex g-40 footer-links-mobile text-center margin-top-mobile">
+            <span class="dialog-span hide-desktop text-center">Neu bei DABubble?</span>
+            <span class="dialog-span create-account-span policy-span hide-desktop pointer text-center" (click)="cancelIntro()"
+                [routerLink]="'/account'">Konto erstellen</span>
+        </div>
     </footer>
-
-=======
-        <span [routerLink]="'/imprint'" >Impressum</span>
-        <span>Datenschutz</span>
-    </footer>
-    
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 </div>

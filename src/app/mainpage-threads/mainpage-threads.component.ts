@@ -2,25 +2,16 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@ang
 import { ChannelServiceService } from '../channel-service.service';
 import { Subscription } from 'rxjs';
 import { Thread } from 'src/models/thread.class';
-<<<<<<< HEAD
-import { Firestore, addDoc, collection, deleteDoc, doc, getDoc, getDocs, increment, limit, onSnapshot, orderBy, query, updateDoc } from '@angular/fire/firestore';
-=======
-import { Firestore, addDoc, collection, doc, getDoc, increment, onSnapshot, updateDoc } from '@angular/fire/firestore';
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
+import { CollectionReference, DocumentData, DocumentReference, Firestore, addDoc, collection, deleteDoc, doc, getDoc, getDocs, increment, limit, onSnapshot, orderBy, query, updateDoc } from '@angular/fire/firestore';
 import { Unsubscribe } from '@angular/fire/auth';
 import { AccountServiceService } from '../account-service.service';
 import { NgForm } from '@angular/forms';
 import { ChatServiceService } from '../chat-service.service';
-import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEmojisComponent } from '../dialog-emojis/dialog-emojis.component';
 import { Channel } from 'src/models/channel.class';
 import { DialogUserProfileComponent } from '../dialog-user-profile/dialog-user-profile.component';
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 @Component({
   selector: 'app-mainpage-threads',
   templateUrl: './mainpage-threads.component.html',
@@ -28,35 +19,27 @@ import { DialogUserProfileComponent } from '../dialog-user-profile/dialog-user-p
 })
 export class MainpageThreadsComponent implements OnInit, OnDestroy {
   @Output() closeEvent = new EventEmitter<void>();
+
   firestore: Firestore = inject(Firestore);
+  channelCollection = collection(this.firestore, 'channels');
 
   private channelSubscription: Subscription;
   private threadSubscription: Subscription;
   unsubAnswers: Unsubscribe;
 
-  currentChannel = new Channel();
-  currentThread = new Thread();
-<<<<<<< HEAD
-  message_2 = new Thread();
-  threadAnswers = [];
+  currentChannel: Channel = new Channel();
+  currentThread: Thread = new Thread();
+  message: Thread = new Thread();
+  threadAnswers: any[] = [];
+  editMessageContent: string = '';
 
-=======
-  message_2 = new Thread();  // Hier Änderung, vorher war es "message" , weil MainpageChatComponent hat die selbe Variable!
-  threadAnswers = [];
-  
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   loading: boolean = false;
 
   hoveredThreadId: number | null = null;
   ownThreadId: number | null = null;
   inEditMessage: number | null = null;
-<<<<<<< HEAD
   hoveredThumbUp: number | null = null;
   hoveredThumbDown: number | null = null;
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-
-  loadedMessageContent: string;
 
   constructor(public dialog: MatDialog,
     public channelService: ChannelServiceService,
@@ -65,11 +48,27 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    this.setupChannel();
+    this.setupThread();
+  }
+
+
+  /**
+   * Subscribes to the current channel.
+   */
+  setupChannel(): void {
     this.channelSubscription = this.channelService.currentChannel$.subscribe(channel => {
       if (channel && Object.keys(channel).length > 0) {
         this.currentChannel = channel;
       }
     });
+  }
+
+
+  /**
+   * Subscribes to the current thread.
+   */
+  setupThread(): void {
     this.threadSubscription = this.channelService.currentThread$.subscribe(thread => {
       if (thread && Object.keys(thread).length > 0) {
         this.currentThread = thread;
@@ -78,8 +77,12 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  /**
+   * Loads all answers of the current thread.
+   */
   setupAnswers(threadID: string) {
-    const channelDocRef = doc(this.firestore, 'channels', this.currentChannel.id);
+    const channelDocRef = doc(this.channelCollection, this.currentChannel.id);
     const threadDocRef = doc(channelDocRef, 'threads', threadID);
     const answerCollection = collection(threadDocRef, 'answers');
 
@@ -89,63 +92,110 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
         const threadData = element.data();
         this.threadAnswers.push(threadData);
       });
-
-      this.threadAnswers.sort((a, b) => {
-<<<<<<< HEAD
-        const dateA = this.channelService.timestampToDate(a.date);
-        const dateB = this.channelService.timestampToDate(b.date);
-=======
-        const dateA = this.timestampToDate(a.date);
-        const dateB = this.timestampToDate(b.date);
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-        return dateA.getTime() - dateB.getTime();
-      });
+      this.sortAnswers();
     });
   }
 
-  async sendMessage(form: NgForm) {
-    if (form.valid) {
+
+  /**
+   * Sorts all answers to see the latest message. 
+   */
+  sortAnswers(): void {
+    this.threadAnswers.sort((a, b) => {
+      const dateA = this.channelService.timestampToDate(a.date);
+      const dateB = this.channelService.timestampToDate(b.date);
+      return dateA.getTime() - dateB.getTime();
+    });
+  }
+
+
+  /**
+   * Sends an answer to the thread.
+   * @param {NgForm} form - The Angular form containing the message.
+   */
+  async sendMessage(form: NgForm): Promise<void> {
+    this.addImageUrlToNewMessage();
+    if (this.message.uploadedFile || form.valid) {
       this.loading = true;
-      const channelDocRef = doc(this.firestore, 'channels', this.currentChannel.id);
-      const threadDocRef = doc(channelDocRef, 'threads', this.currentThread.id);
-      const answerCollection = collection(threadDocRef, 'answers');
 
-      this.message_2.date = new Date();
-      this.message_2.ownerID = this.accountService.getLoggedInUser().id;
-      this.message_2.ownerName = this.accountService.getLoggedInUser().name;
-      this.message_2.ownerAvatarSrc = this.accountService.getLoggedInUser().avatarSrc;
-      this.message_2.ownerEmail = this.accountService.getLoggedInUser().email;
+      this.setMessageProperties();
+      await this.addNewAnswer();
 
-      const threadData = this.message_2.toJSON();
-      const newAnswer = await addDoc(answerCollection, threadData);
-
-      const answerDocRef = doc(answerCollection, newAnswer.id);
-      await updateDoc(answerDocRef, {
-        id: newAnswer.id
-      });
-
-      await updateDoc(threadDocRef, {
-        lastAnswerTime: new Date(),
-        amountOfAnswers: increment(1)
-      });
-
-      form.resetForm();
-      this.message_2.content = '';
-      this.loading = false;
-<<<<<<< HEAD
-      this.chatService.isContent = false;
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
+      this.accountService.userIsActive();
+      this.resetFormAndVariables(form);
     }
   }
 
-  closeEdit() {
-    this.inEditMessage = null;
+
+  /**
+   * Save the file url to the nex message.
+   */
+  addImageUrlToNewMessage() {
+    this.message.uploadedFile = this.chatService.currentImageUrl;
+  }
+  
+  
+  /**
+   * Sets the properties of the message before sending.
+   */
+  private setMessageProperties(): void {
+    const user = this.accountService.getLoggedInUser();
+    this.message.date = new Date();
+    this.message.ownerID = user.id;
+    this.message.ownerName = user.name;
+    this.message.ownerAvatarSrc = user.avatarSrc;
+    this.message.ownerEmail = user.email;
   }
 
-  async openEditMessage(answerId: any, i: number) {
+
+  /**
+   * Adds a new Answer.
+   */
+  private async addNewAnswer(): Promise<void> {
+    const channelDocRef = doc(this.channelCollection, this.currentChannel.id);
+    const threadDocRef = doc(channelDocRef, 'threads', this.currentThread.id);
+    const answerCollection = collection(threadDocRef, 'answers');
+
+    const threadData = this.message.toJSON();
+    const newAnswer = await addDoc(answerCollection, threadData);
+
+    await this.updateThreadsAndAnswers(threadDocRef, answerCollection, newAnswer);
+  }
+
+
+  /**
+   * Updates the answer ID aswell as the answers count in the thread.
+   */
+  async updateThreadsAndAnswers(threadDocRef: any, answerCollection: any, newAnswer: any) {
+    await updateDoc(doc(answerCollection, newAnswer.id), { id: newAnswer.id });
+    await updateDoc(threadDocRef, {
+      lastAnswerTime: new Date(),
+      amountOfAnswers: increment(1)
+    });
+  }
+
+
+  /**
+   * Resets the form and message related variables
+   */
+  resetFormAndVariables(form: NgForm): void {
+    this.chatService.uploadedFileThreads = '';
+    form.resetForm();
+    this.message.content = '';
+    this.loading = false;
+    this.chatService.isContent = false;
+    this.chatService.currentImageUrl = '';
+  }
+
+
+  /**
+   * Opens the edit message input.
+   * @param {any} answerId - The ID of the answer that contains the message to edit.
+   * @param {number} i - The index of the message in the answers array.
+   */
+  async openEditMessage(answerId: any, i: number): Promise<void> {
     this.inEditMessage = i;
-    const channelDocRef = doc(this.firestore, 'channels', this.currentChannel.id);
+    const channelDocRef = doc(this.channelCollection, this.currentChannel.id);
     const threadDocRef = doc(channelDocRef, 'threads', this.currentThread.id);
     const answerCollection = collection(threadDocRef, 'answers');
     const answerDocRef = doc(answerCollection, answerId);
@@ -156,62 +206,34 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async editMessage(answerId: any, i: number) {
-    const channelDocRef = doc(this.firestore, 'channels', this.currentChannel.id);
+
+  /**
+   * Updates the edited content of a specific message in firestore.
+   * @param {any} answerId - The ID of the answer that contains the message to update.
+   * @param {number} i - The index of the message in the answers array.
+   */
+  async editMessage(answerId: any, i: number): Promise<void> {
+    const channelDocRef = doc(this.channelCollection, this.currentChannel.id);
     const threadDocRef = doc(channelDocRef, 'threads', this.currentThread.id);
     const answerCollection = collection(threadDocRef, 'answers');
     const answerDocRef = doc(answerCollection, answerId);
-
     await updateDoc(answerDocRef, {
       content: this.threadAnswers[i].editMessageContent
     });
+    this.resetMessageProperties();
+  }
 
+
+  /**
+   * Resets the message booleans.
+   */
+  resetMessageProperties(): void {
     this.inEditMessage = null;
-<<<<<<< HEAD
     this.hoveredThreadId = null;
     this.ownThreadId = null;
     this.chatService.isEditMessageContent = false;
-=======
   }
 
-  timestampToDate(timestamp: { seconds: number, nanoseconds: number }): Date {
-    return new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
-  }
-
-  getFormattedTime(timestamp: any) {
-    const date = this.timestampToDate(timestamp);
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-
-    const formattedTime = `${hours}:${minutes} Uhr`;
-    return formattedTime;
-  }
-
-  getFormattedDate(timestamp: { seconds: number, nanoseconds: number }): string {
-    const options: Intl.DateTimeFormatOptions = {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric'
-    };
-    const date = this.timestampToDate(timestamp);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const dateToCompare = new Date(date.getTime());
-    dateToCompare.setHours(0, 0, 0, 0);
-    if (dateToCompare.getTime() === today.getTime()) {
-      return 'Heute';
-    } else {
-      return new Intl.DateTimeFormat('de-DE', options).format(date);
-    }
-  }
-
-  threadSentOnNewDate(index: number, threadAnswers: any[]): boolean {
-    if (index === 0) return false;
-    const currentDate = this.getFormattedDate(threadAnswers[index].date);
-    const prevDate = this.getFormattedDate(threadAnswers[index - 1].date);
-    return currentDate !== prevDate;
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-  }
 
   getAmountOfAnswers() {
     if (this.threadAnswers?.length === 1) {
@@ -221,119 +243,223 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
     }
   }
 
-  closeThreads() {
-    this.closeEvent.emit();
+
+  /**
+   * Deletes a message and updates the answer count accordingly.
+   * @param {string} answerId - The ID of the answer/message to be deleted.
+   */
+  async deleteMessage(answerId: string): Promise<void> {
+    const answerDocRef = this.getAnswerDocRef(answerId);
+    await deleteDoc(answerDocRef);
+    await this.updateAnswerCount();
   }
 
-  ngOnDestroy() {
-    if (this.channelSubscription) {
-      this.channelSubscription.unsubscribe();
+
+  /**
+   * Gets the document reference for a specific answer/message.
+   * @param {string} answerId - The ID of the answer/message.
+   */
+  private getAnswerDocRef(answerId: string): DocumentReference {
+    const channelDocRef = doc(this.channelCollection, this.currentChannel.id);
+    const threadDocRef = doc(channelDocRef, 'threads', this.currentThread.id);
+    const answerCollection = collection(threadDocRef, 'answers');
+    return doc(answerCollection, answerId);
+  }
+
+
+  /**
+   * Updates the answer count and optionally the last answer time.
+   */
+  async updateAnswerCount(): Promise<void> {
+    const threadDocRef = this.getThreadDocRef();
+    const answerCollection = this.getAnswerCollection(threadDocRef);
+
+    await this.decrementAnswerCount(threadDocRef);
+    await this.manageLastAnswerTime(threadDocRef, answerCollection);
+  }
+
+
+  /**
+   * Gets the document reference for a specific thread.
+   */
+  private getThreadDocRef(): DocumentReference {
+    const channelDocRef = doc(this.channelCollection, this.currentChannel.id);
+    return doc(channelDocRef, 'threads', this.currentThread.id);
+  }
+
+
+  /**
+   * Gets the collection reference for answers/messages in a thread.
+   * @param {DocumentReference} threadDocRef - The reference to the thread document in Firestore.
+   */
+  private getAnswerCollection(threadDocRef: DocumentReference): CollectionReference {
+    return collection(threadDocRef, 'answers');
+  }
+
+
+  /**
+   * Decrements the count of answers/messages in a thread.
+   * @param {DocumentReference} threadDocRef - The reference to the thread document in Firestore.
+   */
+  private async decrementAnswerCount(threadDocRef: DocumentReference): Promise<void> {
+    await updateDoc(threadDocRef, {
+      amountOfAnswers: increment(-1)
+    });
+  }
+
+
+  /**
+   * Manages the `lastAnswerTime` field of a thread, updating it based on existing answers or setting it to null.
+   * @param {DocumentReference} threadDocRef - The reference to the thread document in Firestore.
+   * @param {CollectionReference} answerCollection - The reference to the answers collection in Firestore.
+   */
+  private async manageLastAnswerTime(threadDocRef: DocumentReference, answerCollection: CollectionReference): Promise<void> {
+    const threadData = (await getDoc(threadDocRef)).data() as Thread;
+
+    if (threadData.amountOfAnswers === 0) {
+      await updateDoc(threadDocRef, { lastAnswerTime: null });
+    } else {
+      await this.updateLastAnswerTime(threadDocRef, answerCollection);
     }
+  }
 
-    if (this.threadSubscription) {
-      this.threadSubscription.unsubscribe();
+  /**
+   * Updates the `lastAnswerTime` field of a thread, based on the latest answer.
+   * @param {DocumentReference} threadDocRef - The reference to the thread document in Firestore.
+   * @param {CollectionReference} answerCollection - The reference to the answers collection in Firestore.
+   */
+  private async updateLastAnswerTime(threadDocRef: DocumentReference, answerCollection: CollectionReference): Promise<void> {
+    const latestAnswerSnapshot = await getDocs(query(answerCollection, orderBy("date", "desc"), limit(1)));
+
+    if (!latestAnswerSnapshot.empty) {
+      const latestAnswer = latestAnswerSnapshot.docs[0];
+      const answerData = latestAnswer.data() as Thread;
+      await updateDoc(threadDocRef, { lastAnswerTime: answerData.date });
     }
-
-    if (this.unsubAnswers) {
-      this.unsubAnswers();
-    }
   }
 
-<<<<<<< HEAD
-  openDialogThread(currentThread: any) {
-    this.chatService.ownerData = currentThread;
-    // event.preventDefault();
-    this.dialog.open(DialogUserProfileComponent, { restoreFocus: false });
-  }
 
-  openDialogEmojisThradsComp() {
-    this.chatService.serviceThread = this.message_2;
-    this.chatService.isContent = true;
-=======
-  openDialogThread(currentThread:any) {
-    this.chatService.ownerData = currentThread;
-   // event.preventDefault();
-    this.dialog.open(DialogUserProfileComponent, { restoreFocus: false });
-  }
-
-  openDialog() {
-    this.chatService.serviceThread = this.message_2;
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-    event.preventDefault();
-    this.dialog.open(DialogEmojisComponent, { restoreFocus: false });
-  }
-
-<<<<<<< HEAD
-  // insertEmoji(event: EmojiEvent) {
-  //   this.chatService.insertEmoji(event);
-  // }
-  // insertEmoji(event: EmojiEvent) {
-  //   this.chatService.insertEmoji(event);
-  // }
-
-
-
-  async addReaction(answerId: string, reactionType: string, userName: string) {
-    const channelDocRef = doc(this.firestore, 'channels', this.currentChannel.id);
+  /**
+   * Add a reaction to a answer.
+   */
+  async addReaction(answerId: string, reactionType: string, userName: string): Promise<void> {
+    const channelDocRef = doc(this.channelCollection, this.currentChannel.id);
     const threadDocRef = doc(channelDocRef, 'threads', this.currentThread.id);
     const answerCollection = collection(threadDocRef, 'answers');
     const answerDocRef = doc(answerCollection, answerId);
 
+    const userReactions = await this.getUserReactions(answerDocRef);
+    this.updateReaction(userReactions, userName, reactionType);
+
+    await updateDoc(answerDocRef, { userReactions });
+  }
+
+
+  /**
+   * Get user reactions from a answer document.
+   */
+  private async getUserReactions(answerDocRef: DocumentReference<DocumentData>): Promise<Object> {
     const answerSnap = await getDoc(answerDocRef);
     const answerData = answerSnap.data() as Thread;
-    const userReactions = answerData.userReactions || {};
+    return answerData.userReactions || {};
+  }
 
-    // If user has already reacted with the same reaction, remove it, otherwise set/update the reaction
+
+  /**
+   * Update the reaction status for a user in the userReactions object.
+   */
+  private updateReaction(userReactions: Object, userName: string, reactionType: string): void {
     if (userReactions[userName] === reactionType) {
       delete userReactions[userName];
     } else {
       userReactions[userName] = reactionType;
     }
-
-    await updateDoc(answerDocRef, {
-      userReactions: userReactions
-    });
   }
 
-  async deleteMessage(answerId: string) {
-    const channelDocRef = doc(this.firestore, 'channels', this.currentChannel.id);
-    const threadDocRef = doc(channelDocRef, 'threads', this.currentThread.id);
-    const answerCollection = collection(threadDocRef, 'answers');
 
-    // Delete the answer.
-    const answerDocRef = doc(answerCollection, answerId);
-    await deleteDoc(answerDocRef);
+  /**
+   * Closes the threads component.
+   */
+  closeThreads() {
+    this.closeEvent.emit();
+  }
 
-    // Update the count of answers by decrementing by 1.
-    await updateDoc(threadDocRef, {
-      amountOfAnswers: increment(-1)
-    });
 
-    // Fetch the current thread data.
-    const threadSnapshot = await getDoc(threadDocRef);
-    const threadData = threadSnapshot.data() as Thread;
+  /**
+   * Takes the information in the thread to open the profile dialog. 
+   */
+  openDialogProfile(thread: Thread): void {
+    this.chatService.ownerData = thread;
+    this.dialog.open(DialogUserProfileComponent, { restoreFocus: false });
+  }
 
-    // If the updated amount of answers is now 0, clear the lastAnswerTime.
-    if (threadData.amountOfAnswers === 0) {
-      await updateDoc(threadDocRef, {
-        lastAnswerTime: null // Or however you want to represent no answers.
-      });
-    } else {
-      // Fetch the latest answer based on its date.
-      const latestAnswerQuery = query(answerCollection, orderBy("date", "desc"), limit(1));
-      const latestAnswerSnapshot = await getDocs(latestAnswerQuery);
 
-      if (!latestAnswerSnapshot.empty) {
-        const latestAnswer = latestAnswerSnapshot.docs[0];
-        const answerData = latestAnswer.data() as Thread;
-        await updateDoc(threadDocRef, {
-          lastAnswerTime: answerData.date
-        });
-      }
+  /**
+ * Opens the emoji picker.
+ */
+  openDialogEmojis(event: any): void {
+    this.chatService.serviceThread = this.message;
+    this.chatService.isContent = true;
+    event.preventDefault();
+    this.dialog.open(DialogEmojisComponent, { restoreFocus: false });
+  }
+
+
+  /**
+   * Opens the emoji picker in the edit message.
+   */
+  openDialogEmojisInEdit(event: any, thread: Thread): void {
+    this.chatService.isEditMessageContent = true;
+    this.chatService.serviceThread = thread;
+    event.preventDefault();
+    this.dialog.open(DialogEmojisComponent, { restoreFocus: false });
+  }
+
+
+  /**
+   * Closes the edit message content form
+   */
+  closeEdit() {
+    this.inEditMessage = null;
+  }
+
+
+  /**
+   * Unsubscribes from all active subscriptions.
+   */
+  ngOnDestroy(): void {
+    this.unsubscribeChannels();
+    this.unsubscribeThreads();
+    this.unsubscribeAnswers();
+  }
+
+
+  /**
+   * Unsubscribes from the channel if active.
+   */
+  private unsubscribeChannels(): void {
+    if (this.channelSubscription) {
+      this.channelSubscription.unsubscribe();
     }
-=======
-  insertEmoji(event: EmojiEvent) {
-    this.chatService.insertEmoji(event);
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
+  }
+
+
+  /**
+   * Unsubscribes from the current thread if active.
+   */
+  private unsubscribeThreads(): void {
+    if (this.threadSubscription) {
+      this.threadSubscription.unsubscribe();
+    }
+  }
+
+
+  /**
+   * Unsubscribes from all answers if active.
+   */
+  private unsubscribeAnswers(): void {
+    if (this.unsubAnswers) {
+      this.unsubAnswers();
+    }
   }
 }

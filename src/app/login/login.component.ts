@@ -1,285 +1,175 @@
-import { ChangeDetectorRef, Component, inject, NgZone, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { User } from 'src/models/user.class';
 import { AccountServiceService } from '../account-service.service';
-import { Firestore, addDoc, collection, getDocs, setDoc } from '@angular/fire/firestore';
+import { DocumentData, DocumentReference, Firestore, collection, getDocs, query, where } from '@angular/fire/firestore';
 import { updateDoc, doc, getDoc } from 'firebase/firestore';
 import { Router } from '@angular/router';
 import { ChatServiceService } from '../chat-service.service';
-import { CredentialResponse, PromptMomentNotification } from 'google-one-tap';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   firestore: Firestore = inject(Firestore);
-  /** Google client ID */
-  public clientId = "136417201224-s82t0jk6btp5001rqj6vohm4pkdlfgdn.apps.googleusercontent.com";
-
-  isIntro = true;
-  user = new User();
-  isEmailExist: boolean = false;
-  isPasswordExist: boolean = false;
+  userCollection = collection(this.firestore, "users");
+  user: User = new User();
   isEmailValid: boolean = false;
   emailPattern: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  showPassword: boolean = false;
+  passwordExists: boolean = false;
   isPasswordValid: boolean = false;
-  showPassword = false;
 
-  constructor(public accountService: AccountServiceService,
-    private router: Router, private ref: ChangeDetectorRef, private ngZone: NgZone) {
-    this.isIntro = accountService.isIntro;
-  }
-
-  ngOnInit(): void {
-    // console.log('this.accountService.usersArray: ', this.accountService.usersArray);
-    this.initializeGoogleLogin();
-  }
-
-  checkIntro() {
-    this.isIntro = false;
+  constructor(
+    public accountService: AccountServiceService,
+    private router: Router,
+    public chatService: ChatServiceService) {
   }
 
 
-  async checkUserEmail() {
+  /**
+   * Validates a user's email.
+   */
+  async checkUserEmail(): Promise<void> {
+    this.isEmailValid = false;
+
     if (this.user.email === '' || !this.emailPattern.test(this.user.email)) {
-      this.isEmailValid = true;
       return;
     }
-    const collRef = collection(this.firestore, "users");
-    const querySnapshot = await getDocs(collRef);
-    this.isEmailExist = querySnapshot.docs.some((doc) => {
-      const userData = doc.data() as User;
-      return userData.email === this.user.email;
-    });
 
-    if (this.isEmailExist) {
+    const q = query(this.userCollection, where("email", "==", this.user.email));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
       this.isEmailValid = true;
-    } else {
-      this.isEmailValid = false;
     }
   }
 
 
-  async checkUserPassword() {
-    if (this.user.password === '') {
-      this.isPasswordValid = true;
+  /**
+   * Validates a user's password by checking the entered password against the stored password.
+   * It first validates the user email and then if the user exists, it validates the password.
+   */
+  async checkUserPassword(): Promise<void> {
+    this.isPasswordValid = false;
+
+    if (this.user.password === '' || this.user.email === '' || !this.emailPattern.test(this.user.email)) {
       return;
     }
-    const collRef = collection(this.firestore, "users");
-    const querySnapshot = await getDocs(collRef);
-    this.isPasswordExist = querySnapshot.docs.some((doc) => {
-      const userData = doc.data() as User;
-      return userData.password === this.user.password;
-    });
 
-    if (this.isPasswordExist) {
-      this.isPasswordValid = true;
-    } else {
-      this.isPasswordValid = false;
+    const q = query(this.userCollection, where("email", "==", this.user.email));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const userData = querySnapshot.docs[0].data() as User;
+
+      if (userData.password === this.user.password) {
+        this.isPasswordValid = true;
+      }
     }
   }
 
 
-
-
-  async login() {
-    const email = this.user.email;
-    const password = this.user.password;
+  /**
+   * Authenticate and log in a user.
+   */
+  async login(): Promise<void> {
+    const { email, password } = this.user;
 
     if (email && password) {
-      const collRef = collection(this.firestore, "users");
-      const querySnapshot = await getDocs(collRef);
+      try {
+        const userDoc = await this.findUserByEmail(email);
 
-      let userFound = false;
-
-      querySnapshot.forEach(async (queryDocSnapshot) => {
-        const userData = queryDocSnapshot.data() as User;
-
-        if (userData.email === email) {
-          userFound = true;
-
-          if (userData.password === password) {
-            console.log('Erfolgreich angemeldet:', userData);
-
-            const userDocRef = doc(this.firestore, 'users', queryDocSnapshot.id);
-            await updateDoc(userDocRef, {
-              loggedIn: true
-            });
-            const userDoc = await getDoc(userDocRef);
-            const updatedUserData = userDoc.data() as User;
-            console.log('Benutzerdaten nach dem Einloggen:', updatedUserData);
-            this.accountService.setLoggedInUser(updatedUserData);
-            this.router.navigate(['/main']);
-
-          } else {
-            console.log('Falsches Passwort');
-          }
+        if (!userDoc) {
+          console.error("No user found with provided email");
+          return;
         }
-      });
 
-      if (!userFound) {
-        console.log('Benutzer ist nicht vorhanden!');
+        const userData = userDoc.data() as User;
+        await this.verifyPasswordAndLoginUser(userData, password, userDoc.ref);
+
+      } catch (error) {
+        console.error("Error logging in:", error);
       }
-    } else {
-      console.log('Bitte füllen Sie beide Eingabefelder aus.');
     }
   }
 
 
+  /**
+   * Find a user document by email.
+   * @param {string} email - The email of the user.
+   */
+  private async findUserByEmail(email: string) {
+    const userQuery = query(this.userCollection, where('email', '==', email));
+    const querySnapshot = await getDocs(userQuery);
+    return querySnapshot.empty ? null : querySnapshot.docs[0];
+  }
+
+
+  /**
+   * Verify the provided password and log the user in if it's correct.
+   * @param {User} userData - The data of the user.
+   * @param {string} password - The password to be verified.
+   * @param {DocumentReference<DocumentData>} userDocRef - Reference to the user document.
+   */
+  private async verifyPasswordAndLoginUser(userData: User, password: string, userDocRef: DocumentReference<DocumentData>): Promise<void> {
+    if (userData.password !== password) {
+      throw new Error("Incorrect password");
+    }
+
+    await this.updateLoginStatus(userDocRef);
+    this.accountService.setLoggedInUser(userData);
+    this.router.navigate(['/main']);
+  }
+
+
+  /**
+   * Update the login status of a user.
+   * @param {DocumentReference<DocumentData>} userDocRef - Reference to the user document.
+   */
+  private async updateLoginStatus(userDocRef: DocumentReference<DocumentData>): Promise<void> {
+    await updateDoc(userDocRef, {
+      loggedIn: true,
+      isActive: true
+    });
+  }
+
+
+  /**
+   * Executes the login as guest with a special id and navigates to the mainpage
+   */
+  async guestLogin(): Promise<void> {
+    const guestID = 'ENbhuJkGlQAtqOEKeWw3';
+    const userDocRef = doc(this.userCollection, guestID);
+    await this.updateLoginStatus(userDocRef);
+    const userDoc = await getDoc(userDocRef);
+    const updatedUserData = userDoc.data() as User;
+    this.accountService.setLoggedInUser(updatedUserData);
+    this.router.navigate(['/main']);
+  }
+
+
+  /**
+   * Changes the path to google-login.
+   */
+  goToGoogleLogin(): void {
+    window.location.href = '/google-login';
+  }
+
+
+  /**
+   * Toggles the password visibility.
+   */
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
 
 
-
-
   /**
-   * Initialize Google login process.
+   * Cancels the mainpage intro.
    */
-  initializeGoogleLogin(): void {
-    // @ts-ignore
-    window.onGoogleLibraryLoad = () => {
-      // @ts-ignore
-      google.accounts.id.initialize({
-        client_id: this.clientId,
-        callback: this.handleCredentialResponse.bind(this),
-        auto_select: false,
-        cancel_on_tap_outside: true
-      });
-      // @ts-ignore
-      google.accounts.id.renderButton(
-        // @ts-ignore
-        document.getElementById("buttonDiv"),
-        { theme: "outline", size: "large" }
-      );
-      // @ts-ignore
-      google.accounts.id.prompt((notification: PromptMomentNotification) => { });
-    };
-  }
-
-
-  /**
-   * Handles the response after Google login attempt.
-   * @param {CredentialResponse} response - Response from Google after login attempt.
-   */
-  async handleCredentialResponse(response: CredentialResponse) {
-    if (!response || typeof response.credential !== 'string') {
-      console.error('Invalid JWT token:', response);
-      return;
-    } else {
-      this.saveGoogleData(this.decodeJWT(response.credential));
-      await this.googleLogin();
-    }
-  }
-
-
-  /**
-   * Save the Google user's decoded JWT payload data.
-   * @param {any} decodedPayload - Decoded JWT payload from Google.
-   */
-  saveGoogleData(decodedPayload: any): void {
-    this.user.email = decodedPayload.email;
-    this.user.name = `${decodedPayload.given_name} ${decodedPayload.family_name}`;
-    this.user.avatarSrc = decodedPayload.picture;
-  }
-
-
-  /**
-   * Decodes a JWT.
-   * @param {string} JWT - The JWT to be decoded.
-   * @returns {any|null} The decoded payload or null if the JWT is invalid.
-   */
-  decodeJWT(JWT: string) {
-    const [headerEncoded, payloadEncoded] = JWT.split('.');
-    if (!headerEncoded || !payloadEncoded) {
-      console.error('Invalid JWT format:', JWT);
-      return null;
-    }
-    const payloadDecoded = atob(payloadEncoded.replace(/-/g, '+').replace(/_/g, '/'));
-    const payload = JSON.parse(payloadDecoded);
-    return payload;
-  }
-
-
-  /**
-   * Login function to authenticate and redirect user.
-   */
-  async googleLogin(): Promise<void> {
-    let userFound = false;
-    let userCollectionRef = collection(this.firestore, "users");
-    const querySnapshot = await getDocs(userCollectionRef);
-    querySnapshot.forEach(async (userDoc) => {
-      const userData = userDoc.data() as User;
-      if (userData.email === this.user.email) {
-        userFound = true;
-        userData.loggedIn = true;
-        await this.setLoggedInStatus(userData);
-      }
-    });
-    if (!userFound) await this.createNewUser();
-  }
-
-
-  /**
-   * Sets the user as logged in and updates the user status.
-   * @param {any} userData - User data to set as logged in.
-   */
-  async setLoggedInStatus(userData: any): Promise<void> {
-    const userDocRef = doc(this.firestore, "users", userData.id);
-    await updateDoc(userDocRef, { loggedIn: true });
-    this.accountService.setLoggedInUser(userData);
-    this.accountService.currentUser = userData;
-    this.ngZone.run(() => this.router.navigate(['/main']));
-  }
-
-
-  /**
-   * Creates a new user entry in Firestore and give the data to the service.
-   */
-  async createNewUser(): Promise<void> {
-    this.generatePassword();
-    let userCollectionRef = collection(this.firestore, "users");
-    const newUser = await addDoc(userCollectionRef, this.user.toJSON());
-    await this.addIdToUser(newUser.id);
-
-    const userDocRef = doc(this.firestore, 'users', newUser.id);
-    const userSnapshot = await getDoc(userDocRef);
-    const userData = userSnapshot.data() as User;
-
-    this.accountService.setLoggedInUser(userData);
-    this.accountService.currentUser = userData;
-    this.ngZone.run(() => this.router.navigate(['/main']));
-  }
-
-
-  /**
-   * Adds an ID and the logged in status to the user's Firestore document.
-   * @param {string} _id - The ID to be added to the user document.
-   */
-  async addIdToUser(_id: string): Promise<void> {
-    const userDocRef = doc(this.firestore, 'users', _id);
-    await setDoc(userDocRef, { id: _id, loggedIn: true }, { merge: true });
-  }
-
-
-  /**
-   * Generates a random password with 12 digits.
-   */
-  generatePassword(): void {
-    const numbers = '0123456789';
-    const uppercaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const lowercaseLetters = 'abcdefghijklmnopqrstuvwxyz';
-    const allCharacters = numbers + uppercaseLetters + lowercaseLetters;
-    let password = [
-      numbers[Math.floor(Math.random() * numbers.length)],
-      uppercaseLetters[Math.floor(Math.random() * uppercaseLetters.length)],
-      lowercaseLetters[Math.floor(Math.random() * lowercaseLetters.length)]
-    ].join('');
-
-    for (let i = 4; i < 12; i++) {
-      password += allCharacters[Math.floor(Math.random() * allCharacters.length)];
-    }
-    this.user.password = password.split('').sort(() => 0.5 - Math.random()).join('');
+  cancelIntro(): void {
+    this.accountService.playIntro = false;
   }
 }

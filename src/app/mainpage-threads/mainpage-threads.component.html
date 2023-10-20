@@ -1,54 +1,44 @@
 <mat-icon class="close-icon p-absolute pointer" (click)="closeThreads()">close</mat-icon>
 
 <div *ngIf="currentChannel" class="threads-header d-flex">
-<<<<<<< HEAD
     <span class="threads-headline cancel-thread-hl-overflow">
-=======
-    <span class="threads-headline">
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
         Thread
         <span class="threads-channel">
             # {{ currentChannel.name }}</span>
     </span>
 </div>
 
-<<<<<<< HEAD
 <div *ngIf="currentThread" class="chat-content threads-content">
 
-    <div class="main-thread-container d-flex ai-start g-20"
+    <div class="main-thread-container d-flex ai-start g-20 no-hover"
         [class.own-thread-container]="currentThread.ownerID === accountService.getLoggedInUser().id">
-        <img (click)="openDialogThread(currentThread)" class="thread-avatar pointer"
-            [src]="currentThread.ownerAvatarSrc || 'assets/img/avatar_small.png'"
-            (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
-=======
-<div *ngIf="currentThread" class="threads-content">
-
-    <div class="main-thread-container d-flex ai-start g-20"
-        [class.own-thread-container]="currentThread.ownerID === accountService.getLoggedInUser().id">
-        <img (click)="openDialogThread(currentThread)" class="thread-avatar" src="{{ currentThread.ownerAvatarSrc }}">
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
+        <img (click)="openDialogProfile(currentThread)" class="thread-avatar pointer"
+            [src]="currentThread.ownerAvatarSrc || 'assets/img/avatar_standard_(1).png'"
+            (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
         <div class="d-flex f-column g-10"
-            [class.thread-creator-reverse]="currentThread.ownerID === accountService.getLoggedInUser().id">
+            [class.thread-creator-reverse]="currentThread.ownerID === accountService.getLoggedInUser().id"
+            [class.text-alignment-reverse]="currentThread.ownerID === accountService.getLoggedInUser().id">
             <div class="d-flex ai-baseline"
                 [class.thread-message-box-reverse]="currentThread.ownerID === accountService.getLoggedInUser().id">
-<<<<<<< HEAD
-                <span (click)="openDialogThread(currentThread)" class="thread-creator pointer">{{
+                <span (click)="openDialogProfile(currentThread)" class="thread-creator pointer">{{
                     currentThread.ownerName }}</span>
                 <span class="thread-time"
                     [class.thread-time-reverse]="currentThread.ownerID === accountService.getLoggedInUser().id">
                     {{ channelService.getFormattedTime(currentThread.date) }}
-=======
-                <span class="thread-creator">{{ currentThread.ownerName }}</span>
-                <span class="thread-time"
-                    [class.thread-time-reverse]="currentThread.ownerID === accountService.getLoggedInUser().id">
-                    {{ getFormattedTime(currentThread.date) }}
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
                 </span>
             </div>
-            <span class="thread-text"
-                [class.thread-text-reverse]="currentThread.ownerID === accountService.getLoggedInUser().id">
-                {{ currentThread.content }}
-            </span>
+
+            <div *ngIf="currentThread.uploadedFile" class="file-container">
+                <img class="thread-file" [src]="currentThread.uploadedFile"
+                    [class.thread-file-reverse]="currentThread.ownerID  === accountService.getLoggedInUser().id"
+                    [class.img-border-complete]="!currentThread.content">
+            </div>
+
+            <span *ngIf="currentThread.content" class="thread-text"
+                [class.thread-text-reverse]="currentThread.ownerID === accountService.getLoggedInUser().id"
+                [class.change-text-border]="currentThread.uploadedFile"
+                [class.change-text-border-reverse]="currentThread.uploadedFile && currentThread.ownerID === accountService.getLoggedInUser().id">
+                {{ currentThread.content }}</span>
         </div>
     </div>
 
@@ -59,36 +49,31 @@
 
     <div *ngFor="let answer of threadAnswers; let i = index" class="d-flex f-column">
 
-<<<<<<< HEAD
         <div *ngIf="channelService.threadSentOnNewDate(i, threadAnswers)"
             class="d-flex ai-center message-date-container">
             <div class="message-date-line"></div>
             <span class="message-date">{{ channelService.getFormattedDate(answer.date) }}</span>
-=======
-        <div *ngIf="threadSentOnNewDate(i, threadAnswers)" class="d-flex ai-center message-date-container">
-            <div class="message-date-line"></div>
-            <span class="message-date">{{ getFormattedDate(answer.date) }}</span>
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
             <div class="message-date-line"></div>
         </div>
 
         <div class="main-thread-container d-flex ai-start g-20 p-relative"
             [class.own-thread-container]="answer.ownerID === accountService.getLoggedInUser().id"
             (mouseenter)="hoveredThreadId = i" (mouseleave)="hoveredThreadId = null">
-<<<<<<< HEAD
 
-            <img (click)="openDialogThread(answer)" class="thread-avatar pointer"
-                [src]="answer.ownerAvatarSrc || 'assets/img/avatar_small.png'"
-                (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
+            <img (click)="openDialogProfile(answer)" class="thread-avatar pointer"
+                [src]="answer.ownerAvatarSrc || 'assets/img/avatar_standard_(1).png'"
+                (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
 
             <div class="d-flex f-column g-10"
                 [class.thread-creator-reverse]="answer.ownerID === accountService.getLoggedInUser().id"
+                [class.text-alignment-reverse]="answer.ownerID === accountService.getLoggedInUser().id"
                 [class.w-100]="inEditMessage === i">
 
                 <div class="d-flex ai-baseline"
                     [class.thread-message-box-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
 
-                    <span class="thread-creator">{{ answer.ownerName }}</span>
+                    <span (click)="openDialogProfile(answer)" class="thread-creator pointer">{{ answer.ownerName
+                        }}</span>
                     <span class="thread-time"
                         [class.thread-time-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
                         {{ channelService.getFormattedTime(answer.date) }}
@@ -96,48 +81,50 @@
 
                 </div>
 
-=======
-            <img (click)="openDialogThread(answer)" class="thread-avatar"
-                [src]="answer.ownerAvatarSrc || 'assets/img/avatar_small.png'">
-            <div class="d-flex f-column g-10"
-                [class.thread-creator-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
-                <div class="d-flex ai-baseline"
-                    [class.thread-message-box-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
-                    <span class="thread-creator">{{ answer.ownerName }}</span>
-                    <span class="thread-time"
-                        [class.thread-time-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
-                        {{ getFormattedTime(answer.date) }}
-                    </span>
+                <div *ngIf="answer.uploadedFile" class="file-container">
+                    <img class="thread-file" [src]="answer.uploadedFile"
+                        [class.thread-file-reverse]="answer.ownerID === accountService.getLoggedInUser().id"
+                        [class.img-border-complete]="!answer.content && !(inEditMessage === i)">
                 </div>
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-                <span *ngIf="!(inEditMessage === i)" class="thread-text"
-                    [class.thread-text-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
-                    {{ answer.content }}
-                </span>
-<<<<<<< HEAD
+
+                <span *ngIf="answer.content && !(inEditMessage === i)" class="thread-text"
+                    [class.thread-text-reverse]="answer.ownerID === accountService.getLoggedInUser().id"
+                    [class.change-text-border]="answer.uploadedFile"
+                    [class.change-text-border-reverse]="answer.uploadedFile && answer.ownerID === accountService.getLoggedInUser().id">
+                    {{ answer.content }}</span>
 
                 <form *ngIf="inEditMessage === i" #answerForm="ngForm" name="editAnswerContent_{{i}}"
-                    class="d-flex j-between f-column edit-msg-input-box thread-input-small">
+                    class="d-flex j-between f-column edit-msg-input-box thread-input-small p-relative"
+                    [class.change-form-border]="answer.uploadedFile">
 
                     <textarea [(ngModel)]="answer.editMessageContent" name="editAnswerContent_{{i}}"
                         class="edit-msg-input"
                         [class.edit-msg-input-reverse]="answer.ownerID === accountService.getLoggedInUser().id"
                         minlength="1" maxlength="1500" required>
-                        {{ loadedMessageContent }}
+                        {{ editMessageContent }}
                     </textarea>
 
+                    <span (click)="openDialogEmojisInEdit($event, answer)"
+                        class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust in-edit-emoji-icon">
+                        sentiment_satisfied
+                    </span>
+
                     <div class="btn-container btn-container-extra">
-                        <!-- <div (click)="handleDivClick($event)" class="btn-container btn-container-extra"> -->
-                        <!-- <span (click)="openDialogEmojis(answer)"
-                            class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust">
-                            sentiment_satisfied
-                        </span> -->
-                        <button class="btn-secondary btn-secondary-small thread-edit-close-btn"
-                            (click)="closeEdit()">Abbrechen</button>
-                        <mat-icon class="close-icon thread-edit-close-icon pointer"
-                            (click)="closeEdit()">close</mat-icon>
-                        <button class="btn-primary btn-primary-small" (click)="editMessage(answer.id, i)"
-                            [disabled]="!answer.editMessageContent?.trim() || !answerForm.valid">Speichern</button>
+                        <button class="btn-secondary btn-secondary-small thread-edit-close-btn edit-btn-extra"
+                            (click)="closeEdit()">
+                            <span class="material-symbols-outlined in-edit-icon hide-under-1300">
+                                block
+                            </span>
+                            <span class="hide-over-1300">Abbrechen</span>
+                        </button>
+                        <button (click)="editMessage(answer.id, i)"
+                            [disabled]="!answer.editMessageContent?.trim() || !answerForm.valid"
+                            class="btn-primary btn-primary-small edit-btn-extra">
+                            <span class="material-symbols-outlined in-edit-icon hide-under-1300">
+                                save
+                            </span>
+                            <span class="hide-over-1300">Speichern</span>
+                        </button>
                     </div>
 
                 </form>
@@ -192,7 +179,7 @@
                                 {{ answer.userReactions | reactionCount: '-' }}
                             </span>
 
-                            <div *ngIf="hoveredThumbUp === i" class="reacted-users-box flex-center"
+                            <div *ngIf="hoveredThumbDown === i" class="reacted-users-box flex-center"
                                 [class.reacted-users-box-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
                                 <span class="reacted-user-span"
                                     [class.reacted-user-span-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
@@ -225,37 +212,14 @@
                         [ngStyle]="{'color': channelService.userHasReacted(answer, '-', accountService.getLoggedInUser().name) ? '#444DF2' : 'inherit'}">
                         thumb_down
                     </span>
-=======
-                <div *ngIf="inEditMessage === i" class="d-flex j-between f-column edit-msg-input-box">
-                    <textarea [(ngModel)]="answer.editMessageContent" class="edit-msg-input"
-                        [class.edit-msg-input-reverse]="answer.ownerID === accountService.getLoggedInUser().id"
-                        maxlength="1500">{{ loadedMessageContent }}</textarea>
-                    <div class="btn-container btn-container-small">
-                        <button class="btn-secondary btn-secondary-small" (click)="closeEdit()">Abbrechen</button>
-                        <button class="btn-primary btn-primary-small"
-                            (click)="editMessage(answer.id, i)">Speichern</button>
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="hoveredThreadId === i && !(inEditMessage === i)" class="thread-reaction-container flex-center g-10"
-                [class.thread-reaction-container-reverse]="answer.ownerID === accountService.getLoggedInUser().id">
-                <div class="emoji-icon flex-center pointer">
-                    <span class="material-symbols-outlined">add_reaction</span>
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
                 </div>
                 <div *ngIf="answer.ownerID === accountService.getLoggedInUser().id" class="p-relative"
                     (mouseenter)="ownThreadId = i" (mouseleave)="ownThreadId = null">
                     <mat-icon class="edit-msg-icon">keyboard_control</mat-icon>
-<<<<<<< HEAD
                     <div *ngIf="(hoveredThreadId === i) && (ownThreadId === i)"
                         class="thread-edit-btn d-flex f-column ai-end">
                         <span (click)="openEditMessage(answer.id, i)" class="pointer">Nachricht bearbeiten</span>
                         <span (click)="deleteMessage(answer.id)" class="pointer">Nachricht löschen</span>
-=======
-                    <div *ngIf="(hoveredThreadId === i) && (ownThreadId === i)" class="thread-edit-btn pointer"
-                        (click)="openEditMessage(answer.id, i)">
-                        Nachricht bearbeiten
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
                     </div>
                 </div>
             </div>
@@ -265,43 +229,43 @@
 
 <form #chatMessageForm="ngForm" class="message-container d-flex f-column" (ngSubmit)="sendMessage(chatMessageForm)">
     <textarea (keydown.enter)="sendMessage(chatMessageForm)" name="thread-answer-input" placeholder="Antworten..."
-<<<<<<< HEAD
-        [(ngModel)]="message_2.content" maxlength="1500" required></textarea>
-=======
-    [(ngModel)]="message_2.content" maxlength="1500" required></textarea>
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
+        [(ngModel)]="message.content" maxlength="1500" required></textarea>
 
     <div class="d-flex message-icons">
         <div class="d-flex ai-center">
 
-            <span class="material-symbols-outlined message-hover-icon flex-center pointer">
-                add
-            </span>
-            <div class="message-hover-icon" class="icon-divider-line"></div>
+            <div class="file-input-container">
+                <input type="file" (change)="chatService.uploadImageInAnswers($event,'fileInputThread')"
+                    id="fileInputThread" class="custom-file-input" aria-label="Datei hochladen">
+                <label for="fileInputThread">
+                    <span class="material-symbols-outlined message-hover-icon flex-center pointer">
+                        add
+                    </span>
+                </label>
+            </div>
 
-<<<<<<< HEAD
-            <span (click)="openDialogEmojisThradsComp()"
-=======
-            <!-- hallo barnabas der nachfolgende span ist dein emoji-button :)  -->
-            <span (click)="openDialog()"
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
+            <div class="icon-divider-line"></div>
+
+            <span (click)="openDialogEmojis($event)"
                 class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust">
                 sentiment_satisfied
             </span>
 
-<<<<<<< HEAD
         </div>
-        <button class="message-send-btn flex-center" type="submit" [disabled]="loading">
-=======
-            <span class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust">
-                alternate_email
-            </span>
 
+        <div *ngIf="chatService.uploadedFileThreads" [class.d-none]="chatService.showImage"
+            class="preview-container flex-center p-absolute">
+            <img class="preview-image" [src]="chatService.uploadedFileThreads">
+            <span (click)="chatService.deletePreviewImage()" class="material-symbols-outlined pointer">
+                delete_forever
+            </span>
         </div>
-        <button class="message-send-btn" type="submit" [disabled]="loading">
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-            <img *ngIf="!loading" class="message-send-icon" src="assets/img/icons/arrow_send.png">
-            <div *ngIf="loading" class="loading-icon"></div>
+
+        <button class="message-send-btn flex-center" type="submit"
+            [disabled]="loading || !message.content && (chatService.uploadedFileThreads === '')">
+            <img *ngIf="!loading && !chatService.uploadingInAnswer" class="message-send-icon"
+                src="assets/img/icons/arrow_send.png">
+            <div *ngIf="loading || chatService.uploadingInAnswer" class="loading-icon"></div>
         </button>
     </div>
 </form>

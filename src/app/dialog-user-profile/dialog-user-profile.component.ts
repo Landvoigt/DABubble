@@ -1,8 +1,8 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AccountServiceService } from '../account-service.service';
 import { ChatServiceService } from '../chat-service.service';
-import { Firestore, collection, getDocs } from '@angular/fire/firestore';
+import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 import { User } from 'src/models/user.class';
 import { ChannelServiceService } from '../channel-service.service';
 import { Thread } from 'src/models/thread.class';
@@ -13,72 +13,60 @@ import { Thread } from 'src/models/thread.class';
   styleUrls: ['./dialog-user-profile.component.scss']
 })
 export class DialogUserProfileComponent {
-  @Output() closeEvent = new EventEmitter<void>();
-  status = '';
-  user = new User();
-  userEmail: string;
-  userDataJson: any = {};
+  firestore: Firestore = inject(Firestore);
+  
+  status: string = '';
+  colorBlue: boolean = false;
+  colorGreen: boolean = false;
+  colorGray: boolean = false;
 
   constructor(public chatService: ChatServiceService,
     public dialogRef: MatDialogRef<DialogUserProfileComponent>,
     public accountService: AccountServiceService,
-    public firestore: Firestore,
     public channelService: ChannelServiceService) {
-    this.getUserData();
+    this.statusCheck();
   }
 
+
+  /**
+   * Subscribes to changes in the user status.
+   */
+  statusCheck() {
+    this.accountService.userData$.subscribe((data) => {
+      const user = data.find((element) => element.email === this.chatService.ownerData['ownerEmail']);
+      if (user) {
+        this.colorGreen = user.loggedIn && !user.isActive;
+        this.colorBlue = user.loggedIn && user.isActive;
+        this.colorGray = !user.loggedIn && !user.isActive;
+        this.getStatusUser();
+      }
+    });
+  }
+
+
+  /**
+   * Sets the right span for the current status.
+   */
   getStatusUser() {
-    if (this.userDataJson.loggedIn) {
+    if (this.colorGreen) {
       this.status = 'Online';
-    } if (this.userDataJson.isActive) {
+    } if (this.colorBlue) {
       this.status = 'Active';
-    } if (!this.userDataJson.loggedIn && !this.userDataJson.isActive) {
+    } if (this.colorGray) {
       this.status = 'Offline';
     }
   }
 
 
-  // getStatusColor(): string {
-  //   switch (this.status) {
-  //     case 'Online':
-  //       return '#92C83E';
-  //     case 'Active':
-  //       return '#444DF2';
-  //     case 'Offline':
-  //       return '#686868';
-  //     default:
-  //       return 'black';
-  //   }
-  // }
-
-
-  openDirectMessage(thread: Thread) {
-    this.user.id = thread.id;
-    this.user.name = thread.ownerName;
-    this.user.avatarSrc = thread.ownerAvatarSrc;
-    this.accountService.triggerOpenDirectMessage(this.user);
+  /**
+   * Extracts the user ID and get the needed user information to show in the dialog. 
+   */
+  async getUserInformation(thread: Thread) {
+    let userID = thread.ownerID;
+    const userDocRef = doc(this.firestore, 'users', userID);
+    const user = await getDoc(userDocRef);
+    const userData = user.data() as User;
+    this.channelService.newDmPartner.next(userData);
     this.dialogRef.close();
-  }
-
-
-  // closeThreads(): void {
-  //   this.dialogRef.close();
-  // }
-
-
-  async getUserData() {
-    this.userDataJson = {};
-    const currentUserEmail = this.chatService.ownerData.ownerEmail;
-    const collRef = collection(this.firestore, "users");
-    const querySnapshot = await getDocs(collRef);
-    querySnapshot.forEach((doc) => {
-      const userData = doc.data() as User;
-      if (userData.email === currentUserEmail) {
-        this.userDataJson.loggedIn = userData.loggedIn;
-        this.userDataJson.isActive = userData.isActive;
-      }
-    });
-
-    this.getStatusUser();
   }
 }

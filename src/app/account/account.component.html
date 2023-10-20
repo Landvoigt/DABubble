@@ -1,90 +1,78 @@
-<div class="account-cont">
-
-
-
-<<<<<<< HEAD
-    <!-- <div class="logo-img-cont-always">
-        <img src="./assets/img/logo-intro.png">
-        <div class="title">DABubble</div>
-    </div> -->
-
-    <img class="logo" src="./assets/img/logo.png">
-=======
-    <div class="logo-img-cont-always">
-        <img src="./assets/img/logo-intro.png">
-        <div class="title">DABubble</div>
+<div class="login-dialog-content flex-center p-relative">
+    <img class="logo-and-title p-absolute hide-mobile pointer" src="assets/img/logo/logo_&_name.png" [routerLink]="'/'">
+    <div class="hide-desktop logo-box d-flex ai-center p-absolute animation-stop pointer" [routerLink]="'/'">
+        <img class="logo" src="assets/img/logo/logo.png">
+        <span>DABubble</span>
     </div>
 
+    <mat-card class="login-card d-flex f-column ai-center">
+        <form (ngSubmit)="saveNewUser()" #accountForm='ngForm' class="account-form d-flex f-column ai-center">
+            <h1>Konto erstellen</h1>
+            <span class="dialog-span text-center">Gib deinem Namen und deine E-mail-Adresse ein und schon hast du dein
+                neues DABubble-Konto.</span>
 
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
+            <div class="login-input-container d-flex ai-center j-start pointer p-relative">
+                <img class="input-icon" src="assets/img/icons/person.png">
+                <input [(ngModel)]="accountService.newUser.name" (ngModelChange)="accountService.checkUserName()"
+                    type="text" name="name" placeholder="Name und Nachname" autocomplete="on" #nameInput="ngModel">
+                <span *ngIf="!accountService.isNameValid && nameInput.dirty" class="warn p-absolute">
+                    * Es sind nur Buchstaben erlaubt.
+                </span>
+                <span *ngIf="accountService.isNameEmpty && nameInput.dirty" class="warn p-absolute">
+                    * Bitte geben sie einen Namen ein.
+                </span>
+            </div>
 
+            <div class="login-input-container d-flex ai-center j-start pointer p-relative">
+                <img class="input-icon" src="assets/img/icons/mail.png">
+                <input [(ngModel)]="accountService.newUser.email" (ngModelChange)="accountService.checkUserEmail()"
+                    type="email" name="email" placeholder="E-mail" #emailInput="ngModel">
+                <span *ngIf="accountService.isExistingEmail" class="warn p-absolute">
+                    * Diese E-Mail-Adresse existiert bereits.
+                </span>
+                <span *ngIf="!accountService.isEmailValid && !accountService.isExistingEmail && emailInput.dirty"
+                    class="warn p-absolute">
+                    * beispielname@email.com
+                </span>
+            </div>
 
-    <mat-card>
+            <div class="login-input-container d-flex ai-center j-start pointer p-relative">
+                <img class="input-icon" src="assets/img/icons/lock.png">
+                <input [(ngModel)]="accountService.newUser.password"
+                    (ngModelChange)="accountService.checkUserPassword()" type="{{ showPassword ? 'text' : 'password' }}"
+                    name="password" placeholder="Passwort" autocomplete="on" #passwordInput="ngModel">
+                <img class="privacy-icon pointer"
+                    [src]="showPassword ? 'assets/img/eye_open.svg' : 'assets/img/eye-slash-regular.svg'"
+                    (click)="togglePasswordVisibility()">
+                <span *ngIf="!accountService.isPasswordValid && !accountService.isPasswordEmpty && passwordInput.dirty"
+                    class="warn p-absolute">
+                    * mindestens 8 Zeichen: a-z-A-Z-0-9
+                </span>
+                <span *ngIf="accountService.isPasswordEmpty && passwordInput.dirty" class="warn p-absolute">
+                    * Bitte geben sie ein Passwort ein.
+                </span>
+            </div>
 
-        <div class="account-card-cont">
-
-
-            <div class="title">Konto erstellen</div>
-            <div class="sub-title">Mit deinem Namen und deiner E-mail-Adresse hast <br> du dein neuesDABubble-Konto.</div>
-
-            <form (ngSubmit)="saveUser(accountForm)" #accountForm='ngForm'>
-                <div class="name-cont">
-                    <input [(ngModel)]="user.name" (ngModelChange)="checkUserName()" type="text" name="name"
-                        placeholder="Name und Nachname" autocomplete="on">
-                        <div style="display: none;" [class.warning]="isValidName && user.name != ''">
-                            Nur Buchstaben erlaubt!</div>
-                    <img src="./assets/img/person.png">
-                </div>
-
-                <div class="email-cont">
-                    <input [(ngModel)]="user.email" (ngModelChange)="checkUserEmail()" type="email" name="email"
-                        placeholder="E-mail" autocomplete="on">
-                    <div style="display: none;" [class.warning]="isEmailExist">Existiert bereits!</div>
-                    <div style="display: none;" [class.warning]="isEmailNotValid  && user.email != '' && !isEmailExist ">beispielname@email.com</div>
-                    <img src="./assets/img/mail.png">
-                </div>
-
-                <div class="password-cont">
-                    <img class="eye" [src]="showPassword ? './assets/img/eye_open.svg' : './assets/img/eye-slash-regular.svg'" (click)="togglePasswordVisibility()">
-                    <input [(ngModel)]="user.password" (ngModelChange)="checkUserPassword()" type="{{ showPassword ? 'text' : 'password' }}"
-                        name="password" placeholder="Passwort" autocomplete="on">
-                    <div style="display: none;" [class.warning]="isPasswordExist">Passwort kann man nicht mehr wälen!</div>
-                    <div style="display: none;" [class.warning]="isPasswordNotValid && user.password != '' && !isPasswordExist ">
-                        mind. 8 Karakter: a-z-A-Z-0-9</div>
-                    <img src="./assets/img/lock.png">
-                </div>
-
-
-            </form>
-
-            <button class="account-btn" [routerLink]="'/profile'" (click)="saveCurrentUser()"
-                [class.account-btn-active]="!isValidName && !isValidEmail && !isValidPassword"
-                [disabled]="isValidName || isValidEmail || isValidPassword || !isChecked"
-                [class.account-btn-disabled]="isValidName || isValidEmail || isValidPassword || !isChecked">Weiter</button>
-
-            <mat-checkbox class="custom-checkbox" [color]="task.color" [(ngModel)]="isChecked">
-                     <label>Ich stimme der</label><a href="#"> Datenschutzerklärung </a><label>zu.</label>
+            <mat-checkbox class="custom-checkbox" color="primary" [(ngModel)]="accountService.policyAccepted"
+                name="checkbox">
+                <label>Ich stimme der<a [routerLink]="'/privacy-policy'"> Datenschutzerklärung </a>zu.</label>
             </mat-checkbox>
 
+            <div class="btn-container j-end w-100">
+                <button class="btn-primary" type="submit" [disabled]="
+                    !accountService.isNameValid || 
+                    !accountService.isEmailValid || 
+                    !accountService.isPasswordValid || 
+                    !accountService.policyAccepted">Weiter</button>
+            </div>
 
-        </div>
-
-
-
-      
-
-        <mat-card-actions>
-            <button (click)="checkIntro()" [routerLink]="'/'" mat-button>
-                <mat-icon>arrow_back</mat-icon>
-            </button>
-        </mat-card-actions>
+            <mat-icon class="go-back-icon p-absolute pointer flex-center" (click)="cancelIntro()"
+                [routerLink]="'/'">arrow_back</mat-icon>
+        </form>
     </mat-card>
 
-
-    <footer>
-        <span  [routerLink]="'/imprint'" >Impressum</span>
-        <span>Datenschutz</span>
-      </footer>
-
-      
+    <footer class="login-footer d-flex g-40">
+        <span class="dialog-span policy-span pointer" [routerLink]="'/imprint'">Impressum</span>
+        <span class="dialog-span policy-span pointer" [routerLink]="'/privacy-policy'">Datenschutz</span>
+    </footer>
 </div>

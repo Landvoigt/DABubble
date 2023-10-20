@@ -1,6 +1,5 @@
 <form *ngIf="channelData" #channelForm="ngForm" class="content d-flex f-column">
     <mat-icon class="close-icon p-absolute pointer close-icon-dialog" (click)="dialogRef.close()">close</mat-icon>
-<<<<<<< HEAD
     <div class="d-flex ai-center">
         <mat-icon class="hashtag"><i>tag</i></mat-icon>
         <h2 class="dialog-h2">{{ channelData.name }}</h2>
@@ -8,43 +7,29 @@
     <div class="edit-box d-flex f-column g-20 p-relative" [class.hide-borders]="inEditName">
         <b class="dialog-span" [class.pl-10]="inEditName">Channel-Name</b>
         <span *ngIf="!inEditName" class="dialog-span">{{ channelData.name }}</span>
-        <input *ngIf="inEditName" [(ngModel)]="channelName" name="channelName" class="dialog-input" minlength="3" maxlength="30" required>
-        <span *ngIf="!inEditName" class="dialog-span edit-span p-absolute pointer" (click)="editName()">Bearbeiten</span>
-        <span *ngIf="inEditName" class="dialog-span edit-span save-span p-absolute pointer" (click)="saveName(channelForm)">Speichern</span>
+        <input *ngIf="inEditName" [(ngModel)]="channelName" name="channelName" class="dialog-input" minlength="3"
+            maxlength="30" required>
+        <span *ngIf="!inEditName" class="dialog-span edit-span p-absolute pointer"
+            (click)="editName()">Bearbeiten</span>
+        <span *ngIf="inEditName" class="dialog-span edit-span save-span p-absolute pointer"
+            (click)="saveName(channelForm)">Speichern</span>
     </div>
     <div class="edit-box d-flex f-column g-20 p-relative" [class.hide-borders]="inEditDescription">
         <b class="dialog-span" [class.pl-10]="inEditDescription">Beschreibung</b>
-        <span *ngIf="!inEditDescription" class="description-text">{{ channelData.description }}</span>
-        <input *ngIf="inEditDescription" [(ngModel)]="channelDescription" name="channelDescription" class="dialog-input" maxlength="160" required>
+        <span *ngIf="!inEditDescription" class="dialog-span description-text">{{ channelData.description }}</span>
+        <input *ngIf="inEditDescription" [(ngModel)]="channelDescription" name="channelDescription" class="dialog-input"
+            maxlength="160" required>
         <div class="edit-box-parting-line" [class.add-padding]="inEditDescription"></div>
         <b class="dialog-span">Erstellt von</b>
-        <span class="dialog-span owner-span">Tim Voigt</span>
-        <span *ngIf="!inEditDescription" class="dialog-span edit-span p-absolute pointer" (click)="editDescription()">Bearbeiten</span>
-        <span *ngIf="inEditDescription" class="dialog-span edit-span save-span p-absolute pointer" (click)="saveDescription(channelForm)">Speichern</span>
-=======
-    <div class="d-flex ai-center g-10 mb-10">
-        <mat-icon class="hashtag"><i>tag</i></mat-icon>
-        <h2>{{ channelData.name }}</h2>
+        <span class="dialog-span owner-span">{{ channelOwner }}</span>
+        <span *ngIf="!inEditDescription" class="dialog-span edit-span p-absolute pointer"
+            (click)="editDescription()">Bearbeiten</span>
+        <span *ngIf="inEditDescription" class="dialog-span edit-span save-span p-absolute pointer"
+            (click)="saveDescription(channelForm)">Speichern</span>
     </div>
-    <div class="edit-box d-flex f-column g-20 p-relative" [class.hide-borders]="inEditName">
-        <b [class.pl-10]="inEditName">Channel-Name</b>
-        <span *ngIf="!inEditName">{{ channelData.name }}</span>
-        <input *ngIf="inEditName" [(ngModel)]="channelName" name="channelName" minlength="3" maxlength="30" required>
-        <span *ngIf="!inEditName" class="edit-span p-absolute pointer" (click)="editName()">Bearbeiten</span>
-        <span *ngIf="inEditName" class="edit-span save-span p-absolute pointer" (click)="saveName(channelForm)">Speichern</span>
+    <div class="btn-container j-end w-100">
+        <button class="btn-primary" (click)="leaveChannel(channelData.id)">Channel verlassen</button>
+        <button class="btn-primary" (click)="deleteChannel(channelData.id)" [disabled]="!canDeleteChannel()">Channel
+            löschen</button>
     </div>
-    <div class="edit-box d-flex f-column g-20 p-relative" [class.hide-borders]="inEditDescription">
-        <b [class.pl-10]="inEditDescription">Beschreibung</b>
-        <span *ngIf="!inEditDescription" class="description-text">{{ channelData.description }}</span>
-        <input *ngIf="inEditDescription" [(ngModel)]="channelDescription" name="channelDescription" maxlength="160" required>
-        <div class="edit-box-parting-line" [class.add-padding]="inEditDescription"></div>
-        <b>Erstellt von</b>
-        <span class="owner-span">Tim Voigt</span>
-        <span *ngIf="!inEditDescription" class="edit-span p-absolute pointer" (click)="editDescription()">Bearbeiten</span>
-        <span *ngIf="inEditDescription" class="edit-span save-span p-absolute pointer" (click)="saveDescription(channelForm)">Speichern</span>
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-    </div>
-    <mat-dialog-actions class="j-end">
-        <button class="btn-primary">Channel verlassen</button>
-    </mat-dialog-actions>
 </form>

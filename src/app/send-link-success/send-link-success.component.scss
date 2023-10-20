@@ -1,0 +1,14 @@
+.login-card {
+    min-height: 260px;
+}
+
+.go-back-icon {
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    @media (max-width: 450px) {
+        left: 20px;
+        bottom: 25px;
+    }
+}

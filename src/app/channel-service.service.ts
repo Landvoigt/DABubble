@@ -6,10 +6,7 @@ import { Thread } from 'src/models/thread.class';
 import { DirectMessage } from 'src/models/direct-message.class';
 import { AccountServiceService } from './account-service.service';
 import { User } from 'src/models/user.class';
-<<<<<<< HEAD
 import { ReactionCountPipe } from './reaction-count.pipe';
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
 @Injectable({
   providedIn: 'root'
@@ -17,32 +14,23 @@ import { ReactionCountPipe } from './reaction-count.pipe';
 export class ChannelServiceService {
   firestore: Firestore = inject(Firestore);
 
-<<<<<<< HEAD
   private _currentChannel_ID = new BehaviorSubject<string | null>(null);
   private _currentChannel = new BehaviorSubject<Channel | null>(null);
 
   private _currentThread_ID = new BehaviorSubject<string | null>(null);
   private _currentThread = new BehaviorSubject<Thread | null>(null);
 
-=======
-  // currentChannel: Channel;
-  private _currentChannel_ID = new BehaviorSubject<string | null>(null);
-  private _currentChannel = new BehaviorSubject<Channel | null>(null);
-
-  // currentThread: Thread;
-  private _currentThread_ID = new BehaviorSubject<string | null>(null);
-  private _currentThread = new BehaviorSubject<Thread | null>(null);
-
-  // currentDmChannel: DirectMessage;
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   private _currentDmChannel_ID = new BehaviorSubject<string | null>(null);
   private _currentDmChannel = new BehaviorSubject<DirectMessage | null>(null);
 
-  savedDmPartner: User = new User();
-  savedChannel_ID: string;
+  public newDmPartner = new BehaviorSubject<User | null>(null);
+  public newChannel = new BehaviorSubject<Channel | null>(null);
 
-<<<<<<< HEAD
   private _isOwnDmChannel = new BehaviorSubject<boolean>(false);
+
+  savedDmPartner: User = new User();
+  savedChannel_ID: string = '';
+
   noCurrentChannel: boolean = true;
   inDirectMessage: boolean = false;
   channelOwnerEqualCurrentUser: boolean = false;
@@ -53,27 +41,14 @@ export class ChannelServiceService {
   /**
    * Observable to get the currently opened channel.
    */
-=======
-  noCurrentChannel: boolean = true;
-  // noCurrentDm: boolean = true;
-  inDirectMessage: boolean = false;
-  channelOwnerEqualCurrentUser: boolean = false;
-  private _isOwnDmChannel = new BehaviorSubject<boolean>(false);
-
-  constructor(private accountService: AccountServiceService) { }
-
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   get currentChannel$() {
     return this._currentChannel.asObservable();
   }
 
-<<<<<<< HEAD
 
   /**
    * Setter to set the current channel ID and fetch its data.
    */
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   set currentChannel_ID(value: string) {
     this._currentChannel_ID.next(value);
 
@@ -88,24 +63,18 @@ export class ChannelServiceService {
     });
   }
 
-<<<<<<< HEAD
 
   /**
    * Observable to get the currently opened thread.
    */
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   get currentThread$() {
     return this._currentThread.asObservable();
   }
 
-<<<<<<< HEAD
 
   /**
    * Setter to set the current thread ID and fetch its data.
    */
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   set currentThread_ID(value: string) {
     this._currentThread_ID.next(value);
 
@@ -120,24 +89,18 @@ export class ChannelServiceService {
     });
   }
 
-<<<<<<< HEAD
 
   /**
    * Observable to get the currently opened direct message channel.
    */
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   get currentDmChannel$() {
     return this._currentDmChannel.asObservable();
   }
 
-<<<<<<< HEAD
 
   /**
    * Setter to set the current direct message channel ID and fetch its data.
    */
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   set currentDmChannel_ID(value: string) {
     this._currentDmChannel_ID.next(value);
 
@@ -151,14 +114,11 @@ export class ChannelServiceService {
     });
   }
 
-<<<<<<< HEAD
 
   /**
    * Checks if the logged-in user is the owner of the opened direct message  channel.
    * @param {Channel} channel - The channel to check against.
    */
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   checkChannelOwner(channel: Channel) {
     const loggedInUserId = this.accountService.getLoggedInUser().id;
     if (channel.owner === loggedInUserId) {
@@ -166,18 +126,14 @@ export class ChannelServiceService {
     }
   }
 
-<<<<<<< HEAD
 
   /**
    * Observable to get the status if the current direct message channel is owned by the logged-in user.
    */
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   get isOwnDmChannel$(): Observable<boolean> {
     return this._isOwnDmChannel.asObservable();
   }
 
-<<<<<<< HEAD
 
   /**
    * Setter to set the status if the current direct message channel is owned by the logged-in user.
@@ -187,6 +143,25 @@ export class ChannelServiceService {
   }
 
 
+  /**
+   * Observable to check if a new direct message chat gets opened.
+   */
+  get newDmPartner$() {
+    return this.newDmPartner.asObservable();
+  }
+
+
+  /**
+   * Observable to check if a new channel chat gets opened through the search field.
+   */
+  get newChannel$() {
+    return this.newChannel.asObservable();
+  }
+
+
+  /**
+   * Changes the given timestamp into a specific format.
+   */
   getFormattedTime(timestamp: any) {
     const date = this.timestampToDate(timestamp);
     const hours = date.getHours().toString().padStart(2, '0');
@@ -196,6 +171,10 @@ export class ChannelServiceService {
     return formattedTime;
   }
 
+
+  /**
+   * Turns the given date into a specific format or changes it to "Today" if the date is today. 
+   */
   getFormattedDate(timestamp: { seconds: number, nanoseconds: number }): string {
     const options: Intl.DateTimeFormatOptions = {
       day: '2-digit',
@@ -214,10 +193,21 @@ export class ChannelServiceService {
     }
   }
 
+
+  /**
+   * Turns the timestamp into a date format.
+   */
   timestampToDate(timestamp: { seconds: number, nanoseconds: number }): Date {
     return new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
   }
 
+
+  /**
+   * Clarifies if the thread date is an other than the date of the thread before.
+   * @param index - The index of the thread.
+   * @param threads - The thread containing the needed information.
+   * @returns 
+   */
   threadSentOnNewDate(index: number, threads: any[]): boolean {
     if (index === threads.length - 1) return false;
     const currentDate = this.getFormattedDate(threads[index].date);
@@ -225,18 +215,46 @@ export class ChannelServiceService {
     return currentDate === nextDate;
   }
 
+
+  /**
+   * Changes the answer count to the given format.
+   */
+  formatAnswerCount(amount: number): string {
+    if (amount === 1) {
+      return '1 Antwort';
+    } else {
+      return amount + ' Antworten';
+    }
+  }
+
+
+  /**
+   * Checks if a user has reacted on the thread and changes the flag based on that.
+   */
   userHasReacted(thread: Thread, reaction: string, userName: string): boolean {
     return thread.userReactions && thread.userReactions[userName] === reaction;
   }
 
+
+  /**
+   * Checks if a user has reacted on the thread and executes the pipe.
+   */
   hasReactions(userReactions: any, reactionType: string): boolean {
     return this.reactionCountPipe.transform(userReactions, reactionType) > 0;
   }
 
+
+  /**
+   * Gets the name of the user that has reacted.
+   */
   getReactedUsersName(userReactions: { [key: string]: string }, reaction: string): string[] {
     return Object.keys(userReactions).filter(userName => userReactions[userName] === reaction);
   }
 
+
+  /**
+   * Formats the reaction container based on how many and who has reacted.
+   */
   getReactionMessage(reactions: { [userId: string]: string }, reactionType: string): Array<{ isName: boolean, text: string }> {
     let messageParts = [];
     let usersWhoReacted = this.getReactedUsersName(reactions, reactionType);
@@ -265,7 +283,7 @@ export class ChannelServiceService {
       messageParts.push({ isName: true, text: usersWhoReacted.join(', ') });
       messageParts.push({ isName: false, text: " und" });
       messageParts.push({ isName: true, text: " Du" });
-      messageParts.push({ isName: false, text: " haben reagiert" }); 
+      messageParts.push({ isName: false, text: " haben reagiert" });
     } else if (usersWhoReacted.length === 3) {
       messageParts.push({ isName: true, text: usersWhoReacted.slice(0, -1).join(', ') });
       messageParts.push({ isName: false, text: " und " });
@@ -277,19 +295,14 @@ export class ChannelServiceService {
       messageParts.push({ isName: true, text: ", Du" });
       messageParts.push({ isName: false, text: " und " });
       messageParts.push({ isName: true, text: " weitere" });
-      messageParts.push({ isName: false, text: " haben reagiert" }); 
+      messageParts.push({ isName: false, text: " haben reagiert" });
     } else {
       usersWhoReacted = usersWhoReacted.filter(name => name !== this.accountService.getLoggedInUser().name);
-      messageParts.push({ isName: true, text: usersWhoReacted.slice(0, 2).join(', ') }); 
+      messageParts.push({ isName: true, text: usersWhoReacted.slice(0, 2).join(', ') });
       messageParts.push({ isName: false, text: " und " });
       messageParts.push({ isName: true, text: " weitere" });
-      messageParts.push({ isName: false, text: " haben reagiert" }); 
+      messageParts.push({ isName: false, text: " haben reagiert" });
     }
     return messageParts;
   }
-=======
-  set isOwnDmChannel(value: boolean) {
-    this._isOwnDmChannel.next(value);
-  }
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 }

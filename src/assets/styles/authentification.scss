@@ -1,0 +1,241 @@
+.login-dialog-content {
+    height: 100vh;
+    width: 100vw;
+    max-width: 100%;
+    background-color: #ECEEFE;
+}
+
+.logo-box {
+    top: 20px;
+    z-index: 102;
+    left: 50%;
+    font-size: 30px;
+    font-weight: 700;
+    transform: translateX(-50%);
+
+    @media (max-width: 700px) {
+        animation: logo-title-animation-small-screen 1900ms ease-in-out forwards;
+    }
+
+    @media (max-height: 700px) {
+        font-size: 28px;
+        top: 10px;
+    }
+}
+
+.logo-and-title {
+    left: 50px;
+    top: 50px;
+}
+
+.logo {
+    height: 60px;
+    object-fit: contain;
+    margin-right: 10px;
+
+    @media (max-width: 450px) {
+        height: 50px;
+    }
+
+    @media (max-height: 700px) {
+        height: 45px;
+    }
+}
+
+.animation-stop {
+    animation: none;
+}
+
+.login-card {
+    width: 550px;
+    height: unset !important;
+    padding: 40px;
+    box-sizing: border-box !important;
+    border-radius: 30px !important;
+    gap: 30px;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        width: 500px;
+    }
+
+    @media (max-width: 700px) {
+        width: 100%;
+        margin-left: 40px;
+        margin-right: 40px;
+        margin-top: -100px;
+    }
+
+    @media (max-width: 450px) {
+        padding: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+        gap: 20px;
+    }
+
+    @media (max-height: 750px) {
+        margin-top: -50px;
+    }
+
+    @media (max-height: 655px) {
+        gap: 15px;
+    }
+}
+
+.login-input-container {
+    width: calc(100% - 40px);
+    border-radius: 50px;
+    padding: 18px 20px;
+    background-color: #ECEEFE;
+    border: 1px transparent solid;
+    transition: all 125ms ease-in-out;
+
+    &:hover {
+        border: 1px gray solid;
+    }
+
+    &:focus-within {
+        border: 1px #444DF2 solid;
+    }
+
+    .input-icon {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+        margin-left: 10px;
+
+        @media (max-width: 1550px) or (max-height: 750px) {
+            width: 15px;
+            height: 15px;
+        }
+
+        @media (max-width: 450px) {
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    .privacy-icon {
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+        margin-right: 10px;
+        opacity: 0.6;
+
+        @media (max-width: 1550px) or (max-height: 750px) {
+            width: 18px;
+            height: 18px;
+        }
+
+        @media (max-width: 450px) {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    input {
+        font-family: 'Nunito', sans-serif;
+        outline: none;
+        color: black;
+        background: transparent;
+        border: none;
+        flex: 1;
+        font-size: 18px;
+        margin-left: 30px;
+
+        &::placeholder {
+            color: #686868;
+        }
+
+        @media (max-width: 1550px) or (max-height: 750px) {
+            font-size: 16px;
+        }
+
+        @media (max-width: 700px) {
+            font-size: 18px;
+        }
+
+        @media (max-width: 450px) {
+            font-size: 14px;
+            margin-left: 15px;
+        }
+    }
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        padding: 13px 20px;
+    }
+
+    @media (max-width: 700px) {
+        padding: 15px 20px;
+    }
+
+    @media (max-width: 450px) {
+        width: calc(100% - 30px);
+        padding: 10px 16px;
+    }
+}
+
+.warn {
+    position: absolute;
+    bottom: -22px;
+    left: 2px;
+    font-size: 12px;
+    color: red;
+}
+
+.go-back-icon {
+    height: unset !important;
+    width: unset !important;
+    left: 44px;
+    bottom: 44px;
+    z-index: 10;
+    border-radius: 50px;
+    padding: 8px;
+    font-size: 26px;
+    font-weight: 600;
+
+    &:hover {
+        background-color: #ECEEFE;
+        color: #797EF3;
+    }
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 24px;
+        left: 42px;
+        bottom: 40px;
+    }
+
+    @media (max-width: 450px) {
+        font-size: 20px;
+        left: 31px;
+        bottom: 17px;
+    }
+}
+
+.login-footer {
+    position: absolute;
+    bottom: 50px;
+    color: #797EF3;
+
+    @media (max-width: 450px) {
+        gap: 10px !important;
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+.policy-span {
+    color: #797EF3;
+    border: 1px solid transparent;
+    transition: all 125ms ease-in-out;
+    border-radius: 20px;
+    padding: 6px 12px;
+
+    &:hover {
+        border: 1px solid lightgray;
+    }
+
+    @media (max-width: 450px) {
+        padding: 3px 9px;
+        font-size: 15px !important;
+    }
+}

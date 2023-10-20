@@ -1,5 +1,4 @@
 <div class="main-page-bg p-relative">
-<<<<<<< HEAD
     <div *ngIf="showChat" class="toggle-sidenav-container pointer" (click)="toggleLeftSidenav()"
         (mouseenter)="hoverCodeIcon = true" (mouseleave)="hoverCodeIcon = false" [ngClass]="{
             'hide-sidenav-toggle-div': isRightSidenavActive()}">
@@ -40,32 +39,14 @@
 
     </mat-sidenav-container>
 
-=======
-    <div class="toggle-sidenav-container pointer" (click)="toggleLeftSidenav()" (mouseenter)="hoverCodeIcon = true"
-        (mouseleave)="hoverCodeIcon = false">
-        <span *ngIf="isSidenavOpen">Workspace-Menü schließen</span>
-        <span *ngIf="!isSidenavOpen">Workspace-Menü öffnen</span>
-        <img class="code-symbol"
-            [src]="hoverCodeIcon ? 'assets/img/icons/code_symbol_purple.png' : 'assets/img/icons/code_symbol.png'"
-            [ngStyle]="{ transform: isSidenavOpen ? 'rotate(180deg)' : 'rotate(0)' }">
+    <app-success-banner *ngIf="isBannerVisible" [message]="bannerMsg">
+    </app-success-banner>
+    
+</div>
+
+<div *ngIf="chatService.cleaningDataInProgress" class="big-loading-screen flex-center">
+    <div class="load"></div>
+    <div class="load-logo flex-center p-absolute">
+        <img src="assets/img/logo/logo.png">
     </div>
-
-    <app-mainpage-header (closeLeftSidenav)="toggleLeftSidenav()" (closeRightSidenav)="rightSidenav.close()"></app-mainpage-header>
-
-    <mat-sidenav-container class="content">
-
-        <mat-sidenav #leftSidenav [(opened)]="isSidenavOpen" mode="side" opened="true" class="wrapper">
-            <app-mainpage-channels class="channel-container f-column" (closeEvent)="rightSidenav.close()"></app-mainpage-channels>
-        </mat-sidenav>
-
-        <app-mainpage-chat *ngIf="!channelService.inDirectMessage" class="chat-container d-flex f-column" (openEvent)="rightSidenav.open()"></app-mainpage-chat>
-        <app-mainpage-direct-message *ngIf="channelService.inDirectMessage" class="chat-container d-flex f-column"></app-mainpage-direct-message>
-
-        <mat-sidenav #rightSidenav mode="side" opened="false" position="end" class="wrapper">
-            <app-mainpage-threads class="threads-container d-flex f-column"
-                (closeEvent)="rightSidenav.toggle()"></app-mainpage-threads>
-        </mat-sidenav>
-
-    </mat-sidenav-container>
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 </div>

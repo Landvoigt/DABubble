@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <div *ngIf="!screenService.tabletMode" class="channels-header d-flex ai-center g-20">
     <img src="assets/img/code_learning.png">
     <span class="channels-headline">Code Learning</span>
@@ -10,48 +9,63 @@
 </div>
 
 <div *ngIf="screenService.tabletMode" class="search-main-container">
-    <div class="search-wrapper">
+    <div class="p-relative">
         <div class="search-container pointer">
-            <div class="search-field d-flex ai-center j-between" #searchFieldContainer>
-                <!-- <input [(ngModel)]="search" name="search-field" (ngModelChange)="generalSearch()"
-                    placeholder="Code learning durchsuchen" autocomplete="off">
-                <img src="assets/img/icons/loupe.png"> -->
-                <input [(ngModel)]="search" name="search-field" placeholder="Code learning durchsuchen"
+            <div class="search-field d-flex ai-center" [class.search-open]="searchService.noSearchResult()"
+                #searchFieldContainerMobile>
+                <input [(ngModel)]="searchService.search" name="search-field"
+                    (ngModelChange)="searchService.generalSearch()" placeholder="Code learning durchsuchen"
                     autocomplete="off">
                 <img src="assets/img/icons/loupe.png">
-            </div>
-            <div class="result-container">
-                <!-- <div class="result-search pointer">
-                    <div class="item" *ngFor="let user of searchResultsName">{{ user.data.name }}
-                        <div [class.online]="user.data.loggedIn && !accountService.getLoggedInUser().isActive && searchResultsName.length > 0"
-                            [class.offline]="!user.data.loggedIn && !accountService.getLoggedInUser().isActive && searchResultsName.length > 0"
-                            [class.active]="accountService.getLoggedInUser().loggedIn && user.data.isActive">
+
+                <div class="result-container">
+                    <div class="result-search d-flex f-column j-start p-absolute pointer" [class.cancel-border]="!searchService.noSearchResult()">
+                        <div (click)="searchService.openDirectMessage(user.data)" class="item d-flex ai-center"
+                            *ngFor="let user of searchService.searchResultsName; let i = index">
+                            <div class="item-content d-flex ai-center">
+                                <span class="material-symbols-outlined result-icon">person</span>
+                                {{ user.data.name }}
+                            </div>
+                            <div class="status-container-search">
+                                <div [class.dot-online]="user.data.loggedIn && !accountService.getLoggedInUser().isActive && searchService.searchResultsName.length > 0"
+                                    [class.dot-offline]="!user.data.loggedIn && !accountService.getLoggedInUser().isActive && searchService.searchResultsName.length > 0"
+                                    [class.dot-active]="accountService.getLoggedInUser().loggedIn && user.data.isActive">
+                                </div>
+                            </div>
+                        </div>
+                        <div (click)="searchService.extractUserInformation(user.data)" class="item d-flex ai-center"
+                            *ngFor="let user of searchService.searchResultsEmail; let i = index">
+                            <div class="item-content d-flex ai-center">
+                                <span class="material-symbols-outlined result-icon">alternate_email</span>
+                                {{ user.data.email }}
+                            </div>
+                        </div>
+                        <div (click)="searchService.openChannelArea(channel.data)" class="item d-flex ai-center"
+                            *ngFor="let channel of searchService.searchResultsChannel">
+
+                            <div class="item-content d-flex ai-center">
+                                <span class="material-symbols-outlined result-icon">tag</span>
+                                {{ channel.data.name }}
+                            </div>
+                        </div>
+                        <div (click)="searchService.openThread(thread)" class="item d-flex ai-center"
+                            *ngFor="let thread of searchService.searchResultsThreads; let i = index">
+
+                            <div class="item-content d-flex ai-center">
+                                <span class="material-symbols-outlined result-icon">chat</span>
+                                <b class="result-channel-name-for-msg">#{{ thread.channelName }}</b> - {{ thread.content }}
+                            </div>
                         </div>
                     </div>
-                    <div class="item" *ngFor="let user of searchResultsEmail">{{ user.data.email }}</div>
-                    <div class="item" *ngFor="let channel of searchResultsChannel">#{{ channel.data.name }}</div>
-                </div> -->
+                </div>
             </div>
         </div>
-=======
-<div class="channels-header d-flex ai-center g-20">
-    <img src="assets/img/code_learning.png">
-    <span class="channels-headline">Code Learning</span>
-    <div class="new-message-icon flex-center pointer">
-        <span class="material-symbols-outlined">
-            edit_square
-        </span>
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     </div>
 </div>
 
 <div class="channels-content d-flex f-column">
     <div class="channels-section d-flex f-column">
-<<<<<<< HEAD
         <div class="d-flex ai-center j-between channel-hl-mobile" style="margin-bottom: 15px;">
-=======
-        <div class="d-flex ai-center j-between" style="margin-bottom: 15px;">
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
             <div class="d-flex g-10 ai-center pointer sub-headline-hover">
                 <mat-icon [ngClass]="{'rotate': !isDropdownOpenChannel}" (click)="channelSectionToggle()"
                     class="mr-10">arrow_drop_down</mat-icon>
@@ -94,60 +108,39 @@
         </div>
 
         <div class="friends-wrapper" [ngClass]="{'up': !isDropdownOpenDm}">
-<<<<<<< HEAD
 
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
             <div class="friends-section d-flex">
                 <div (click)="openSelfMessage()" class="d-flex ai-center friend-box pointer"
                     [class.channel-open]="channelService.inDirectMessage && accountService.getLoggedInUser().id === currentSelectedUser_ID">
                     <div class="p-relative mr-20 d-flex">
-<<<<<<< HEAD
                         <img class="friends-avatar"
-                            [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar_small.png'"
-                            (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
-                        <div class="status-check"
-                            [class.status-online]="accountService.getLoggedInUser().loggedIn && !accountService.getLoggedInUser().isActive"
-                            [class.status-offline]="!accountService.getLoggedInUser().loggedIn && !accountService.getLoggedInUser().isActive"
-                            [class.status-active]="accountService.getLoggedInUser().loggedIn && accountService.getLoggedInUser().isActive">
+                            [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar_standard_(1).png'"
+                            (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+                        <div class="status-check" [class.status-online]="colorGreen" [class.status-offline]="colorGray"
+                            [class.status-active]="colorBlue">
                         </div>
                     </div>
-                    <span class="font-adjust user-name-wrap">{{ getFirstName(accountService.getLoggedInUser().name) }} (Du)</span>
+                    <span class="font-adjust user-name-wrap">{{ getFirstName(accountService.getLoggedInUser().name) }}
+                        (Du)</span>
                 </div>
             </div>
 
+            <div class="divider-line"></div>
 
-=======
-                        <img class="friends-avatar" src="{{ accountService.getLoggedInUser().avatarSrc }}">
-                    </div>
-                    <span class="font-adjust user-name-wrap">{{ accountService.getLoggedInUser().name }} (Du)</span>
-                </div>
-            </div>
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
             <div class="friends-section d-flex" *ngFor="let user of allUsers">
                 <div (click)="openDirectMessage(user)" class="d-flex ai-center friend-box pointer"
                     [class.channel-open]="channelService.inDirectMessage && user.id === currentSelectedUser_ID">
                     <div class="p-relative mr-20 d-flex">
-<<<<<<< HEAD
-                        <!-- <img class="friends-avatar" [src]="user.avatarSrc || 'assets/img/avatar_small.png'"> -->
-                        <img class="friends-avatar" [src]="user.avatarSrc || 'assets/img/avatar_small.png'"
-                            (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
+                        <img class="friends-avatar" [src]="user.avatarSrc || 'assets/img/avatar_standard_(1).png'"
+                            (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
                         <div class="status-check" [class.status-online]="user.loggedIn && !user.isActive"
                             [class.status-offline]="!user.loggedIn && !user.isActive"
                             [class.status-active]="user.loggedIn && user.isActive"></div>
-=======
-                        <img class="friends-avatar" [src]="user.avatarSrc || 'assets/img/avatar_small.png'">
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
                     </div>
                     <span class="font-adjust user-name-wrap">{{ user.name }}</span>
                 </div>
             </div>
         </div>
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     </div>
 </div>

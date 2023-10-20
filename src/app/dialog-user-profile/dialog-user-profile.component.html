@@ -1,26 +1,21 @@
-<<<<<<< HEAD
 <mat-icon class="close-icon close-icon-dialog p-absolute pointer" (click)="dialogRef.close()">close</mat-icon>
 <div class="content d-flex f-column p-relative">
     <h2 class="profile-text">Profil</h2>
-    <img class="avatar-big" [src]="chatService.ownerData.ownerAvatarSrc || 'assets/img/avatar_small.png'"
-        (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
-    <span class="dialog-span popup-name">{{ chatService.ownerData.ownerName }}</span>
+    <img class="avatar-big" [src]="chatService.ownerData.ownerAvatarSrc || 'assets/img/avatar_standard_(1).png'"
+        (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+    <span class="popup-name">{{ chatService.ownerData.ownerName }}</span>
 
     <div class="status-container d-flex ai-center w-100 g-20">
-        <div *ngIf="userDataJson.loggedIn && !userDataJson.isActive" class="online"></div>
-        <div *ngIf="userDataJson.loggedIn && userDataJson.isActive" class="active"></div>
-        <div *ngIf="!userDataJson.loggedIn && !userDataJson.isActive" class="offline"></div>
-
-        <span *ngIf="userDataJson.loggedIn && !userDataJson.isActive" style="color:#92C83E" class="dialog-span status">{{ status
-            }}</span>
-        <span *ngIf="userDataJson.isActive && userDataJson.loggedIn" style="color:#444DF2" class="dialog-span status">{{ status
-            }}</span>
-        <span *ngIf="!userDataJson.loggedIn && !userDataJson.isActive" style="color:#686868" class="dialog-span status">{{
-            status }}</span>
+        <div [class.dot-online]="colorGreen" [class.dot-active]="colorBlue" [class.dot-offline]="colorGray">
+        </div>
+        <span class="dialog-span status" [class.span-online]="colorGreen" [class.span-offline]="colorGray"
+            [class.span-active]="colorBlue">
+            {{ status }}
+        </span>
     </div>
 
     <div class="d-flex ai-end w-100 g-20 mt-30">
-        <span class="dialog-span material-symbols-outlined email-icon">
+        <span class="material-symbols-outlined email-icon">
             mail
         </span>
         <span class="dialog-span">E-Mail-Adresse</span>
@@ -31,44 +26,6 @@
     </a>
 
     <div class="btn-container mt-30">
-        <button class="btn-primary" (click)="openDirectMessage(chatService.ownerData)">Nachricht</button>
+        <button class="btn-primary" (click)="getUserInformation(chatService.ownerData)">Nachricht</button>
     </div>
-=======
-<div class="user-profile-container-wrapper">
-
-    <span class="profile-text">Profil</span>
-    <mat-icon class="icon-position pointer" (click)="closeThreads()">close</mat-icon>
-
-    <div class="user-profile-container">
-
-        <div class="profil-image-container">
-            <img class="profile-image"
-                [src]="this.chatService.ownerData.ownerAvatarSrc || 'assets/img/avatar_small.png'">
-        </div>
-
-        <span class="user-name">{{ this.chatService.ownerData.ownerName }}</span>
-
-        <div class="active-container">
-            <img class="online-dot" src="assets/img/icons/online.png">
-            <span class="online-text">Aktiv</span>
-        </div>
-
-        <div class="email-icon-text-container">
-            <img src="assets/img/icons/email.png">
-            <span>E-Mail-Adresse</span>
-        </div>
-
-        <span class="user-email">{{ this.chatService.ownerData.ownerEmail }}</span>
-
-        <!-- <div class="nachricht-btn">
-            <img (click)="closeThreads()" src="./assets/img/nachricht.png">
-        </div> -->
-
-        <div class="btn-container">
-            <button class="btn-primary btn-primary-medium" (click)="closeThreads()">Nachricht</button>
-        </div>
-
-    </div>
-
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 </div>

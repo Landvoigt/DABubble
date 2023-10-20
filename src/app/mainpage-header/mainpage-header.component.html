@@ -1,110 +1,76 @@
-<<<<<<< HEAD
-<div class="main-page-header d-flex ai-center j-between">
-    <div class="logo-container ">
+<div class="main-page-header d-flex ai-center j-between p-relative">
+    <div class="logo-container flex-center">
         <img class="pointer" src="assets/img/logo/logo_&_name.png" (click)="closeAllChats()">
     </div>
 
-
     <div *ngIf="!screenService.tabletMode" class="search-main-container">
-        <div class="search-wrapper">
+        <div class="p-relative">
             <div class="search-container pointer">
-                <div class="search-field d-flex ai-center" #searchFieldContainer>
-                    <input [(ngModel)]="search" name="search-field" (ngModelChange)="generalSearch()"
-                        placeholder="Code learning durchsuchen" autocomplete="off">
+                <div class="search-field d-flex ai-center" [class.search-open]="searchService.noSearchResult()"
+                    #searchFieldContainer>
+                    <input [(ngModel)]="searchService.search" name="search-field"
+                        (ngModelChange)="searchService.generalSearch()" placeholder="Code learning durchsuchen"
+                        autocomplete="off">
                     <img src="assets/img/icons/loupe.png">
 
                     <div class="result-container">
-                        <div class="result-search pointer">
-                            <div (click)="onClickDirectMessage(user.data,i)" class="item"
-                                *ngFor="let user of searchResultsName; let i = index">{{ user.data.name }}
-                                <div [class.online]="user.data.loggedIn && !accountService.getLoggedInUser().isActive && searchResultsName.length > 0"
-                                    [class.offline]="!user.data.loggedIn && !accountService.getLoggedInUser().isActive && searchResultsName.length > 0"
-                                    [class.active]="accountService.getLoggedInUser().loggedIn && user.data.isActive">
+                        <div class="result-search d-flex f-column j-start p-absolute pointer"
+                            [class.cancel-border]="!searchService.noSearchResult()">
+                            <div (click)="searchService.openDirectMessage(user.data)" class="item d-flex ai-center"
+                                *ngFor="let user of searchService.searchResultsName; let i = index">
+                                <div class="item-content d-flex ai-center">
+                                    <span class="material-symbols-outlined result-icon">person</span>
+                                    {{ user.data.name }}
+                                </div>
+                                <div class="status-container-search">
+                                    <div [class.dot-online]="user.data.loggedIn && !accountService.getLoggedInUser().isActive && searchService.searchResultsName.length > 0"
+                                        [class.dot-offline]="!user.data.loggedIn && !accountService.getLoggedInUser().isActive && searchService.searchResultsName.length > 0"
+                                        [class.dot-active]="accountService.getLoggedInUser().loggedIn && user.data.isActive">
+                                    </div>
                                 </div>
                             </div>
-                            <!-- <div (click)="onClickDirectMessage(user.data,i)" class="item"
-                                *ngFor="let user of searchResultsEmail; let i = index">{{ user.data.email }}</div> -->
-                            <div (click)="openDialogProfileDmHeader(user.data)" class="item"
-                                *ngFor="let user of searchResultsEmail; let i = index">{{ user.data.email }}</div>
-                            <div (click)="onClickOpenChannelArea(channel.data)" class="item"
-                                *ngFor="let channel of searchResultsChannel">#{{ channel.data.name }}</div>
-                            <div (click)="onClickOpenChannelAreaAndThread(thread)" class="item"
-                                *ngFor="let thread of searchResultsThreads; let i = index">{{ thread.threadContent }}
+                            <div (click)="searchService.extractUserInformation(user.data)" class="item d-flex ai-center"
+                                *ngFor="let user of searchService.searchResultsEmail; let i = index">
+                                <div class="item-content d-flex ai-center">
+                                    <span class="material-symbols-outlined result-icon">alternate_email</span>
+                                    {{ user.data.email }}
+                                </div>
                             </div>
+                            <div (click)="searchService.openChannelArea(channel.data)" class="item d-flex ai-center"
+                                *ngFor="let channel of searchService.searchResultsChannel">
 
+                                <div class="item-content d-flex ai-center">
+                                    <span class="material-symbols-outlined result-icon">tag</span>
+                                    {{ channel.data.name }}
+                                </div>
+                            </div>
+                            <div (click)="searchService.openThread(thread)" class="item d-flex ai-center"
+                                *ngFor="let thread of searchService.searchResultsThreads; let i = index">
+
+                                <div class="item-content d-flex ai-center">
+                                    <span class="material-symbols-outlined result-icon">chat</span>
+                                    <b class="result-channel-name-for-msg">#{{ thread.channelName }}</b> - {{ thread.content }}
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-
                 </div>
-
             </div>
         </div>
     </div>
 
-
-
-    <!-- <div *ngIf="!screenService.tabletMode" class="search-main-container">
-        <div class="search-wrapper">
-            <div class="search-container pointer">
-
-                <div class="search-field d-flex ai-center j-between" #searchFieldContainer>   
-
-
-                <form class="general-search-form">
-                    <input type="text" aria-label="Number" matInput [(ngModel)]="search" name="search-field"
-                        (ngModelChange)="generalSearch()" placeholder="Code learning durchsuchen"
-                        [matAutocomplete]="auto">
-                    <img src="assets/img/icons/loupe.png">
-                    <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option  (click)="onClickDirectMessage(user.data,i)" class="item"
-                        *ngFor="let user of searchResultsName; let i = index" [value]="user.data.name">
-                            <div>{{ user.data.name }}
-                            <div [class.online]="user.data.loggedIn && !accountService.getLoggedInUser().isActive && searchResultsName.length > 0"
-                                [class.offline]="!user.data.loggedIn && !accountService.getLoggedInUser().isActive && searchResultsName.length > 0"
-                                [class.active]="accountService.getLoggedInUser().loggedIn && user.data.isActive">
-                            </div>
-                        </div>
-                        </mat-option>
-
-                        <mat-option (click)="onClickDirectMessage(user.data,i)" class="item"
-                        *ngFor="let user of searchResultsEmail; let i = index" [value]="user.data.email">
-                            <div >{{ user.data.email }}</div>
-                        </mat-option>
-
-                        <mat-option (click)="onClickOpenChannelArea(channel.data)" class="item"
-                        *ngFor="let channel of searchResultsChannel" [value]="channel.data.name">
-                            <div >#{{ channel.data.name }}</div>
-                        </mat-option>
-
-                        <mat-option (click)="onClickOpenChannelAreaAndThread(thread)" class="item"
-                        *ngFor="let thread of searchResultsThreads; let i = index">
-                            <div >{{ thread.threadContent }}</div>
-                        </mat-option>
-                    </mat-autocomplete>
-                </form>
-             </div>
-
-            </div>
-        </div>
-    </div> -->
-
-
     <div class="profile-container d-flex ai-center j-end p-relative">
-        <span class="name pointer hide-name"
-            (click)="$event.stopPropagation(); toggleLogoutPopup()"
+        <span class="name pointer hide-name" (click)="$event.stopPropagation(); toggleLogoutPopup()"
             [ngClass]="{'cancel-hover': showProfilePopup || showLogoutPopup}">
             {{ accountService.getLoggedInUser().name }}
         </span>
         <div class="flex-center p-relative">
             <img class="user-avatar pointer"
-                [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar_small.png'"
+                [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar_standard_(1).png'"
                 (click)="$event.stopPropagation(); toggleLogoutPopup()"
-                (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
-            <div class="status-check"
-                [class.status-online]="accountService.getLoggedInUser().loggedIn && !accountService.getLoggedInUser().isActive"
-                [class.status-offline]="!accountService.getLoggedInUser().loggedIn && !accountService.getLoggedInUser().isActive"
-                [class.status-active]="accountService.getLoggedInUser().loggedIn && accountService.getLoggedInUser().isActive">
+                (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+            <div class="status-check" [class.dot-online]="colorGreen" [class.dot-offline]="colorGray"
+                [class.dot-active]="colorBlue">
             </div>
         </div>
         <mat-icon *ngIf="!screenService.tabletMode" class="arrow-icon pointer"
@@ -126,126 +92,83 @@
             <div class="profile-popup p-absolute d-flex f-column j-start" (click)="$event.stopPropagation()">
                 <mat-icon class="close-icon close-icon-dialog p-absolute pointer"
                     (click)="closeProfilePopup()">close</mat-icon>
-                <span *ngIf="!showEditProfile" class="popup-header-text">Profil</span>
-                <span *ngIf="showEditProfile" class="popup-header-text">Dein Profil bearbeiten</span>
+                <h2 *ngIf="!showEditProfile">Profil</h2>
+                <h2 *ngIf="showEditProfile">Dein Profil bearbeiten</h2>
                 <img class="avatar-big"
-                    [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar_small.png'"
-                    (error)="accountService.handleImageError($event, 'assets/img/avatar_small.png')">
+                    [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar_standard_(1).png'"
+                    (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
 
-                <div *ngIf="!showEditProfile" class="d-flex w-100 j-between">
+                <div *ngIf="!showEditProfile" class="d-flex w-100 j-between g-20">
                     <span class="popup-name" *ngIf="accountService.loggedInUser != null">
-=======
-<div class="main-page-header d-flex ai-center">
-    <div class="logo-container flex-center">
-        <img class="pointer" src="assets/img/logo/logo_&_name.png" (click)="closeAllChats()">
-    </div>
-    <div class="search-container flex-center">
-        <div class="search-field d-flex ai-center">
-            <input name="search-field" placeholder="Code learning durchsuchen">
-            <img class="pointer" src="assets/img/icons/loupe.png">
-        </div>
-    </div>
-    <div class="profile-container d-flex ai-center j-end p-relative">
-        <span class="name pointer" (click)="$event.stopPropagation(); toggleLogoutPopup()"
-            [ngClass]="{'cancel-hover': showProfilePopup || showLogoutPopup}">
-            {{ accountService.getLoggedInUser().name }}
-        </span>
-        <img class="user-avatar pointer" src="{{ accountService.getLoggedInUser().avatarSrc }}"
-            (click)="$event.stopPropagation(); toggleLogoutPopup()">
-        <mat-icon class="arrow-icon pointer" (click)="$event.stopPropagation(); toggleLogoutPopup()"
-            [ngClass]="{'cancel-hover': showProfilePopup || showLogoutPopup}">keyboard_arrow_down</mat-icon>
-        <div *ngIf="showLogoutPopup" class="overlay" (click)="closeLogoutPopup()">
-            <div class="logout-popup p-absolute flex-center f-column" (click)="$event.stopPropagation()">
-                <span class="pointer" (click)="closeLogoutPopup(); toggleProfilePopup()">Profil</span>
-                <span class="pointer" (click)="logoutUser()">Logout</span>
-            </div>
-        </div>
-        <div *ngIf="showProfilePopup" class="overlay" (click)="closeProfilePopup()">
-            <div class="profile-popup p-absolute d-flex f-column j-start" (click)="$event.stopPropagation()">
-                <mat-icon class="close-icon p-absolute pointer" (click)="closeProfilePopup()">close</mat-icon>
-                <span *ngIf="!showEditProfile" class="popup-header-text">Profil</span>
-                <span *ngIf="showEditProfile" class="popup-header-text">Dein Profil bearbeiten</span>
-                <img class="avatar-big mt-40 mb-40" src="{{ accountService.getLoggedInUser().avatarSrc }}">
-
-                <div *ngIf="!showEditProfile" class="d-flex w-100 j-between">
-                    <span class="name" *ngIf="accountService.loggedInUser != null">
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
                         {{ accountService.getLoggedInUser().name }}
                     </span>
                     <a class="pointer" (click)="toggleEditProfile()">Bearbeiten</a>
                 </div>
-<<<<<<< HEAD
                 <div *ngIf="!showEditProfile" class="status-container d-flex ai-center w-100 g-20 mt-20">
-
-                    <!-- <div class="status-container g-20"> -->
-                    <div [class.dot-online]="accountService.getLoggedInUser().loggedIn && !accountService.getLoggedInUser().isActive"
-                        [class.dot-offline]="!accountService.getLoggedInUser().loggedIn && !accountService.getLoggedInUser().isActive"
-                        [class.dot-active]="accountService.getLoggedInUser().loggedIn && accountService.getLoggedInUser().isActive">
+                    <div [class.dot-online]="colorGreen" [class.dot-active]="colorBlue" [class.dot-offline]="colorGray">
                     </div>
-                    <div class="status"
-                        [class.span-online]="accountService.getLoggedInUser().loggedIn && !accountService.getLoggedInUser().isActive"
-                        [class.span-offline]="!accountService.getLoggedInUser().loggedIn && !accountService.getLoggedInUser().isActive"
-                        [class.span-active]="accountService.getLoggedInUser().loggedIn && accountService.getLoggedInUser().isActive">
-                        {{ status }}</div>
-                    <!-- </div> -->
-
+                    <span class="dialog-span status" [class.span-online]="colorGreen" [class.span-offline]="colorGray"
+                        [class.span-active]="colorBlue">
+                        {{ status }}
+                    </span>
                 </div>
                 <div *ngIf="!showEditProfile" class="d-flex ai-end w-100 g-20 mt-30">
                     <span class="material-symbols-outlined email-icon">
                         mail
                     </span>
-                    <span>E-Mail-Adresse</span>
+                    <span class="dialog-span">E-Mail-Adresse</span>
                 </div>
                 <span *ngIf="!showEditProfile" class="popup-email mt-20">
                     {{ accountService.getLoggedInUser().email }}
                 </span>
-                <div *ngIf="showEditProfile" class="d-flex ai-end w-100 g-20 mb-20">
-                    <span class="material-symbols-outlined email-icon">
-                        account_circle
-                    </span>
-=======
-                <div *ngIf="!showEditProfile" class="d-flex w-100 g-20 mt-30">
-                    <img class="online-dot" src="assets/img/icons/online.png">
-                    <span class="online-text">Aktiv</span>
-                </div>
-                <div *ngIf="!showEditProfile" class="d-flex w-100 g-20 mt-40">
-                    <img src="assets/img/icons/email.png">
-                    <span>E-Mail-Adresse</span>
-                </div>
-                <span *ngIf="!showEditProfile" class="popup-email mt-30">
-                    {{ accountService.getLoggedInUser().email }}
-                </span>
-                <div *ngIf="showEditProfile" class="d-flex ai-center w-100 g-20 mb-20">
-                    <img src="assets/img/icons/person_in_circle.png">
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-                    <span>Vollständiger Name</span>
-                </div>
-                <input *ngIf="showEditProfile" class="edit-profile-input"
-                    value="{{ accountService.getLoggedInUser().name }}">
-<<<<<<< HEAD
-                <div *ngIf="showEditProfile" class="d-flex ai-end w-100 g-20 mt-30 mb-20"
-                    [ngClass]="{'opa-03': isGoogleEmail()}">
-                    <span class="material-symbols-outlined email-icon">
-                        mail
-                    </span>
-                    <span>E-Mail-Adresse</span>
-                </div>
-                <input *ngIf="showEditProfile" class="edit-profile-input"
-                    value="{{ accountService.getLoggedInUser().email }}" [ngClass]="{'opa-03': isGoogleEmail()}">
-                <span *ngIf="showEditProfile && isGoogleEmail()" class="email-change-alert">* Änderung der Email bei Google-Login nicht möglich.</span>
-                <div *ngIf="showEditProfile" class="btn-container mt-30">
-=======
-                <div *ngIf="showEditProfile" class="d-flex ai-center w-100 g-20 mt-40 mb-20">
-                    <img src="assets/img/icons/email.png">
-                    <span>E-Mail-Adresse</span>
-                </div>
-                <input *ngIf="showEditProfile" class="edit-profile-input"
-                    value="{{ accountService.getLoggedInUser().email }}">
-                <div *ngIf="showEditProfile" class="btn-container">
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-                    <button class="btn-secondary" (click)="toggleEditProfile()">Abbrechen</button>
-                    <button class="btn-primary" (click)="saveEditedUserInformation()">Speichern</button>
-                </div>
+
+                <form *ngIf="showEditProfile" #updateForm="ngForm" (ngSubmit)="saveEditedUserInformation(updateForm)"
+                    class="d-flex f-column">
+                    <div class="d-flex ai-end w-100 g-20 mb-20" [ngClass]="{'opa-03': isGuest()}">
+                        <span class="material-symbols-outlined email-icon">
+                            account_circle
+                        </span>
+                        <span class="dialog-span">Vollständiger Name</span>
+                    </div>
+
+                    <div class="p-relative w-100 d-flex">
+                        <input [(ngModel)]="name" name="updateNameInput" (ngModelChange)="checkUserName()"
+                            class="edit-profile-input" [ngClass]="{'opa-03': isGuest()}" placeholder="Name und Nachname"
+                            autocomplete="on" minlength="2" maxlength="35" #changeName="ngModel">
+                        <span *ngIf="!isNameValid && changeName.dirty" class="email-change-alert warn">
+                            * Es sind nur Buchstaben erlaubt.
+                        </span>
+                        <span *ngIf="isNameEmpty && changeName.dirty" class="email-change-alert warn">
+                            * Bitte geben sie einen Namen ein.
+                        </span>
+                    </div>
+
+                    <div class="d-flex ai-end w-100 g-20 mt-30 mb-20"
+                        [ngClass]="{'opa-03': isGoogleEmail() || isGuest()}">
+                        <span class="material-symbols-outlined email-icon">
+                            mail
+                        </span>
+                        <span class="dialog-span">E-Mail-Adresse</span>
+                    </div>
+                    <div class="p-relative w-100 d-flex">
+                        <input [(ngModel)]="email" name="updateEmailInput" (ngModelChange)="checkUserEmail()"
+                            class="edit-profile-input" [ngClass]="{'opa-03': isGoogleEmail() || isGuest()}"
+                            placeholder="E-mail" autocomplete="on" minlength="2" maxlength="35" #changeMail="ngModel">
+                        <span *ngIf="!isGoogleEmail() && !isEmailValid && changeMail.dirty" class="email-change-alert warn">
+                            * Diese E-Mail-Adresse ist leider ungültig.
+                        </span>
+                    </div>
+                    <span *ngIf="isGoogleEmail()" class="email-change-alert">* Änderung der Email bei
+                        Google-Login nicht möglich.</span>
+                    <span *ngIf="isGuest()" class="email-change-alert">* Änderungen im Guest-Login
+                        nicht
+                        möglich.</span>
+                    <div class="btn-container mt-30">
+                        <button class="btn-secondary" (click)="toggleEditProfile()">Abbrechen</button>
+                        <button class="btn-primary" type="submit"
+                            [disabled]="!updateForm.form.valid || !isEmailValid || !isNameValid">Speichern</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

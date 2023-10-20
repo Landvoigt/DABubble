@@ -3,13 +3,15 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AccountServiceService } from '../account-service.service';
 import { ChannelServiceService } from '../channel-service.service';
 import { Subscription } from 'rxjs';
-import { Firestore, collection, getDocs } from '@angular/fire/firestore';
+import { Firestore, arrayRemove, collection, doc, getDocs, updateDoc } from '@angular/fire/firestore';
 import { User } from 'src/models/user.class';
 import { DialogChannelAddNewMembersComponent } from '../dialog-channel-add-new-members/dialog-channel-add-new-members.component';
+import { Channel } from 'src/models/channel.class';
+import { Thread } from 'src/models/thread.class';
+import { DialogUserProfileComponent } from '../dialog-user-profile/dialog-user-profile.component';
+import { ChatServiceService } from '../chat-service.service';
+import { BannerServiceService } from '../banner-service.service';
 
-/**
- * Component for displaying and managing channel members.
- */
 @Component({
   selector: 'app-dialog-channel-members',
   templateUrl: './dialog-channel-members.component.html',
@@ -18,9 +20,11 @@ import { DialogChannelAddNewMembersComponent } from '../dialog-channel-add-new-m
 export class DialogChannelMembersComponent implements OnInit, OnDestroy {
   firestore: Firestore = inject(Firestore);
   userCollectionRef = collection(this.firestore, 'users');
-  private subscription: Subscription;
-  currentChannel;
-  channelMembers = [];
+
+  private channelSubscription: Subscription;
+
+  currentChannel: Channel;
+  channelMembers: any[] = [];
 
   showNoPerm: boolean = false;
   hoverTimeout: any;
@@ -29,12 +33,11 @@ export class DialogChannelMembersComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<DialogChannelMembersComponent>,
     public accountService: AccountServiceService,
-    public channelService: ChannelServiceService) { }
+    public channelService: ChannelServiceService,
+    private chatService: ChatServiceService,
+    private bannerService: BannerServiceService) { }
 
 
-  /**
-   * Lifecycle hook that is called after data-bound properties of a directive are initialized.
-   */
   ngOnInit(): void {
     this.subscribeCurrentChannel();
   }
@@ -43,10 +46,11 @@ export class DialogChannelMembersComponent implements OnInit, OnDestroy {
   /**
    * Subscribes to the updates of the current channel.
    */
-  private subscribeCurrentChannel(): void {
-    this.subscription = this.channelService.currentChannel$.subscribe(channel => {
+  subscribeCurrentChannel(): void {
+    this.channelSubscription = this.channelService.currentChannel$.subscribe(channel => {
       if (channel && Object.keys(channel).length > 0) {
         this.currentChannel = channel;
+        this.channelMembers = [];
         this.setupMembers();
       }
     });
@@ -56,7 +60,7 @@ export class DialogChannelMembersComponent implements OnInit, OnDestroy {
   /**
    * Sets up the list of members for the current channel.
    */
-  private async setupMembers(): Promise<void> {
+  async setupMembers(): Promise<void> {
     const loggedInUserId = this.accountService.getLoggedInUser().id;
     const querySnapshot = await getDocs(this.userCollectionRef);
     this.populateChannelMembers(querySnapshot, loggedInUserId);
@@ -68,7 +72,8 @@ export class DialogChannelMembersComponent implements OnInit, OnDestroy {
    * @param {any} querySnapshot - The snapshot of user data.
    * @param {string} loggedInUserId - The ID of the currently logged-in user.
    */
-  private populateChannelMembers(querySnapshot: any, loggedInUserId: string): void {
+  populateChannelMembers(querySnapshot: any, loggedInUserId: string): void {
+    this.channelMembers = [];
     querySnapshot.forEach((userDoc) => {
       const userData = userDoc.data() as User;
       if (this.currentChannel.members.includes(userData.id) && userData.id !== loggedInUserId) {
@@ -108,7 +113,43 @@ export class DialogChannelMembersComponent implements OnInit, OnDestroy {
   }
 
 
-  openProfile(): void {
+  /**
+   * Extracts the needed information from the given user to open the profile dialog.
+   */
+  extractUserInformation(user: User) {
+    let content = new Thread;
+    content.ownerName = user.name,
+      content.ownerAvatarSrc = user.avatarSrc,
+      content.ownerEmail = user.email,
+      content.ownerID = user.id
+    this.openDialogProfile(content);
+  }
+
+
+  /**
+   * Opens the profile dialog.
+   */
+  openDialogProfile(thread: Thread) {
+    this.chatService.ownerData = thread;
+    this.dialog.open(DialogUserProfileComponent, { restoreFocus: false });
+  }
+
+
+  /**
+   * Removes a specific member from the current channel.
+   * @param memberID - ID of the channel members that gets removed.
+   */
+  async removeChannelMember(memberID: string) {
+    const channelDocRef = doc(this.firestore, 'channels', this.currentChannel.id);
+    try {
+      await updateDoc(channelDocRef, {
+        members: arrayRemove(memberID)
+      });
+      this.bannerService.show('Mitglied entfernt');
+      // this.bannerService.show('User removed');
+    } catch (error) {
+      console.error('Error removing user:', error);
+    }
   }
 
 
@@ -116,8 +157,8 @@ export class DialogChannelMembersComponent implements OnInit, OnDestroy {
    * Unsubscribes from the updates of the current channel.
    */
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.channelSubscription) {
+      this.channelSubscription.unsubscribe();
     }
   }
 }

@@ -1,16 +1,19 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation, inject } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ChannelServiceService } from '../channel-service.service';
-import { Observable, Subscription, map, startWith } from 'rxjs';
+import { Observable, Subscription, map, startWith, tap } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { Firestore, arrayUnion, collection, doc, getDocs, updateDoc } from '@angular/fire/firestore';
 import { Channel } from 'src/models/channel.class';
 import { User } from 'src/models/user.class';
+import { DialogChannelMembersComponent } from '../dialog-channel-members/dialog-channel-members.component';
+import { BannerServiceService } from '../banner-service.service';
 
 @Component({
   selector: 'app-dialog-channel-add-new-members',
   templateUrl: './dialog-channel-add-new-members.component.html',
-  styleUrls: ['./dialog-channel-add-new-members.component.scss']
+  styleUrls: ['./dialog-channel-add-new-members.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DialogChannelAddNewMembersComponent implements OnInit, OnDestroy {
   firestore: Firestore = inject(Firestore);
@@ -24,9 +27,13 @@ export class DialogChannelAddNewMembersComponent implements OnInit, OnDestroy {
   allUsers: any[] = [];
   filteredUsers: Observable<any[]>;
 
+  hasSuggestions: boolean = false;
+
   constructor(
+    public dialog: MatDialog,
     public dialogRef: MatDialogRef<DialogChannelAddNewMembersComponent>,
-    public channelService: ChannelServiceService) { }
+    public channelService: ChannelServiceService,
+    private bannerService: BannerServiceService) { }
 
 
   /**
@@ -65,7 +72,10 @@ export class DialogChannelAddNewMembersComponent implements OnInit, OnDestroy {
   private initializeFilteredUsers(): void {
     this.filteredUsers = this.control.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value || ''))
+      map(value => this._filter(value || '')),
+      tap(suggestions => {
+        this.hasSuggestions = suggestions && suggestions.length > 0;
+      })
     );
   }
 
@@ -163,15 +173,29 @@ export class DialogChannelAddNewMembersComponent implements OnInit, OnDestroy {
     return validName ? null : { invalidName: true };
   }
 
+
+  /**
+   * Takes the selected user and puts the value to the input field.
+   * @param user - The user selected
+   */
+  selectUser(user: any): void {
+    this.selectedUser = user;
+    this.control.setValue(user);
+    this.control.updateValueAndValidity();
+  }
+
+
   /**
    * Adds a new member to the Firestore collection and closes the dialog.
    */
   async addNewMember(): Promise<void> {
     this.selectedUser = this.control.value as User;
     if (this.isValidUser(this.selectedUser)) {
-      console.log(this.selectedUser);
       await this.updateChannelMembers(this.selectedUser.id);
       this.dialogRef.close();
+      this.bannerService.show('Mitglied hinzugefügt');
+      // this.bannerService.show('User added');
+      this.openChannelMembers();
     } else {
       console.error("User or User ID is invalid");
     }
@@ -183,7 +207,7 @@ export class DialogChannelAddNewMembersComponent implements OnInit, OnDestroy {
    * @param {User | null} user - The user object to check.
    * @returns {boolean} True if the user object is valid, otherwise false.
    */
-  private isValidUser(user: User | null): boolean {
+  isValidUser(user: User | null): boolean {
     return user && user.id ? true : false;
   }
 
@@ -192,11 +216,19 @@ export class DialogChannelAddNewMembersComponent implements OnInit, OnDestroy {
    * Updates the channel members in the Firestore collection.
    * @param {string} userId - The ID of the user to add.
    */
-  private async updateChannelMembers(userId: string): Promise<void> {
+  async updateChannelMembers(userId: string): Promise<void> {
     const channelDocRef = doc(this.firestore, 'channels', this.currentChannel.id);
     await updateDoc(channelDocRef, {
       members: arrayUnion(userId)
     });
+  }
+
+
+  /**
+   * Re-opens the channel members dialog.
+   */
+  openChannelMembers() {
+    this.dialog.open(DialogChannelMembersComponent);
   }
 
 

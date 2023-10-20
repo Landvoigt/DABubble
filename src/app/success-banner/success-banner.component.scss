@@ -1,0 +1,31 @@
+.success-banner {
+    position: absolute;
+    z-index: 9999;
+    bottom: 20px;
+    right: 20px;
+    padding: 40px;
+    background-color: #444DF2;
+    color: white;
+    border-radius: 30px;
+    border-bottom-right-radius: 0;
+    display: flex;
+    gap: 10px;
+    font-size: 30px;
+    font-weight: 600;
+    white-space: nowrap;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 28px;
+        padding: 35px;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 26px;
+        padding: 25px;
+    }
+
+    @media (max-width: 450px) {
+        font-size: 22px;
+        padding: 20px;
+    }
+}

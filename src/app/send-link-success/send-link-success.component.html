@@ -1,0 +1,13 @@
+<div class="login-dialog-content flex-center p-relative">
+    <img class="logo-and-title p-absolute hide-mobile pointer" src="assets/img/logo/logo_&_name.png" (click)="locateToMainpage()">
+    <div class="hide-desktop logo-box d-flex ai-center p-absolute animation-stop pointer" (click)="locateToMainpage()">
+        <img class="logo" src="assets/img/logo/logo.png">
+        <span>DABubble</span>
+    </div>
+
+    <mat-card class="login-card d-flex f-column ai-center">
+        <h1>Email gesendet</h1>
+        <span class="dialog-span text-center">Schauen sie in ihrem Postfach nach und klicken sie auf den Link in der Email.</span>
+        <mat-icon class="go-back-icon p-absolute pointer flex-center" (click)="locateToMainpage()">arrow_back</mat-icon>
+    </mat-card>
+</div>

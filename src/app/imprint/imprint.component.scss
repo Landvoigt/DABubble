@@ -1,86 +1,128 @@
-.imprint-cont {
-    width: 100vw;
-    max-width: 100%;
-    min-height: 100vh;
-<<<<<<< HEAD
-    display: flex;
-    justify-content: center;
-    align-items: center;
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-    background-color: #ECEEFE;
-    position: relative;
-
-
-<<<<<<< HEAD
-   
-
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-
-    .logo {
-        position: absolute;
-        left: 50px;
-        top: 50px;
-    }
-
-   
 mat-card {
-     margin-top: 100px;
-        max-width: 50vw;
-        height: 70vh;
-        padding-top: 75px;
-        padding-left: 32px;
-        padding-right: 32px;
-        padding-bottom: 32px;
-        border-radius: 25px;
-        position: relative;
+    width: 500px;
+    max-height: 65%;
 
-        .close-icon {
-            position: absolute;
-            left: 32px;
-            top: 24px;
-            padding: 5px;
-            border-radius: 100%;
-            &:hover {
-                border-radius: 100%;
-            }
-        }
-}
-    .content {
-       width: 100%;
-       height: 100%;
-        color: balck;
-     
-       // background-color: rgba(0, 0, 0, 0.1);
-        overflow: scroll;
-       
+    @media(max-width: 700px) {
+        width: 100%;
+        margin-left: 40px;
+        margin-right: 40px;
     }
-<<<<<<< HEAD
+
+    @media(max-width: 450px) {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
 }
 
-@media screen and (max-width: 1200px) {
-    mat-card {
-       // scale: 0.9;
+.content {
+    margin-bottom: 60px;
+    overflow: scroll;
+    font-size: 18px;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 16px;
     }
 
-    .logo {
-        scale: 0.8;
+    @media (max-width: 700px) {
+        font-size: 18px;
+        text-align: center;
     }
 
-   
+    @media (max-width: 450px) {
+        margin-bottom: 50px;
+        font-size: 16px;
+    }
 }
 
-@media screen and (max-width: 800px) {
+.go-back-icon {
+    bottom: 35px;
+    left: 40px;
 
-    .logo {
-        top: 50px !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        margin-left: -25px !important;
+    @media (max-width: 450px) {
+        left: 20px;
+        bottom: 25px;
+    }
+}
+
+b {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    margin-right: unset;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 15px;
     }
 
+    @media (max-width: 700px) {
+        font-size: 17px;
+    }
 
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
+    @media (max-width: 450px) {
+        font-size: 15px;
+    }
+}
+
+a {
+    text-decoration: none;
+    color: #797EF3;
+}
+
+h3 {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 23px !important;
+    font-weight: 600 !important;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 22px !important;
+    }
+
+    @media(max-width: 700px) {
+        font-size: 23px !important;
+    }
+
+    @media(max-width: 450px) {
+        font-size: 22px !important;
+    }
+}
+
+h4 {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 21px !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+    margin-top: 15px !important;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 19px !important;
+        margin-top: 10px !important;
+    }
+
+    @media(max-width: 700px) {
+        font-size: 21px !important;
+        margin-top: 15px !important;
+    }
+
+    @media(max-width: 450px) {
+        font-size: 19px !important;
+        margin-top: 10px !important;
+    }
+}
+
+span,
+p {
+    font-size: 16px;
+    margin-bottom: 0;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 14px;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 16px;
+    }
+
+    @media (max-width: 450px) {
+        font-size: 14px;
+    }
 }

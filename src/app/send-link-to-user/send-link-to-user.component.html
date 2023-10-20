@@ -1,73 +1,39 @@
-<div class="send-email-cont">
-
-<<<<<<< HEAD
-  <img class="logo" src="./assets/img/logo.png">
-  <!-- <div class="logo-img-cont-always">
-    <img src="./assets/img/logo-intro.png">
-    <div class="title">DABubble</div>
-  </div> -->
-=======
-
-  <div class="logo-img-cont-always">
-    <img src="./assets/img/logo-intro.png">
-    <div class="title">DABubble</div>
+<div class="login-dialog-content flex-center p-relative">
+  <img class="logo-and-title p-absolute hide-mobile pointer" src="assets/img/logo/logo_&_name.png" [routerLink]="'/'">
+  <div class="hide-desktop logo-box d-flex ai-center p-absolute animation-stop pointer" [routerLink]="'/'">
+    <img class="logo" src="assets/img/logo/logo.png">
+    <span>DABubble</span>
   </div>
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-  
-  <mat-card [class.send-email-opacity]="isSent">
-    <div class="send-link">
 
-      <div class="title">Passwort zurücksetzen</div>
-      <div class="info-above">Bitte geben Sie Ihre E-mail Adresse ein.</div>
-      <div class="email-send">
-        <input placeholder="E-mail" type="email" [(ngModel)]="email" #emailInput="ngModel"
-          (ngModelChange)="checkUserEmail()">
-
-        <img src="./assets/img/mail.png">
-        
-        <div [style.display]="isEmailExist ? 'none' : 'flex'">
-          <div [style.display]="emailInput.touched ? (isEmailValid ? 'none' : 'flex') : 'none'"
-<<<<<<< HEAD
-            [class.warning-invalid]="isEmailValid && email !=''">*Diese E-Mail-Adresse ist leider ungültig.</div>
-=======
-            [class.warning-invalid]="!isEmailValid">*Diese E-Mail-Adresse ist leider ungültig.</div>
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-        </div>
-
-        <div [style.display]="isEmailExist ? 'none' : 'flex'">
-          <div [style.display]="emailInput.touched ? (!isEmailValid ? 'none' : 'flex') : 'none'"
-            [class.warning-not-exist]="isEmailValid">*Die E-Mail-Adresse ist nicht in der Datenbank vorhanden!</div>
-        </div>
+  <mat-card class="login-card d-flex f-column ai-center" [class.opa-03]="sending">
+    <form (submit)="sendMail($event)" class="d-flex f-column ai-center">
+      <h1>Passwort zurücksetzen</h1>
+      <span class="dialog-span text-center">Bitte geben Sie Ihre E-mail Adresse ein.</span>
+      <div class="login-input-container d-flex ai-center j-start pointer p-relative">
+        <img class="input-icon" src="assets/img/icons/mail.png">
+        <input [(ngModel)]="email" (ngModelChange)="checkUserEmail()" type="email" name="email" placeholder="E-mail"
+          autocomplete="on" #emailInput="ngModel" required>
+        <span *ngIf="!isEmailValid && emailInput.touched && emailInput.value !== ''" class="warn p-absolute">
+          *Diese E-Mail-Adresse ist leider ungültig.
+        </span>
       </div>
-
-
-      <p>Wir senden Ihnen eine E-Mail, über die <br> Sie
-        Ihr Passwort Ändern können.
-      </p>
-      <div class="button-cont">
-        <button (click)="sendEmail()" [disabled]="!isEmailExist">E-Mail senden</button>
-
+      <textarea name="message" [(ngModel)]="resetPasswordMessage" class="d-none"></textarea>
+      <span class="dialog-span text-center">Wir senden Ihnen eine E-Mail, über die sie ihr Passwort ändern
+        können.</span>
+      <div class="btn-container j-end w-100">
+        <button class="btn-primary" type="submit" [disabled]="!isEmailValid">E-Mail senden</button>
       </div>
+    </form>
 
-    </div>
-
-
-    <mat-card-actions>
-      <button (click)="checkIntro()" [routerLink]="'/'" mat-button>
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-    </mat-card-actions>
-
+    <mat-icon class="go-back-icon p-absolute pointer flex-center" (click)="cancelIntro()"
+      [routerLink]="'/'">arrow_back</mat-icon>
   </mat-card>
 
-
-
-
-  <img [class.email-sent-animation]="isSent" class="email-sent-image" src="./assets/img/email-sent.png">
-
-  <footer>
-    <span  [routerLink]="'/imprint'" >Impressum</span>
-    <span>Datenschutz</span>
+  <footer class="login-footer d-flex g-40">
+    <span class="dialog-span policy-span pointer" [routerLink]="'/imprint'">Impressum</span>
+    <span class="dialog-span policy-span pointer" [routerLink]="'/privacy-policy'">Datenschutz</span>
   </footer>
-
 </div>
+
+<app-success-banner *ngIf="isBannerVisible" [message]="bannerMsg">
+</app-success-banner>

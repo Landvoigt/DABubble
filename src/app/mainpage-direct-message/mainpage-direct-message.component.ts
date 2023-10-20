@@ -1,29 +1,17 @@
-<<<<<<< HEAD
 import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
-=======
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ChannelServiceService } from '../channel-service.service';
 import { AccountServiceService } from '../account-service.service';
 import { ChatServiceService } from '../chat-service.service';
 import { DialogEmojisComponent } from '../dialog-emojis/dialog-emojis.component';
-<<<<<<< HEAD
-import { DocumentData, DocumentReference, Firestore, addDoc, collection, deleteDoc, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
-import { Subscription } from 'rxjs';
-import { Unsubscribe, User } from '@angular/fire/auth';
-import { Thread } from 'src/models/thread.class';
-import { DirectMessage } from 'src/models/direct-message.class';
-import { DialogUserProfileComponent } from '../dialog-user-profile/dialog-user-profile.component';
-import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
-=======
-import { Firestore, addDoc, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
+import { DocumentData, DocumentReference, Firestore, addDoc, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { Subscription } from 'rxjs';
 import { Unsubscribe } from '@angular/fire/auth';
 import { Thread } from 'src/models/thread.class';
 import { DirectMessage } from 'src/models/direct-message.class';
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
+import { DialogUserProfileComponent } from '../dialog-user-profile/dialog-user-profile.component';
+import { User } from 'src/models/user.class';
 
 @Component({
   selector: 'app-mainpage-direct-message',
@@ -31,11 +19,8 @@ import { DirectMessage } from 'src/models/direct-message.class';
   styleUrls: ['./mainpage-direct-message.component.scss']
 })
 export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
-<<<<<<< HEAD
   @Output() openLeftSidenav = new EventEmitter<void>();
 
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   firestore: Firestore = inject(Firestore);
   usersCollection = collection(this.firestore, 'users');
   dmCollection = collection(this.firestore, 'direct-messages');
@@ -44,10 +29,10 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
   private directMessageSubscription: Subscription;
   unsubThreads: Unsubscribe;
 
-  currentDmChannel = new DirectMessage();
-  directMessage = new Thread();
-  threads = [];
-  // message_3;
+  currentDmChannel: DirectMessage = new DirectMessage();
+  directMessage: Thread = new Thread();
+  threads: any[] = [];
+  editMessageContent: string = '';
 
   isOwnDmChannel: boolean = false;
   isThreadsEmpty: boolean = false;
@@ -56,20 +41,14 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
   hoveredThreadId: number | null = null;
   ownThreadId: number | null = null;
   inEditMessage: number | null = null;
-<<<<<<< HEAD
   hoveredThumbUp: number | null = null;
   hoveredThumbDown: number | null = null;
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-
-  loadedMessageContent: string;
 
   constructor(
     public dialog: MatDialog,
     public channelService: ChannelServiceService,
     public accountService: AccountServiceService,
-    public chatService: ChatServiceService) {
-  }
+    public chatService: ChatServiceService) { }
 
 
   /**
@@ -86,6 +65,7 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
       }
     });
   }
+
 
   /**
    * Sets up the subscription to direct messages.
@@ -120,13 +100,8 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
    */
   sortThreads(): void {
     this.threads.sort((a, b) => {
-<<<<<<< HEAD
       const dateA = this.channelService.timestampToDate(a.date);
       const dateB = this.channelService.timestampToDate(b.date);
-=======
-      const dateA = this.timestampToDate(a.date);
-      const dateB = this.timestampToDate(b.date);
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
       return dateB.getTime() - dateA.getTime();
     });
   }
@@ -153,14 +128,37 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
    * @param {NgForm} form - The Angular form containing the message.
    */
   async sendMessage(form: NgForm): Promise<void> {
-    if (!form.valid) return;
-    this.loading = true;
+    this.addImageUrlToNewMessage();
+    if (this.directMessage.uploadedFile || form.valid) {
+      this.loading = true;
 
-    this.setMessageProperties();
-    await this.addAndUpdateThread();
+      this.setMessageProperties();
+      await this.addAndUpdateThread();
 
-    form.resetForm();
-    this.loading = false;
+      this.accountService.userIsActive();
+      this.resetFormAndVariables(form);
+    }
+  }
+
+  
+  /**
+   * Save the file url to the nex message.
+   */
+  addImageUrlToNewMessage() {
+    this.directMessage.uploadedFile = this.chatService.currentImageUrl;
+  }
+
+
+  /**
+   * Sets the properties for the direct message before sending.
+   */
+  private setMessageProperties(): void {
+    const user = this.accountService.getLoggedInUser();
+    this.directMessage.date = new Date();
+    this.directMessage.ownerID = user.id;
+    this.directMessage.ownerName = user.name;
+    this.directMessage.ownerAvatarSrc = user.avatarSrc;
+    this.directMessage.ownerEmail = user.email;
   }
 
 
@@ -176,19 +174,19 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
 
 
   /**
-   * Sets the properties for the direct message before sending.
+   * Resets the form and message related variables
    */
-  private setMessageProperties(): void {
-    const user = this.accountService.getLoggedInUser();
-    this.directMessage.date = new Date();
-    this.directMessage.ownerID = user.id;
-    this.directMessage.ownerName = user.name;
-    this.directMessage.ownerAvatarSrc = user.avatarSrc;
+  resetFormAndVariables(form: NgForm): void {
+    this.chatService.uploadedFileDm = '';
+    form.resetForm();
+    this.directMessage.content = '';
+    this.loading = false;
+    this.chatService.isContent = false;
+    this.chatService.currentImageUrl = '';
   }
 
 
   /**
-<<<<<<< HEAD
    * Add a reaction to a thread.
    */
   async addReaction(threadId: string, reactionType: string, userName: string) {
@@ -237,8 +235,6 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
 
 
   /**
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
    * Opens the edit message input.
    * @param {any} threadId - The ID of the thread that contains the message to edit.
    * @param {number} i - The index of the message in the threads array.
@@ -268,8 +264,15 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
     await updateDoc(threadDocRef, {
       content: this.threads[i].editMessageContent
     });
+    this.resetMessageProperties();
+  }
+
+
+  /**
+   * Resets the message booleans.
+   */
+  resetMessageProperties() {
     this.inEditMessage = null;
-<<<<<<< HEAD
     this.hoveredThreadId = null;
     this.ownThreadId = null;
     this.chatService.isEditMessageContent = false;
@@ -279,69 +282,14 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
   /**
    * Closes the edit message content form
    */
-=======
-  }
-
-
-  timestampToDate(timestamp: { seconds: number, nanoseconds: number }): Date {
-    return new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
-  }
-
-
-  getFormattedTime(timestamp: any) {
-    const date = this.timestampToDate(timestamp);
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-
-    const formattedTime = `${hours}:${minutes} Uhr`;
-    return formattedTime;
-  }
-
-
-  getFormattedDate(timestamp: { seconds: number, nanoseconds: number }): string {
-    const options: Intl.DateTimeFormatOptions = {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric'
-    };
-    const date = this.timestampToDate(timestamp);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const dateToCompare = new Date(date.getTime());
-    dateToCompare.setHours(0, 0, 0, 0);
-    if (dateToCompare.getTime() === today.getTime()) {
-      return 'Heute';
-    } else {
-      return new Intl.DateTimeFormat('de-DE', options).format(date);
-    }
-  }
-
-
-  threadSentOnNewDate(index: number, threads: any[]): boolean {
-    if (index === threads.length - 1) return false;
-    const currentDate = this.getFormattedDate(threads[index].date);
-    const nextDate = this.getFormattedDate(threads[index + 1].date);
-    return currentDate === nextDate;
-  }
-
-
-  openDialog() {
-    this.dialog.open(DialogEmojisComponent, { restoreFocus: false });
-  }
-
-
-  openDialogThread(thread) {
-
-  }
-
-
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   closeEdit() {
     this.inEditMessage = null;
   }
 
 
-<<<<<<< HEAD
+  /**
+   * Closes the direct message content at lower width
+   */
   closeDirectMessageMobile() {
     this.openLeftSidenav.emit();
     this.channelService.inDirectMessage = false;
@@ -351,7 +299,10 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
-  openDialogEmojis() {
+  /**
+   * Opens the emoji picker.
+   */
+  openDialogEmojis(event: any) {
     this.chatService.serviceThread = this.directMessage;
     this.chatService.isContent = true;
     event.preventDefault();
@@ -359,58 +310,49 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
   }
 
 
-  openDialogDm(thread: any) {
-    this.chatService.ownerData = thread;
-    this.chatService.ownerData.ownerEmail = this.channelService.savedDmPartner.email;
-    this.dialog.open(DialogUserProfileComponent, { restoreFocus: false });
-  }
-
-  openDialogEmojisEditDm(thread) {
+  /**
+   * Opens the emoji picker in the edit message.
+   */
+  openDialogEmojisInEdit(event: any, thread: Thread) {
     this.chatService.isEditMessageContent = true;
     this.chatService.serviceThread = thread;
+    event.preventDefault();
     this.dialog.open(DialogEmojisComponent, { restoreFocus: false });
   }
 
 
-  openDialogProfileDmHeader() {
-    this.chatService.ownerData = this.channelService.savedDmPartner;
-    this.chatService.ownerData.ownerAvatarSrc = this.channelService.savedDmPartner.avatarSrc;
-    this.chatService.ownerData.ownerName = this.channelService.savedDmPartner.name;
-    this.chatService.ownerData.ownerEmail = this.channelService.savedDmPartner.email;
+  /**
+   * Takes the information in the thread to open the profile dialog. 
+   */
+  openDialogProfile(thread: Thread) {
+    this.chatService.ownerData = thread;
     this.dialog.open(DialogUserProfileComponent, { restoreFocus: false });
   }
 
 
-  openExtra(user) {
-    const content = {
-      ownerName: user.name,
-      ownerAvatarSrc: user.avatarSrc,
-      ownerEmail: user.email,
-      ownerID: user.id
-    };
-
-    this.chatService.ownerData = content;
-    this.dialog.open(DialogUserProfileComponent, { restoreFocus: false });
-
-    //console.log(content);
+  /**
+   * Extracts the needed information from of a specific user to open the profile dialog.
+   */
+  extractUserInformation(user: User) {
+    let content = new Thread;
+    content.ownerName = user.name,
+      content.ownerAvatarSrc = user.avatarSrc,
+      content.ownerEmail = user.email,
+      content.ownerID = user.id
+    this.openDialogProfile(content);
   }
 
-=======
-  // insertEmoji(event: EmojiEvent) {
-  //   this.chatService.insertEmoji(event);
-  // }
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 
+  /**
+   * Unsubscribes from all active subscriptions.
+   */
   ngOnDestroy() {
     this.unsubscribeDirectMessage();
     this.unsubscribeSelfMessage();
     this.unsubscribeThreads();
   }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
   /**
    * Unsubscribes from the direct message subscription if active.
    */
@@ -419,6 +361,7 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
       this.directMessageSubscription.unsubscribe();
     }
   }
+
 
   /**
    * Unsubscribes from the self message subscription if active.
@@ -429,6 +372,7 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
     }
   }
 
+
   /**
    * Unsubscribes from all threads if active.
    */
@@ -437,8 +381,4 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
       this.unsubThreads();
     }
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8

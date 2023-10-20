@@ -1,0 +1,244 @@
+///  General dialog style  
+
+.dialog-h2 {
+    margin: 0 0 10px 0 !important;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        margin: 0 !important;
+    }
+
+    @media (max-width: 700px) {
+        margin: 0 0 10px 0 !important;
+    }
+
+    @media (max-width: 450px) {
+        margin: 0 !important;
+    }
+}
+
+.dialog-span {
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 16px;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 18px;
+    }
+
+    @media (max-width: 450px) {
+        font-size: 16px;
+    }
+}
+
+.dialog-input {
+    font-family: 'Nunito', sans-serif;
+    outline: none;
+    color: #686868;
+    font-size: 18px;
+    background: none;
+    border: 1px solid #ADB0D9;
+    border-radius: 50px;
+    padding: 18px 20px;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 16px;
+        padding: 12px 20px;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 18px;
+        padding: 15px 20px;
+    }
+
+    @media (max-width: 450px) {
+        font-size: 16px;
+        padding: 12px 20px;
+    }
+}
+
+.close-icon {
+    height: unset !important;
+    width: unset !important;
+    font-weight: 600;
+    top: 30px;
+    right: 38px;
+    z-index: 10;
+    border-radius: 50px;
+    padding: 8px;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+        background-color: #ECEEFE;
+        color: #797EF3;
+    }
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        top: 25px;
+        right: 20px;
+        padding: 5px;
+        font-size: 20px;
+    }
+
+    @media (max-width: 920px) {
+        top: 12px;
+    }
+}
+
+.close-icon-dialog {
+    top: 45px !important;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        top: 40px !important;
+        right: 38px !important;
+        padding: 5px;
+        font-size: 20px;
+    }
+
+    @media (max-width: 450px) {
+        top: 30px !important;
+        right: 20px !important;
+    }
+}
+
+.close-icon-responsive {
+    display: none !important;
+    height: unset !important;
+    width: unset !important;
+
+    @media (max-width: 920px) {
+        display: flex !important;
+        top: 12px;
+        right: 20px;
+        padding: 5px;
+        font-weight: 600;
+        font-size: 20px;
+        z-index: 10;
+        border-radius: 50px;
+
+        &:hover {
+            background-color: #ECEEFE;
+            color: #797EF3;
+        }
+    }
+
+    @media (max-width: 450px) {
+        right: 10px;
+    }
+}
+
+
+///  Profile dialog style 
+
+.popup-name {
+    font-size: 30px !important;
+    font-weight: 700 !important;
+    white-space: nowrap;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 28px !important;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 30px !important;
+    }
+
+    @media (max-width: 450px) {
+        font-size: 26px !important;
+    }
+}
+
+.avatar-big {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 50%;
+    align-self: center;
+    margin-top: 40px;
+    margin-bottom: 50px;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        width: 135px;
+        height: 135px;
+        margin-top: 30px;
+        margin-bottom: 40px;
+    }
+
+    @media (max-width: 700px) {
+        width: 150px;
+        height: 150px;
+        margin-top: 40px;
+        margin-bottom: 50px;
+    }
+
+    @media (max-width: 450px) {
+        width: 135px;
+        height: 135px;
+        margin-top: 30px;
+        margin-bottom: 40px;
+    }
+}
+
+.status {
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    margin-left: 2px;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 16px !important;
+        margin-left: 1px;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 17px !important;
+        margin-left: 2px;
+    }
+
+    @media (max-width: 450px) {
+        font-size: 16px !important;
+        margin-left: 1px;
+    }
+}
+
+.popup-email {
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    color: #535AF1;
+    margin-left: 45px;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        margin-left: 43px;
+        font-size: 16px !important;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 17px !important;
+    }
+
+    @media (max-width: 450px) {
+        margin-left: 43px;
+        font-size: 16px !important;
+    }
+}
+
+.email-icon {
+    font-size: 24px !important;
+    font-weight: 500 !important;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        font-size: 22px !important;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 24px !important;
+    }
+
+    @media (max-width: 450px) {
+        font-size: 22px !important;
+    }
+}

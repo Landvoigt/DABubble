@@ -1,5 +1,5 @@
 .content {
-    width: 350px;
+    width: 360px;
     padding-top: 5px;
 
     h2 {
@@ -7,7 +7,7 @@
     }
 
     @media (max-width: 1550px) or (max-height: 750px) {
-        width: 320px;
+        width: 330px;
         padding: 0;
         margin-bottom: 0;
     }
@@ -41,25 +41,4 @@ a {
             height: 16px;
         }
     }
-
-    .status {
-        font-size: 17px;
-        font-weight: 500;
-
-        @media (max-width: 1550px) or (max-height: 750px) {
-            font-size: 16px;
-        }
-    }
-}
-
-.online {
-    background-color: #92C83E;
-}
-
-.offline {
-    background-color: #686868;
-}
-
-.active {
-    background-color: #444DF2;
 }

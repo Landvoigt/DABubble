@@ -1,106 +1,117 @@
-import { Component} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AccountServiceService } from '../account-service.service';
-import { Location } from '@angular/common';
-import { User } from 'src/models/user.class';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { BannerServiceService } from '../banner-service.service';
+import { Subscription } from 'rxjs';
+import { Firestore, addDoc, collection, doc, updateDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-
 
 @Component({
   selector: 'app-account-profile',
   templateUrl: './account-profile.component.html',
   styleUrls: ['./account-profile.component.scss']
 })
-export class AccountProfileComponent  {
-  imageUrl: string | null = null;
-  user = new User();
+export class AccountProfileComponent {
+  firestore: Firestore = inject(Firestore);
   private storage = getStorage();
-  filePath: any;
-  isCreated = false;
-  isNotChoose = true;
+  userCollection = collection(this.firestore, "users");
 
+  bannerSubscription: Subscription;
+  isBannerVisible: boolean = false;
+  bannerMsg: string = '';
 
-  avatars: any = [
-    'avatar_1.png',
-    'avatar_big.png',
-    'avatar_small.png'
+  avatars = [
+    'avatar_standard_(1)',
+    'avatar_standard_(2)',
+    'avatar_standard_(3)',
+    'avatar_standard_(4)',
+    'avatar_standard_(5)',
+    'avatar_standard_(6)'
   ];
-  imagePath = './assets/img/none-profile.png';
-  isIntro = true;
-  name: string = '';
 
-  constructor(private accountService: AccountServiceService,
-    private location: Location,private router: Router) {
-    this.isIntro = accountService.isIntro;
-    this.name = this.accountService.currentUser[0].name;
+  avatarSet: boolean = false;
+  loading: boolean = false;
+
+  constructor(
+    public accountService: AccountServiceService,
+    public bannerService: BannerServiceService,
+    public router: Router) {
+    this.initializeBanner();
   }
 
 
-  async uploadImage(event: any) {
+  /**
+   * Subscribes to changes for the banner to show them when called.
+   */
+  initializeBanner(): void {
+    this.bannerSubscription = this.bannerService.bannerContent$.subscribe(
+      bannerMessage => {
+        this.isBannerVisible = bannerMessage.isVisible;
+        this.bannerMsg = bannerMessage.message;
+      }
+    );
+  }
+
+
+  /**
+   * Uploads an image to a storage reference and updates the user avatar source.
+   * @param {Event} event - The event object that contains the file input.
+   */
+  async uploadImage(event: any): Promise<void> {
     try {
+      this.loading = true;
       const file = event.target.files[0];
       const filePath = `${file.name}`;
       const fileRef = ref(this.storage, filePath);
       const uploadTask = uploadBytesResumable(fileRef, file);
       const snapshot = await uploadTask;
-      this.imagePath = await getDownloadURL(snapshot.ref);
-      this.accountService.imagePathService = this.imagePath;
-      console.log('Bild-URL:', this.imagePath);
-      console.log('Bild-URL als profile in Firestore:', this.user.avatarSrc);
-      this.isNotChoose = false;
+      let imgSrc = await getDownloadURL(snapshot.ref);
+      this.accountService.newUser.avatarSrc = imgSrc;
+      this.avatarSet = true;
+      this.loading = false;
     } catch (error) {
-      console.error('Fehler beim Hochladen und Auslesen des Bildes:', error);
-    }
-
-  }
-
-
-async chooseAvatar(i: any) {
-    try {
-      const fileName = this.avatars[i];
-      const filePath = `${fileName}`;
-      const fileRef = ref(this.storage, filePath);
-      const imageBlob = await fetch(`./assets/img/${fileName}`).then((response) => response.blob());
-      const uploadTask = uploadBytesResumable(fileRef, imageBlob);
-      await uploadTask;
-      this.imagePath = await getDownloadURL(fileRef);
-      this.accountService.imagePathService = this.imagePath;
-      this.isNotChoose = false;
-      console.log('Bild-URL:', this.imagePath);
-      console.log('Bild-URL als profile in Firestore:', this.user.avatarSrc);
-    } catch (error) {
-      console.error('Fehler beim Hochladen und Auslesen des Bildes:', error);
+      console.error('Error uploading image', error);
     }
   }
 
 
-checkIntro() {
-    this.isCreated = true;
+  /**
+   * Sets a chosen avatar to the new user and updates the avatarSet flag.
+   * @param {any} i - The index to select the avatar.
+   */
+  chooseAvatar(i: any): void {
+    let fileName = this.avatars[i];
+    let imgSrc = `assets/img/${fileName}.png`
+    this.accountService.newUser.avatarSrc = imgSrc;
+    this.avatarSet = true;
+  }
+
+
+  /**
+   * Creates a new user account, updates the document to include the new user's ID,
+   * shows a success banner, and navigates to the home route after a delay.
+   */
+  async createAccount(): Promise<void> {
+    this.loading = true;
+    const newUser = await addDoc(this.userCollection, this.accountService.newUser.toJSON());
+    const newUserDoc = doc(this.userCollection, newUser.id);
+    await updateDoc(newUserDoc, { id: newUser.id });
+
+    this.bannerService.show('Account erstellt');
+    // this.bannerService.show('Account created');
     setTimeout(() => {
-      this.isCreated = false;
-      this.router.navigate(['/']);
-    }, 1500);
-    this.sendingForm();
-    this.accountService.currentUser = [];
-    this.accountService.currentBoolean = [];
-    this.accountService.isIntro = false;
+      this.router.navigate(['/']).then(() => {
+        this.accountService.playIntro = false;
+        this.loading = false;
+      });
+    }, 1800);
   }
 
 
-  goBack() {  // test
-    this.location.back();
+  /**
+   * Cancels the mainpage intro.
+   */
+  cancelIntro(): void {
+    this.accountService.playIntro = false;
   }
-
-  goForward() {   // test
-    this.location.forward();
-  }
-
-  sendingForm() {
-    // hier wird   boolean Variable auf true gesetzt
-    this.accountService.setMeinBoolean(true);
-  }
-
-
-
-
 }

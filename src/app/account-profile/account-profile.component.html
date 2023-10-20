@@ -1,41 +1,37 @@
-<div class="profile-cont">
-
-  <img [class.account-created-animation]="isCreated" class="account-created-image"
-    src="./assets/img/account-created.png">
-
-  <div [class.profile-cont-opacity]="isCreated" class="logo-img-cont-always">
-    <img src="./assets/img/logo-intro.png">
-    <div class="title">DABubble</div>
+<div class="login-dialog-content flex-center p-relative" [class.opa-03]="loading">
+  <img class="logo-and-title p-absolute hide-mobile pointer" src="assets/img/logo/logo_&_name.png" [routerLink]="'/'">
+  <div class="hide-desktop logo-box d-flex ai-center p-absolute animation-stop pointer" [routerLink]="'/'">
+      <img class="logo" src="assets/img/logo/logo.png">
+      <span>DABubble</span>
   </div>
 
-  <mat-card [class.profile-cont-opacity]="isCreated">
-    <div class="profile-card">
-      <div class="title">Wähle deinen Avatar</div>
-      <img class="none-profile" [src]="imagePath">
-      <div class="name">{{name}}</div>
-      <div class="info-avatars">
-        <div>Aus der Liste wählen</div>
-        <div class="avatars-container">
-          <img class="avatar-img" (click)="chooseAvatar(i)" *ngFor="let avatar of avatars; let i = index"
-            src="./assets/img/{{avatar}}">
-        </div>
-      </div>
-      <div class="file-input-container">eigenes Bild verwenden
-        <input type="file" (change)="uploadImage($event)" id="fileInput" class="custom-file-input">
-        <label for="fileInput" class="custom-file-label">Datei hochladen</label>
-      </div>
-      <button (click)="checkIntro()" [disabled]="isNotChoose" class="weiter-btn">Weiter</button>
+  <mat-card class="login-card d-flex f-column ai-center">
+    <h1>Wähle deinen Avatar</h1>
+    <img class="chosen-avatar" [src]="accountService.newUser.avatarSrc">
+    <h2 class="hide-mobile">{{ accountService.newUser.name }}</h2>
+    <span class="dialog-span">Aus der Liste wählen</span>
+    <div class="avatar-box d-flex">
+      <img class="avatar-img pointer" (click)="chooseAvatar(i)" *ngFor="let avatar of avatars; let i = index"
+        src="assets/img/{{ avatar }}.png">
     </div>
-    <mat-card-actions>
-      <button [routerLink]="'/account'" mat-button>
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-    </mat-card-actions>
+    <div class="file-input-container d-flex ai-center p-relative">
+      <span class="dialog-span">oder eigenes Bild verwenden</span>
+      <input type="file" (change)="uploadImage($event)" id="fileInput" class="custom-file-input">
+      <label for="fileInput" class="btn-secondary" [attr.disabled]="loading ? true : null">Datei hochladen</label>
+    </div>
+
+    <div class="btn-container j-end w-100">
+      <button class="btn-primary" (click)="createAccount()" [disabled]="!avatarSet">Weiter</button>
+    </div>
+
+    <mat-icon class="go-back-icon p-absolute pointer flex-center" [routerLink]="'/account'">arrow_back</mat-icon>
   </mat-card>
 
-  <footer>
-    <span>Impressum</span>
-    <span>Datenschutz</span>
+  <footer class="login-footer d-flex g-40">
+    <span class="dialog-span policy-span pointer" [routerLink]="'/imprint'">Impressum</span>
+    <span class="dialog-span policy-span pointer" [routerLink]="'/privacy-policy'">Datenschutz</span>
   </footer>
-
 </div>
+
+<app-success-banner *ngIf="isBannerVisible" [message]="bannerMsg">
+</app-success-banner>

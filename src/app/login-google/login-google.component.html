@@ -1,5 +1,17 @@
-<div class="background flex-center">
-    <div class="container flex-center">
-        <div id="buttonDiv" class="btn" style="display: flex; justify-content: center;"></div>
+<div class="login-dialog-content flex-center p-relative">
+    <img class="logo-and-title p-absolute hide-mobile pointer" src="assets/img/logo/logo_&_name.png" [routerLink]="'/'">
+    <div class="hide-desktop logo-box d-flex ai-center p-absolute animation-stop pointer" [routerLink]="'/'">
+        <img class="logo" src="assets/img/logo/logo.png">
+        <span>DABubble</span>
     </div>
+    
+    <mat-card class="login-card d-flex f-column ai-center">
+        <h1>Google-Login</h1>
+        <span class="dialog-span text-center">Bitte wählen sie ihr Google Konto aus.</span>
+        
+        <div id="buttonDiv"></div>
+
+        <mat-icon class="go-back-icon p-absolute pointer flex-center" (click)="cancelIntro()"
+            [routerLink]="'/'">arrow_back</mat-icon>
+    </mat-card>
 </div>

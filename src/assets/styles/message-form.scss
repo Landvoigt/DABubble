@@ -1,0 +1,192 @@
+////   Message form style for the 3 chat options
+
+.message-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    height: 140px;
+    border: 1px solid rgba(171, 174, 216, 0.85);
+    border-radius: 20px;
+    background-color: white;
+
+    @media (max-width: 1550px) or (max-height: 750px) {
+        height: 130px;
+    }
+
+    @media (max-height: 750px) {
+        height: 120px;
+    }
+
+    textarea {
+        height: 60%;
+        outline: none;
+        border: none;
+        padding: 15px 20px;
+        border-radius: 20px;
+        resize: none;
+        overflow: scroll;
+        font-size: 16px;
+        font-weight: 500;
+        color: #686868;
+
+        &::placeholder {
+            font-family: 'Nunito', sans-serif;
+        }
+
+        @media (max-width: 1550px) or (max-height: 750px) {
+            font-size: 14px;
+        }
+
+        @media (max-height: 750px) {
+            padding: 10px 15px;
+        }
+    }
+
+    .message-icons {
+        padding-left: 15px;
+        padding-right: 20px;
+        padding-bottom: 15px;
+        justify-content: space-between;
+
+        @media (max-height: 750px) {
+            padding-left: 10px;
+            padding-right: 15px;
+            padding-bottom: 10px;
+        }
+
+        .icon-divider-line {
+            height: 40px;
+            width: 1px;
+            background-color: #ADB0D9;
+            margin-left: 5px;
+
+            @media (max-width: 1550px) or (max-height: 750px) {
+                height: 35px;
+            }
+        }
+
+        .message-hover-icon {
+            font-size: 28px;
+            padding: 3px;
+            color: #686868;
+
+            &:hover {
+                color: #535AF1;
+                border-radius: 50%;
+                background-color: #ECEEFE;
+            }
+
+            @media (max-width: 1550px) or (max-height: 750px) {
+                font-size: 24px;
+            }
+        }
+
+        .icon-size-adjust {
+            font-size: 25px !important;
+            margin-left: 5px;
+            padding: 5px !important;
+
+            &:hover {
+                font-weight: 600;
+            }
+
+            @media (max-width: 1550px) or (max-height: 750px) {
+                font-size: 22px !important;
+            }
+        }
+    }
+
+    .message-send-btn {
+        outline: none;
+        background-color: unset;
+        border: none;
+    }
+
+    .message-send-icon {
+        object-fit: contain;
+        cursor: pointer;
+        height: 18px;
+        width: 18px;
+
+        &:hover {
+            filter: opacity(0.7)
+        }
+
+        @media (max-width: 1550px) or (max-height: 750px) {
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    .loading-icon {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        animation: rotate .25s linear infinite;
+        border: 2px solid transparent;
+        border-top-color: #444DF2;
+
+        @media (max-width: 1550px) or (max-height: 750px) {
+            width: 12px;
+            height: 12px;
+        }
+    }
+}
+
+.file-input-container {
+    position: relative;
+    display: inline-block;
+
+    .custom-file-input {
+        display: none;
+    }
+}
+
+.file-container {
+    display: flex;
+
+}
+
+.preview-container {
+    left: 115px;
+    bottom: 10px;
+
+    .preview-image {
+        object-fit: cover;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 1px solid black;
+    }
+
+    span {
+        color: red;
+        font-size: 22px;
+        margin-left: 5px;
+    }
+}
+
+.in-edit-emoji-icon {
+    position: absolute;
+    bottom: 19px;
+    left: 19px;
+    padding: 4px;
+    font-size: 22px !important;
+
+    &:hover {
+        color: #535AF1 !important;
+        border-radius: 50% !important;
+        background-color: #ECEEFE !important;
+    }
+
+    @media (max-width: 1300px) {
+        bottom: 19px;
+        left: 19px;
+    }
+
+    @media (max-width: 450px) {
+        bottom: 8px;
+        left: 8px;
+    }
+}

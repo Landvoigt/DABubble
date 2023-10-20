@@ -1,14 +1,11 @@
 import { Component, inject } from '@angular/core';
-<<<<<<< HEAD
 import { Firestore, addDoc, collection, doc, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
-=======
-import { Firestore, addDoc, collection, doc, updateDoc } from '@angular/fire/firestore';
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
 import { NgForm } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Channel } from 'src/models/channel.class';
 import { AccountServiceService } from '../account-service.service';
 import { ChannelServiceService } from '../channel-service.service';
+import { BannerServiceService } from '../banner-service.service';
 
 @Component({
   selector: 'app-dialog-add-channel',
@@ -28,15 +25,11 @@ export class DialogAddChannelComponent {
   /** Loading indicator flag. */
   loading: boolean = false;
 
-  /**
-   * @param {MatDialogRef<DialogAddChannelComponent>} dialogRef - Reference to the current dialog.
-   * @param {AccountServiceService} accountService - Service to manage accounts.
-   * @param {ChannelServiceService} channelService - Service to manage channels.
-   */
   constructor(
     public dialogRef: MatDialogRef<DialogAddChannelComponent>,
     public accountService: AccountServiceService,
-    private channelService: ChannelServiceService) { }
+    private channelService: ChannelServiceService,
+    private bannerService: BannerServiceService) { }
 
 
   /**
@@ -50,20 +43,18 @@ export class DialogAddChannelComponent {
 
     this.loading = true;
 
-<<<<<<< HEAD
     await this.checkForChannelExistence();
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
     this.setChannelProperties();
     await this.createNewChannel();
 
     this.dialogRef.close();
     this.loading = false;
+    this.bannerService.show('Channel erstellt');
+    // this.bannerService.show('Channel created');
   }
 
 
   /**
-<<<<<<< HEAD
    * Adds an additional number if the channel already exists
    */
   async checkForChannelExistence() {
@@ -90,8 +81,6 @@ export class DialogAddChannelComponent {
 
 
   /**
-=======
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
    * Sets the properties for the channel that's about to be added. It sets the owner (current user),
    * adds the owner to the members list, and sets the current date for the creation date of the channel.
    */

@@ -1,5 +1,6 @@
 import { ChatServiceService } from '../chat-service.service';
 import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 
 @Component({
@@ -9,21 +10,24 @@ import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 })
 export class DialogEmojisComponent {
 
- //content:any;
+  constructor(
+    public chatService: ChatServiceService,
+    public dialogRef: MatDialogRef<DialogEmojisComponent>) { }
 
-  constructor(public chatService: ChatServiceService) { }
 
+  /**
+   * Inserts an emoji on the position in the textarea.
+   * @param event - The picked emoji
+   */
   insertEmoji(event: EmojiEvent) {
     this.chatService.serviceThread;
-    console.log('this.chatService.serviceThread;', this.chatService.serviceThread);
     const emojiNative: string = event.emoji.native;
 
-    if(this.chatService.isContent) {
-      this.chatService.serviceThread.content += `${emojiNative}`; // aus MainpageChatComponent und MainpageThreadsComponent
+    if (this.chatService.isContent) {
+      this.chatService.serviceThread.content += `${emojiNative}`;
     }
-    if(this.chatService.isEditMessageContent) {
-       this.chatService.serviceThread.editMessageContent += emojiNative; // aus MainpageDirectMessageComponent
+    if (this.chatService.isEditMessageContent) {
+      this.chatService.serviceThread.editMessageContent += `${emojiNative}`;
     }
-   
   }
 }

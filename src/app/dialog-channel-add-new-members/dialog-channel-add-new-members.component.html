@@ -1,22 +1,32 @@
-<form (ngSubmit)="addNewMember()" class="content d-flex f-column p-relative">
+<form class="d-flex f-column p-relative" [class.extend-form]="hasSuggestions">
   <mat-icon class="close-icon p-absolute pointer close-icon-extra" (click)="dialogRef.close()">close</mat-icon>
   <h2>Leute hinzufügen</h2>
   <span class="threads-channel"># {{ currentChannel.name }}</span>
-<<<<<<< HEAD
-  <input class="dialog-input" placeholder="Name eingeben" matInput [matAutocomplete]="auto" [formControl]="control"
-    [class.change-input-border]="auto.isOpen" required>
-  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayUserName" class="autocomplete-container">
-    <mat-option class="options" *ngFor="let user of filteredUsers | async" [value]="user">
-=======
-  <input placeholder="Name eingeben" matInput [matAutocomplete]="auto" [formControl]="control"
-    [class.change-input-border]="auto.isOpen" required>
-  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayUserName" class="autocomplete-container">
-    <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
->>>>>>> 5e9dc2590ee32b0477fb53aab40e7b77fc6d36b8
-      {{ user.name }}
-    </mat-option>
-  </mat-autocomplete>
+
+  <div class="search-main-container">
+    <div class="p-relative">
+      <div class="search-container pointer">
+        <div class="search-field d-flex ai-center" [class.search-open]="hasSuggestions">
+          <input placeholder="Name eingeben" autocomplete="off" [formControl]="control" name="channelMemberName"
+            [value]="displayUserName(control.value)" required>
+
+          <div class="result-container">
+            <div class="result-search d-flex f-column j-start p-absolute pointer"
+              [class.cancel-border]="!hasSuggestions">
+              <div class="item d-flex ai-center" *ngFor="let user of filteredUsers | async" (click)="selectUser(user)">
+                <div class="item-content d-flex ai-center">
+                  {{ user.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
   <mat-dialog-actions class="j-end">
-    <button class="btn-primary" type="submit" [disabled]="!control.valid">Hinzufügen</button>
+    <button class="btn-primary" [disabled]="!control.valid" (click)="addNewMember()">Hinzufügen</button>
   </mat-dialog-actions>
 </form>
