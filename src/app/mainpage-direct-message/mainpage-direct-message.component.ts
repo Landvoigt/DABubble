@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ChannelServiceService } from '../channel-service.service';
@@ -20,6 +20,7 @@ import { User } from 'src/models/user.class';
 })
 export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
   @Output() openLeftSidenav = new EventEmitter<void>();
+  @ViewChild('directMessageInput', { static: false }) directMessageInput: ElementRef;
 
   firestore: Firestore = inject(Firestore);
   usersCollection = collection(this.firestore, 'users');
@@ -45,6 +46,7 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
   hoveredThumbDown: number | null = null;
 
   constructor(
+    private cdRef: ChangeDetectorRef,
     public dialog: MatDialog,
     public channelService: ChannelServiceService,
     public accountService: AccountServiceService,
@@ -63,6 +65,8 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
       } else {
         this.subscribeToDirectMessages();
       }
+      this.cdRef.detectChanges();
+      this.directMessageInput.nativeElement.focus();
     });
   }
 
@@ -140,7 +144,7 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
     }
   }
 
-  
+
   /**
    * Save the file url to the nex message.
    */

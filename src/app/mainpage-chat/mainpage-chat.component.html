@@ -227,7 +227,7 @@
 
     <textarea (keydown.enter)="sendMessage(chatMessageForm)" name="main-chat-input"
         placeholder="Nachricht an #{{ currentChannel.name }}" [(ngModel)]="message.content" maxlength="1500"
-        required></textarea>
+        #mainChatInput required></textarea>
 
     <div class="d-flex message-icons">
         <div class="d-flex ai-center">

@@ -206,13 +206,25 @@ export class ChannelServiceService {
    * Clarifies if the thread date is an other than the date of the thread before.
    * @param index - The index of the thread.
    * @param threads - The thread containing the needed information.
-   * @returns 
    */
   threadSentOnNewDate(index: number, threads: any[]): boolean {
     if (index === threads.length - 1) return false;
     const currentDate = this.getFormattedDate(threads[index].date);
     const nextDate = this.getFormattedDate(threads[index + 1].date);
     return currentDate === nextDate;
+  }
+
+
+  /**
+   * Clarifies if the answer date is an other than the date of the thread before.
+   * @param index - The index of the thread.
+   * @param threads - The thread containing the needed information.
+   */
+  answerSentOnNewDate(index: number, threads: any[]): boolean {
+    if (index === 0) return false;
+    const currentDate = this.getFormattedDate(threads[index].date);
+    const previousDate = this.getFormattedDate(threads[index - 1].date);
+    return currentDate !== previousDate;
   }
 
 

@@ -200,7 +200,7 @@
 <form #chatMessageForm="ngForm" class="message-container d-flex f-column" (ngSubmit)="sendMessage(chatMessageForm)">
 
     <textarea (keydown.enter)="sendMessage(chatMessageForm)" [(ngModel)]="directMessage.content" name="main-chat-input"
-        placeholder="Nachricht an #Entwicklerteam" maxlength="1500" required></textarea>
+        placeholder="Nachricht an #Entwicklerteam" maxlength="1500" #directMessageInput required></textarea>
 
     <div class="d-flex message-icons">
         <div class="d-flex ai-center">

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
 import { ChannelServiceService } from '../channel-service.service';
 import { DocumentData, DocumentReference, Firestore, addDoc, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { Unsubscribe } from '@angular/fire/database';
@@ -24,6 +24,7 @@ import { Channel } from 'src/models/channel.class';
 export class MainpageChatComponent implements OnInit, OnDestroy {
   @Output() openRightSidenav = new EventEmitter<void>();
   @Output() openLeftSidenav = new EventEmitter<void>();
+  @ViewChild('mainChatInput', { static: false }) mainChatInput: ElementRef;
 
   firestore: Firestore = inject(Firestore);
   userCollection = collection(this.firestore, 'users');
@@ -48,6 +49,7 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
   hoveredThumbDown: number | null = null;
 
   constructor(
+    private cdRef: ChangeDetectorRef,
     public dialog: MatDialog,
     public channelService: ChannelServiceService,
     public accountService: AccountServiceService,
@@ -70,6 +72,8 @@ export class MainpageChatComponent implements OnInit, OnDestroy {
         this.channelService.noCurrentChannel = false;
         this.setupThreads();
         this.setupChannelMembers();
+        this.cdRef.detectChanges();
+        this.mainChatInput.nativeElement.focus();
       } else {
         this.channelService.noCurrentChannel = true;
       }

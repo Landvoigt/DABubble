@@ -154,7 +154,9 @@ export class LoginComponent {
    * Changes the path to google-login.
    */
   goToGoogleLogin(): void {
-    window.location.href = '/google-login';
+    this.router.navigate(['/google-login']).then(() => {
+      window.location.reload();
+    });
   }
 
 

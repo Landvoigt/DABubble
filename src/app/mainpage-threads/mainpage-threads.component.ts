@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
 import { ChannelServiceService } from '../channel-service.service';
 import { Subscription } from 'rxjs';
 import { Thread } from 'src/models/thread.class';
@@ -19,6 +19,7 @@ import { DialogUserProfileComponent } from '../dialog-user-profile/dialog-user-p
 })
 export class MainpageThreadsComponent implements OnInit, OnDestroy {
   @Output() closeEvent = new EventEmitter<void>();
+  @ViewChild('threadsInput', { static: false }) threadsInput: ElementRef;
 
   firestore: Firestore = inject(Firestore);
   channelCollection = collection(this.firestore, 'channels');
@@ -41,7 +42,9 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
   hoveredThumbUp: number | null = null;
   hoveredThumbDown: number | null = null;
 
-  constructor(public dialog: MatDialog,
+  constructor(
+    private cdRef: ChangeDetectorRef,
+    public dialog: MatDialog,
     public channelService: ChannelServiceService,
     public chatService: ChatServiceService,
     public accountService: AccountServiceService) { }
@@ -73,6 +76,8 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
       if (thread && Object.keys(thread).length > 0) {
         this.currentThread = thread;
         this.setupAnswers(this.currentThread.id);
+        this.cdRef.detectChanges();
+        this.threadsInput.nativeElement.focus();
       }
     });
   }

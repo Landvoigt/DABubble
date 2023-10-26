@@ -49,7 +49,7 @@
 
     <div *ngFor="let answer of threadAnswers; let i = index" class="d-flex f-column">
 
-        <div *ngIf="channelService.threadSentOnNewDate(i, threadAnswers)"
+        <div *ngIf="channelService.answerSentOnNewDate(i, threadAnswers)"
             class="d-flex ai-center message-date-container">
             <div class="message-date-line"></div>
             <span class="message-date">{{ channelService.getFormattedDate(answer.date) }}</span>
@@ -229,7 +229,7 @@
 
 <form #chatMessageForm="ngForm" class="message-container d-flex f-column" (ngSubmit)="sendMessage(chatMessageForm)">
     <textarea (keydown.enter)="sendMessage(chatMessageForm)" name="thread-answer-input" placeholder="Antworten..."
-        [(ngModel)]="message.content" maxlength="1500" required></textarea>
+        [(ngModel)]="message.content" maxlength="1500" #threadsInput required></textarea>
 
     <div class="d-flex message-icons">
         <div class="d-flex ai-center">
