@@ -66,9 +66,9 @@
         </span>
         <div class="flex-center p-relative">
             <img class="user-avatar pointer"
-                [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar_standard_(1).png'"
+                [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar/avatar_standard_(1).png'"
                 (click)="$event.stopPropagation(); toggleLogoutPopup()"
-                (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+                (error)="accountService.handleImageError($event, 'assets/img/avatar/avatar_standard_(1).png')">
             <div class="status-check" [class.dot-online]="colorGreen" [class.dot-offline]="colorGray"
                 [class.dot-active]="colorBlue">
             </div>
@@ -95,8 +95,8 @@
                 <h2 *ngIf="!showEditProfile">Profil</h2>
                 <h2 *ngIf="showEditProfile">Dein Profil bearbeiten</h2>
                 <img class="avatar-big"
-                    [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar_standard_(1).png'"
-                    (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+                    [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar/avatar_standard_(1).png'"
+                    (error)="accountService.handleImageError($event, 'assets/img/avatar/avatar_standard_(1).png')">
 
                 <div *ngIf="!showEditProfile" class="d-flex w-100 j-between g-20">
                     <span class="popup-name" *ngIf="accountService.loggedInUser != null">

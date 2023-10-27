@@ -138,8 +138,8 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
   addImageUrlToNewMessage() {
     this.message.uploadedFile = this.chatService.currentImageUrl;
   }
-  
-  
+
+
   /**
    * Sets the properties of the message before sending.
    */
@@ -406,7 +406,10 @@ export class MainpageThreadsComponent implements OnInit, OnDestroy {
     this.chatService.serviceThread = this.message;
     this.chatService.isContent = true;
     event.preventDefault();
-    this.dialog.open(DialogEmojisComponent, { restoreFocus: false });
+    const dialogEmoji = this.dialog.open(DialogEmojisComponent, { restoreFocus: false });
+    dialogEmoji.afterClosed().subscribe(() => {
+      this.threadsInput.nativeElement.focus();
+    });
   }
 
 

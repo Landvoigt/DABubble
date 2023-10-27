@@ -103,6 +103,18 @@
         border: none;
     }
 
+    .message-send-btn:disabled {
+        cursor: default !important;
+
+        .message-send-icon {
+            cursor: default !important;
+
+            &:hover {
+                filter: none !important;
+            }
+        }
+    }
+
     .message-send-icon {
         object-fit: contain;
         cursor: pointer;
@@ -110,7 +122,7 @@
         width: 18px;
 
         &:hover {
-            filter: opacity(0.7)
+            filter: opacity(0.7);
         }
 
         @media (max-width: 1550px) or (max-height: 750px) {

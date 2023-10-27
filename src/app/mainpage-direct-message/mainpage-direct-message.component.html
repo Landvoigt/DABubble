@@ -1,8 +1,8 @@
 <div class="chat-header d-flex">
     <div class="chat-headline d-flex ai-center g-20 pointer">
         <img (click)="extractUserInformation(channelService.savedDmPartner)" class="dm-headline-avatar"
-            [src]="channelService.savedDmPartner.avatarSrc || 'assets/img/avatar_standard_(1).png'"
-            (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+            [src]="channelService.savedDmPartner.avatarSrc || 'assets/img/avatar/avatar_standard_(1).png'"
+            (error)="accountService.handleImageError($event, 'assets/img/avatar/avatar_standard_(1).png')">
         <span (click)="extractUserInformation(channelService.savedDmPartner)" *ngIf="!isOwnDmChannel">{{
             channelService.savedDmPartner.name
             }}</span>
@@ -29,8 +29,8 @@
             (mouseleave)="hoveredThreadId = null">
 
             <img (click)="openDialogProfile(thread)" class="thread-avatar pointer"
-                [src]="thread.ownerAvatarSrc || 'assets/img/avatar_standard_(1).png'"
-                (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+                [src]="thread.ownerAvatarSrc || 'assets/img/avatar/avatar_standard_(1).png'"
+                (error)="accountService.handleImageError($event, 'assets/img/avatar/avatar_standard_(1).png')">
 
             <div class="d-flex f-column g-10"
                 [class.thread-creator-reverse]="thread.ownerID === accountService.getLoggedInUser().id"
@@ -199,14 +199,15 @@
 
 <form #chatMessageForm="ngForm" class="message-container d-flex f-column" (ngSubmit)="sendMessage(chatMessageForm)">
 
-    <textarea (keydown.enter)="sendMessage(chatMessageForm)" [(ngModel)]="directMessage.content" name="main-chat-input"
-        placeholder="Nachricht an #Entwicklerteam" maxlength="1500" #directMessageInput required></textarea>
+    <textarea (keydown.enter)="sendMessage(chatMessageForm)" (input)="resetMessageProperties()"
+        [(ngModel)]="directMessage.content" name="main-chat-input" placeholder="Nachricht an #Entwicklerteam"
+        maxlength="1500" #directMessageInput required></textarea>
 
     <div class="d-flex message-icons">
         <div class="d-flex ai-center">
 
             <div class="file-input-container">
-                <input type="file" (change)="chatService.uploadImageInThreads($event,'fileInputDm')" id="fileInputDm"
+                <input type="file" (change)="resetMessageProperties(); chatService.uploadImageInThreads($event,'fileInputDm')" id="fileInputDm"
                     class="custom-file-input" aria-label="Datei hochladen">
                 <label for="fileInputDm">
                     <span class="material-symbols-outlined message-hover-icon flex-center pointer">
@@ -217,7 +218,7 @@
 
             <div class="message-hover-icon" class="icon-divider-line"></div>
 
-            <span (click)="openDialogEmojis($event)"
+            <span (click)="resetMessageProperties(); openDialogEmojis($event)"
                 class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust">
                 sentiment_satisfied
             </span>
@@ -244,8 +245,8 @@
 <div *ngIf="isThreadsEmpty && !isOwnDmChannel" class="chat-content-before-msg">
     <div class="d-flex ai-end">
         <img class="thread-avatar-big pointer" (click)="extractUserInformation(channelService.savedDmPartner)"
-            [src]="channelService.savedDmPartner.avatarSrc || 'avatar_standard_(1).png'"
-            (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+            [src]="channelService.savedDmPartner.avatarSrc || 'assets/img/avatar/avatar_standard_(1).png'"
+            (error)="accountService.handleImageError($event, 'assets/img/avatar/avatar_standard_(1).png')">
         <span (click)="extractUserInformation(channelService.savedDmPartner)"
             class="chat-headline headline-no-hover pointer">{{
             channelService.savedDmPartner.name }}</span>
@@ -262,8 +263,8 @@
 <div *ngIf="isThreadsEmpty && isOwnDmChannel" class="chat-content-before-msg">
     <div class="d-flex ai-end">
         <img class="thread-avatar-big pointer" (click)="extractUserInformation(accountService.getLoggedInUser())"
-            [src]="channelService.savedDmPartner.avatarSrc || 'assets/img/avatar_standard_(1).png'"
-            (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+            [src]="channelService.savedDmPartner.avatarSrc || 'assets/img/avatar/avatar_standard_(1).png'"
+            (error)="accountService.handleImageError($event, 'assets/img/avatar/avatar_standard_(1).png')">
         <span class="chat-headline headline-no-hover pointer"
             (click)="extractUserInformation(accountService.getLoggedInUser())">{{ channelService.savedDmPartner.name }}
             (Du)</span>

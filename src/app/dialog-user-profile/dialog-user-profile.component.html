@@ -1,8 +1,8 @@
 <mat-icon class="close-icon close-icon-dialog p-absolute pointer" (click)="dialogRef.close()">close</mat-icon>
 <div class="content d-flex f-column p-relative">
     <h2 class="profile-text">Profil</h2>
-    <img class="avatar-big" [src]="chatService.ownerData.ownerAvatarSrc || 'assets/img/avatar_standard_(1).png'"
-        (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+    <img class="avatar-big" [src]="chatService.ownerData.ownerAvatarSrc || 'assets/img/avatar/avatar_standard_(1).png'"
+        (error)="accountService.handleImageError($event, 'assets/img/avatar/avatar_standard_(1).png')">
     <span class="popup-name">{{ chatService.ownerData.ownerName }}</span>
 
     <div class="status-container d-flex ai-center w-100 g-20">

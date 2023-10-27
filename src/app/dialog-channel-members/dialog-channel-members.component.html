@@ -5,8 +5,8 @@
         <div class="d-flex ai-center member-box pointer" (click)="extractUserInformation(accountService.getLoggedInUser())">
             <div class="p-relative mr-20 d-flex">
                 <img class="members-avatar"
-                    [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar_standard_(1).png'"
-                    (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+                    [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar/avatar_standard_(1).png'"
+                    (error)="accountService.handleImageError($event, 'assets/img/avatar/avatar_standard_(1).png')">
             </div>
             <span class="dialog-span font-adjust user-name-wrap">{{ accountService.getLoggedInUser().name }} (Du)</span>
         </div>
@@ -15,8 +15,8 @@
     <div class="members-section d-flex ai-center j-between" *ngFor="let member of channelMembers">
         <div class="d-flex ai-center member-box pointer" (click)="extractUserInformation(member)">
             <div class="p-relative mr-20 d-flex">
-                <img class="members-avatar" [src]="member.avatarSrc || 'assets/img/avatar_standard_(1).png'"
-                    (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+                <img class="members-avatar" [src]="member.avatarSrc || 'assets/img/avatar/avatar_standard_(1).png'"
+                    (error)="accountService.handleImageError($event, 'assets/img/avatar/avatar_standard_(1).png')">
             </div>
             <span class="dialog-span font-adjust user-name-wrap">{{ member.name }}</span>
         </div>

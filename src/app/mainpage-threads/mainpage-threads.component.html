@@ -13,8 +13,8 @@
     <div class="main-thread-container d-flex ai-start g-20 no-hover"
         [class.own-thread-container]="currentThread.ownerID === accountService.getLoggedInUser().id">
         <img (click)="openDialogProfile(currentThread)" class="thread-avatar pointer"
-            [src]="currentThread.ownerAvatarSrc || 'assets/img/avatar_standard_(1).png'"
-            (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+            [src]="currentThread.ownerAvatarSrc || 'assets/img/avatar/avatar_standard_(1).png'"
+            (error)="accountService.handleImageError($event, 'assets/img/avatar/avatar_standard_(1).png')">
         <div class="d-flex f-column g-10"
             [class.thread-creator-reverse]="currentThread.ownerID === accountService.getLoggedInUser().id"
             [class.text-alignment-reverse]="currentThread.ownerID === accountService.getLoggedInUser().id">
@@ -61,8 +61,8 @@
             (mouseenter)="hoveredThreadId = i" (mouseleave)="hoveredThreadId = null">
 
             <img (click)="openDialogProfile(answer)" class="thread-avatar pointer"
-                [src]="answer.ownerAvatarSrc || 'assets/img/avatar_standard_(1).png'"
-                (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+                [src]="answer.ownerAvatarSrc || 'assets/img/avatar/avatar_standard_(1).png'"
+                (error)="accountService.handleImageError($event, 'assets/img/avatar/avatar_standard_(1).png')">
 
             <div class="d-flex f-column g-10"
                 [class.thread-creator-reverse]="answer.ownerID === accountService.getLoggedInUser().id"
@@ -228,14 +228,15 @@
 </div>
 
 <form #chatMessageForm="ngForm" class="message-container d-flex f-column" (ngSubmit)="sendMessage(chatMessageForm)">
-    <textarea (keydown.enter)="sendMessage(chatMessageForm)" name="thread-answer-input" placeholder="Antworten..."
-        [(ngModel)]="message.content" maxlength="1500" #threadsInput required></textarea>
+    <textarea (keydown.enter)="sendMessage(chatMessageForm)" (input)="resetMessageProperties()"
+        name="thread-answer-input" placeholder="Antworten..." [(ngModel)]="message.content" maxlength="1500"
+        #threadsInput required></textarea>
 
     <div class="d-flex message-icons">
         <div class="d-flex ai-center">
 
             <div class="file-input-container">
-                <input type="file" (change)="chatService.uploadImageInAnswers($event,'fileInputThread')"
+                <input type="file" (change)="resetMessageProperties(); chatService.uploadImageInAnswers($event,'fileInputThread')"
                     id="fileInputThread" class="custom-file-input" aria-label="Datei hochladen">
                 <label for="fileInputThread">
                     <span class="material-symbols-outlined message-hover-icon flex-center pointer">
@@ -246,7 +247,7 @@
 
             <div class="icon-divider-line"></div>
 
-            <span (click)="openDialogEmojis($event)"
+            <span (click)="resetMessageProperties(); openDialogEmojis($event)"
                 class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust">
                 sentiment_satisfied
             </span>

@@ -229,6 +229,8 @@ export class MainpageHeaderComponent {
     this.accountService.clearLoggedInUser();
     this.router.navigate(['/']);
     this.accountService.playIntro = false;
+    this.channelService.noCurrentChannel = true;
+    this.channelService.inDirectMessage = false;
   }
 
 

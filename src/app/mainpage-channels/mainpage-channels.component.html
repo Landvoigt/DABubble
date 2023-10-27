@@ -1,5 +1,5 @@
 <div *ngIf="!screenService.tabletMode" class="channels-header d-flex ai-center g-20">
-    <img src="assets/img/code_learning.png">
+    <img src="assets/img/logo/code_learning.png">
     <span class="channels-headline">Code Learning</span>
     <!-- <div class="new-message-icon flex-center pointer">
         <span class="material-symbols-outlined">
@@ -114,8 +114,8 @@
                     [class.channel-open]="channelService.inDirectMessage && accountService.getLoggedInUser().id === currentSelectedUser_ID">
                     <div class="p-relative mr-20 d-flex">
                         <img class="friends-avatar"
-                            [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar_standard_(1).png'"
-                            (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+                            [src]="accountService.getLoggedInUser().avatarSrc || 'assets/img/avatar/avatar_standard_(1).png'"
+                            (error)="accountService.handleImageError($event, 'assets/img/avatar/avatar_standard_(1).png')">
                         <div class="status-check" [class.status-online]="colorGreen" [class.status-offline]="colorGray"
                             [class.status-active]="colorBlue">
                         </div>
@@ -131,8 +131,8 @@
                 <div (click)="openDirectMessage(user)" class="d-flex ai-center friend-box pointer"
                     [class.channel-open]="channelService.inDirectMessage && user.id === currentSelectedUser_ID">
                     <div class="p-relative mr-20 d-flex">
-                        <img class="friends-avatar" [src]="user.avatarSrc || 'assets/img/avatar_standard_(1).png'"
-                            (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+                        <img class="friends-avatar" [src]="user.avatarSrc || 'assets/img/avatar/avatar_standard_(1).png'"
+                            (error)="accountService.handleImageError($event, 'assets/img/avatar/avatar_standard_(1).png')">
                         <div class="status-check" [class.status-online]="user.loggedIn && !user.isActive"
                             [class.status-offline]="!user.loggedIn && !user.isActive"
                             [class.status-active]="user.loggedIn && user.isActive"></div>

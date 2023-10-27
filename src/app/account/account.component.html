@@ -42,7 +42,7 @@
                     (ngModelChange)="accountService.checkUserPassword()" type="{{ showPassword ? 'text' : 'password' }}"
                     name="password" placeholder="Passwort" autocomplete="on" #passwordInput="ngModel">
                 <img class="privacy-icon pointer"
-                    [src]="showPassword ? 'assets/img/eye_open.svg' : 'assets/img/eye-slash-regular.svg'"
+                    [src]="showPassword ? 'assets/img/icons/password_show.svg' : 'assets/img/icons/password_hide.svg'"
                     (click)="togglePasswordVisibility()">
                 <span *ngIf="!accountService.isPasswordValid && !accountService.isPasswordEmpty && passwordInput.dirty"
                     class="warn p-absolute">

@@ -310,7 +310,10 @@ export class MainpageDirectMessageComponent implements OnInit, OnDestroy {
     this.chatService.serviceThread = this.directMessage;
     this.chatService.isContent = true;
     event.preventDefault();
-    this.dialog.open(DialogEmojisComponent, { restoreFocus: false });
+    const dialogEmoji = this.dialog.open(DialogEmojisComponent, { restoreFocus: false });
+    dialogEmoji.afterClosed().subscribe(() => {
+        this.directMessageInput.nativeElement.focus();
+    });
   }
 
 

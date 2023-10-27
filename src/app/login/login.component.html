@@ -48,7 +48,7 @@
                     type="{{ showPassword ? 'text' : 'password' }}" name="password" placeholder="Passwort"
                     autocomplete="on" #passwordInput="ngModel">
                 <img class="privacy-icon pointer"
-                    [src]="showPassword ? 'assets/img/eye_open.svg' : 'assets/img/eye-slash-regular.svg'"
+                    [src]="showPassword ? 'assets/img/icons/password_show.svg' : 'assets/img/icons/password_hide.svg'"
                     (click)="togglePasswordVisibility()">
                 <span *ngIf="!isPasswordValid && passwordInput.touched && passwordInput.value !== ''"
                     class="warn p-absolute">
@@ -64,7 +64,7 @@
                 <div class="underline"></div>
             </div>
 
-            <img class="google-btn-container pointer" src="assets/img/google-login.png" (click)="goToGoogleLogin()">
+            <img class="google-btn-container pointer" src="assets/img/logo/google_login.png" (click)="goToGoogleLogin()">
 
             <div class="btn-cont">
                 <button (click)="login()" [disabled]="!isEmailValid || !isPasswordValid" type="submit"

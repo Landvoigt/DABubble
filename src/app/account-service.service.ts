@@ -42,7 +42,7 @@ export class AccountServiceService {
   constructor() {
     this.parseLoggedInUser();
     this.initializeUserData();
-    this.newUser.avatarSrc = 'assets/img/none-profile.png';
+    this.newUser.avatarSrc = 'assets/img/avatar/avatar_default.png';
   }
 
 

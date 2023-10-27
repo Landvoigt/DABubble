@@ -9,8 +9,8 @@
     <div class="d-flex ai-center p-relative">
         <div (click)="openMembers()" class="d-flex ai-center mr-20 assigned-clients-box pointer">
             <img *ngFor="let member of currentChannelMembers | slice:0:3" class="member-avatar"
-                [src]="member.avatarSrc || 'assets/img/avatar_standard_(1).png'"
-                (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+                [src]="member.avatarSrc || 'assets/img/avatar/avatar_standard_(1).png'"
+                (error)="accountService.handleImageError($event, 'assets/img/avatar/avatar_standard_(1).png')">
             <span class="assigned-client-count">{{ currentChannel.members.length }}</span>
         </div>
         <div class="add-client-icon-box flex-center pointer"
@@ -40,8 +40,8 @@
             (mouseleave)="hoveredThreadId = null">
 
             <img (click)="openDialogProfile(thread)" class="thread-avatar pointer"
-                [src]="thread.ownerAvatarSrc || 'assets/img/avatar_standard_(1).png'"
-                (error)="accountService.handleImageError($event, 'assets/img/avatar_standard_(1).png')">
+                [src]="thread.ownerAvatarSrc || 'assets/img/avatar/avatar_standard_(1).png'"
+                (error)="accountService.handleImageError($event, 'assets/img/avatar/avatar_standard_(1).png')">
 
             <div [id]="thread.id" class="d-flex f-column g-10"
                 [class.thread-creator-reverse]="thread.ownerID === accountService.getLoggedInUser().id"
@@ -225,7 +225,7 @@
 <form *ngIf="!channelService.noCurrentChannel" #chatMessageForm="ngForm" class="message-container d-flex f-column"
     (ngSubmit)="sendMessage(chatMessageForm)">
 
-    <textarea (keydown.enter)="sendMessage(chatMessageForm)" name="main-chat-input"
+    <textarea (keydown.enter)="sendMessage(chatMessageForm)" (input)="resetMessageProperties()" name="main-chat-input"
         placeholder="Nachricht an #{{ currentChannel.name }}" [(ngModel)]="message.content" maxlength="1500"
         #mainChatInput required></textarea>
 
@@ -233,7 +233,7 @@
         <div class="d-flex ai-center">
 
             <div class="file-input-container">
-                <input type="file" (change)="chatService.uploadImageInThreads($event,'fileInputChat')"
+                <input type="file" (change)="resetMessageProperties(); chatService.uploadImageInThreads($event,'fileInputChat')"
                     id="fileInputChat" class="custom-file-input" aria-label="Datei hochladen">
                 <label for="fileInputChat">
                     <span class="material-symbols-outlined message-hover-icon flex-center pointer">
@@ -244,7 +244,7 @@
 
             <div class="message-hover-icon" class="icon-divider-line"></div>
 
-            <span (click)="openDialogEmojis($event)"
+            <span (click)="resetMessageProperties(); openDialogEmojis($event)"
                 class="material-symbols-outlined message-hover-icon flex-center pointer icon-size-adjust">
                 sentiment_satisfied
             </span>
